@@ -38,6 +38,6 @@ public class LogOnPanel extends LogOnPanelLayout {
 
     @Override
     public void onTileClick(User user) {
-
+        updateComponents(user);
     }
 }

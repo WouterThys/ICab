@@ -1,6 +1,5 @@
 package com.galenus.act.gui.components;
 
-import com.galenus.act.classes.BaseClass;
 import com.galenus.act.classes.User;
 import com.galenus.act.gui.GuiInterface;
 
@@ -100,6 +99,8 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
     //
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (clickListener != null) {
+            clickListener.onTileClick(user);
+        }
     }
 }
