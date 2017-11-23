@@ -1,6 +1,7 @@
 package com.galenus.act;
 
 import com.galenus.act.gui.Application;
+import com.galenus.act.web.WebManager;
 
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -17,20 +18,38 @@ public class Main {
     public static void main(String[] args) {
         readArguments(args);
 
-        SwingUtilities.invokeLater(() -> {
-            setLookAndFeel();
+        initialize();
 
-            Application app = new Application();
-            app.setTitle("ICAB");
-            app.setLocationByPlatform(true);
-            app.setPreferredSize(new Dimension(1500, 800));
-            if (FULL_SCREEN) {
-                app.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
-            app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            app.pack();
-            app.setVisible(true);
-        });
+        // TEST
+
+        WebManager.webMgr().registerDevice();
+
+        while (true);
+
+        // TEST
+
+//        SwingUtilities.invokeLater(() -> {
+//            setLookAndFeel();
+//
+//            Application app = new Application();
+//            app.setTitle("ICAB");
+//            app.setLocationByPlatform(true);
+//            app.setPreferredSize(new Dimension(1500, 800));
+//            if (FULL_SCREEN) {
+//                app.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//            }
+//            app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//            app.pack();
+//            app.setVisible(true);
+//        });
+    }
+
+    private static void initialize() {
+        WebManager.webMgr().init(
+                "ICAB",
+                "http://sp0007test/juliette/oriswsmattteo.asmx",
+                "http://tempuri.org/",
+                60000);
     }
 
     private static void readArguments(String[] args) {
