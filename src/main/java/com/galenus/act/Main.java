@@ -20,28 +20,20 @@ public class Main {
 
         initialize();
 
-        // TEST
+        SwingUtilities.invokeLater(() -> {
+            setLookAndFeel();
 
-        WebManager.webMgr().registerDevice();
-
-        while (true);
-
-        // TEST
-
-//        SwingUtilities.invokeLater(() -> {
-//            setLookAndFeel();
-//
-//            Application app = new Application();
-//            app.setTitle("ICAB");
-//            app.setLocationByPlatform(true);
-//            app.setPreferredSize(new Dimension(1500, 800));
-//            if (FULL_SCREEN) {
-//                app.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//            }
-//            app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//            app.pack();
-//            app.setVisible(true);
-//        });
+            Application app = new Application();
+            app.setTitle("I-CAB");
+            app.setLocationByPlatform(true);
+            app.setPreferredSize(new Dimension(1500, 800));
+            if (FULL_SCREEN) {
+                app.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+            app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            app.pack();
+            app.setVisible(true);
+        });
     }
 
     private static void initialize() {

@@ -14,6 +14,10 @@ public class WebManager {
     }
     private WebManager() {}
 
+    public static final String WebCall_DeviceRegister = "RegisterDevice";
+    public static final String WebCall_DeviceUnRegister = "UnRegisterDevice";
+    public static final String WebCall_DeviceGetUsers = "GetDeviceUsers";
+
     private String deviceName;
     private int deviceType;
 
@@ -68,7 +72,7 @@ public class WebManager {
      */
 
     public void registerDevice() {
-        new AsyncWebCall("RegisterDevice") {
+        new AsyncWebCall(WebCall_DeviceRegister) {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
@@ -79,6 +83,15 @@ public class WebManager {
     }
 
     public void unregisterDevice() {
+    }
+
+    public void getDeviceUsers() {
+        new AsyncWebCall(WebCall_DeviceGetUsers) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+            }
+        }.execute();
     }
 
 
