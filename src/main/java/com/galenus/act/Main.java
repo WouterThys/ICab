@@ -6,6 +6,7 @@ import com.galenus.act.web.WebManager;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
+import java.io.File;
 
 public class Main {
 
@@ -16,6 +17,7 @@ public class Main {
     public static boolean FULL_SCREEN = false;
 
     public static void main(String[] args) {
+        String startUpPath = new File("").getAbsolutePath() + File.separator;
         readArguments(args);
 
         initialize();
@@ -23,7 +25,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             setLookAndFeel();
 
-            Application app = new Application();
+            Application app = new Application(startUpPath);
             app.setTitle("I-CAB");
             app.setLocationByPlatform(true);
             app.setPreferredSize(new Dimension(1500, 800));
