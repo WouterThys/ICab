@@ -58,8 +58,10 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
     private void updateUserInfo(User user) {
         if (user != null) {
             userNameField.setText(user.getFirstName());
+            keyPad.clear();
         } else {
             userNameField.setText("");
+            keyPad.clear();
         }
     }
 
@@ -84,12 +86,14 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
     public void initializeComponents() {
         gridPanel = new JPanel(new GridLayout(rows,cols));
 
-        userNameField = new JLabel();
+        userNameField = new JLabel("", JLabel.CENTER);
         Font f = userNameField.getFont();
-        userNameField.setFont(new Font(f.getName(), Font.BOLD, 30));
+        userNameField.setFont(new Font(f.getName(), Font.BOLD, 50));
+        userNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         keyPad = new IKeyPad();
         keyPad.setPreferredSize(new Dimension(300,400));
+
 
     }
 

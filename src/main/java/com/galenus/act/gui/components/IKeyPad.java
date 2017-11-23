@@ -1,6 +1,9 @@
 package com.galenus.act.gui.components;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,8 +12,8 @@ import java.util.List;
 
 public class IKeyPad extends JPanel {
 
-    private int maxDigits = 10;
-    private final JTextArea text = new JTextArea(1, maxDigits);
+    private int maxDigits = 4;
+    private final JTextPane text = new JTextPane();
     private final JButton clear = new JButton(new Clear("Clear"));
     private final JButton enter = new JButton(new Enter("Enter"));
     private final List<NumberButton> numbers = new ArrayList<NumberButton>();
@@ -22,9 +25,16 @@ public class IKeyPad extends JPanel {
         super(new BorderLayout());
 
         JPanel display = new JPanel();
-        text.setFont(new Font("Dialog", Font.PLAIN, 24));
+        text.setFont(new Font("Dialog", Font.PLAIN, 60));
         text.setEditable(false);
         text.setFocusable(false);
+        text.setPreferredSize(new Dimension(200, 80));
+
+        StyledDocument doc = text.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
         display.add(text);
         this.add(display, BorderLayout.NORTH);
 
@@ -38,14 +48,12 @@ public class IKeyPad extends JPanel {
         }
         pad.add(clear);
         clear.setFocusable(false);
-        this.getInputMap().put(KeyStroke.getKeyStroke(
-                KeyEvent.VK_CLEAR, 0), clear.getText());
+        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0), clear.getText());
         this.getActionMap().put(clear.getText(), new Click(clear));
         pad.add(numbers.get(0));
         pad.add(enter);
         enter.setFocusable(false);
-        this.getInputMap().put(KeyStroke.getKeyStroke(
-                KeyEvent.VK_ENTER, 0), enter.getText());
+        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), enter.getText());
         this.getActionMap().put(enter.getText(), new Click(enter));
         this.add(pad, BorderLayout.CENTER);
     }
@@ -56,7 +64,14 @@ public class IKeyPad extends JPanel {
     public IKeyPad(int maxDigits) {
         this();
         this.maxDigits = maxDigits;
-        this.text.setColumns(maxDigits);
+        //this.text.setColumns(maxDigits);
+    }
+
+    public void clear() {
+        text.setText("");
+        for (NumberButton n : numbers) {
+            n.setEnabled(true);
+        }
     }
 
     private class Clear extends AbstractAction {
@@ -67,10 +82,7 @@ public class IKeyPad extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            text.setText("");
-            for (NumberButton n : numbers) {
-                n.setEnabled(true);
-            }
+            clear();
         }
     }
 
@@ -118,7 +130,8 @@ public class IKeyPad extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     String cmd = e.getActionCommand();
                     if (text.getText().length() < maxDigits) {
-                        text.append(cmd);
+                        String txt = text.getText() + cmd;
+                        text.setText(txt);
                     }
                     if (text.getText().length() == maxDigits) {
                         for (NumberButton n : numbers) {

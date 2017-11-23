@@ -34,24 +34,24 @@ public class User extends BaseClass {
     }
 
     public enum UserSex {
+        Machine,
         Female,
-        Male,
-        Machine;
+        Male;
 
         public static int enumToInt(UserSex userSex) {
             switch (userSex) {
-                case Female: return 0;
-                case Male: return 1;
-                case Machine: return 2;
+                case Machine: return 0;
+                case Female: return 1;
+                case Male: return 2;
                 default: return -1;
             }
         }
 
         public static UserSex intToEnum(int userSex) {
             switch (userSex) {
-                case 0: return Female;
-                case 1: return Male;
-                case 2: return Machine;
+                case 0: return Machine;
+                case 1: return Female;
+                case 2: return Male;
                 default: return Female;
             }
         }
