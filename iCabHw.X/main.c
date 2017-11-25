@@ -40,6 +40,12 @@ void main(void) {
         if (readReady) {
             readReady = false;
             read = D_UART_Read();
+            if (strcmp(read.command, "L") == 0) {
+                C_DOOR_LockAll();
+            }
+            if (strcmp(read.command, "U") == 0) {
+                C_DOOR_UnlockAll();
+            }
         }
         
         // FSM

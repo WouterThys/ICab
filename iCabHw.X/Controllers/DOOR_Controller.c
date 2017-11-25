@@ -21,6 +21,18 @@ static Door doors[DOOR_COUNT];
 /*******************************************************************************
  *          BASIC FUNCTIONS
  ******************************************************************************/
+static void commandAndMessage(Door door, char* com, char* mes);
+
+static void commandAndMessage(Door door, char* com, char* mes) {
+    // Command
+    com[0] = 'P';
+    com[1] = door.id + 0x30;
+    com[2] = '\0';
+    
+    // Message
+    mes[0] = door.is_open + 0x30;
+    mes[1] = '\0';
+}
 
 /*******************************************************************************
  *          DRIVER FUNCTIONS
@@ -85,12 +97,6 @@ void C_DOOR_ReadSensors() {
     for (d = 0; d < DOOR_COUNT; d++) {
         doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
     }
-    
-    if (doors[0].is_open) {
-        LATBbits.LATB7 = 1;
-    } else {
-        LATBbits.LATB7 = 0;
-    }
 }
 
 void C_DOOR_SendStates() {
@@ -98,7 +104,13 @@ void C_DOOR_SendStates() {
     for (d = 0; d < DOOR_COUNT; d++) {
         if (doors[d].was_open != doors[d].is_open) {
             
-            D_UART_Write("P", "O");
+            char com[3];
+            char mes[2];
+            commandAndMessage(doors[d], &com, &mes);
+
+            // Message
+            D_UART_Write(com, mes);
+            
             doors[d].was_open = doors[d].is_open;
         }
     }

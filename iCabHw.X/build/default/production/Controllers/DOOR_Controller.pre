@@ -1,17 +1,17 @@
 
 # 1 "Controllers/DOOR_Controller.c"
 
-# 26 "/opt/microchip/xc8/v1.44/include/htc.h"
+# 26 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
 
 extern double __fpnormalize(double);
 
 
-# 13 "/opt/microchip/xc8/v1.44/include/xc8debug.h"
+# 13 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\xc8debug.h"
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 50 "/opt/microchip/xc8/v1.44/include/pic18f2550.h"
+# 50 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h"
 extern volatile unsigned short UFRM @ 0xF66;
 
 asm("UFRM equ 0F66h");
@@ -4239,7 +4239,7 @@ extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 
 extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
-# 18 "/opt/microchip/xc8/v1.44/include/pic18.h"
+# 18 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h"
 __attribute__((__unsupported__("The " "flash_write" " routine is no longer supported. Please use the MPLAB X MCC."))) void flash_write(const unsigned char *, unsigned int, __far unsigned char *);
 __attribute__((__unsupported__("The " "EraseFlash" " routine is no longer supported. Please use the MPLAB X MCC."))) void EraseFlash(unsigned long startaddr, unsigned long endaddr);
 
@@ -4269,10 +4269,10 @@ extern __nonreentrant void _delay3(unsigned char);
 # 23 "Controllers/../Drivers/PORT_Driver.h"
 void D_PORT_Init();
 
-# 12 "/opt/microchip/xc8/v1.44/include/stdbool.h"
+# 12 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdbool.h"
 typedef unsigned char bool;
 
-# 13 "/opt/microchip/xc8/v1.44/include/stdint.h"
+# 13 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdint.h"
 typedef signed char int8_t;
 
 # 20
@@ -4422,7 +4422,21 @@ void C_DOOR_SendStates();
 # 19 "Controllers/DOOR_Controller.c"
 static Door doors[5];
 
-# 28
+# 24
+static void commandAndMessage(Door door, char* com, char* mes);
+
+static void commandAndMessage(Door door, char* com, char* mes) {
+
+com[0] = 'P';
+com[1] = door.id + 0x30;
+com[2] = '\0';
+
+
+mes[0] = door.is_open + 0x30;
+mes[1] = '\0';
+}
+
+# 40
 void C_DOOR_Init() {
 
 TRISB &= 0x3F;
@@ -4483,12 +4497,6 @@ uint8_t d;
 for (d = 0; d < 5; d++) {
 doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
 }
-
-if (doors[0].is_open) {
-LATBbits.LATB7 = 1;
-} else {
-LATBbits.LATB7 = 0;
-}
 }
 
 void C_DOOR_SendStates() {
@@ -4496,7 +4504,13 @@ uint8_t d;
 for (d = 0; d < 5; d++) {
 if (doors[d].was_open != doors[d].is_open) {
 
-D_UART_Write("P", "O");
+char com[3];
+char mes[2];
+commandAndMessage(doors[d], &com, &mes);
+
+
+D_UART_Write(com, mes);
+
 doors[d].was_open = doors[d].is_open;
 }
 }

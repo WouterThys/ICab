@@ -5,7 +5,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "19 Drivers/UART_Driver.h
 [s S327 `*Cuc 1 `*Cuc 1 `*Cuc 1 ]
 [n S327 . sender command message ]
-"4202 /opt/microchip/xc8/v1.44/include/pic18f2550.h
+"4202 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [s S175 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S175 . TX9D TRMT BRGH SENDB SYNC TXEN TX9 CSRC ]
 "4212
@@ -51,9 +51,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _RCREG `Vuc ~T0 @X0 0 e@4014 ]
 "67 Drivers/UART_Driver.c
 [v _acknowledge `(v ~T0 @X0 0 sf ]
-"195 /opt/microchip/xc8/v1.44/include/stdio.h
+"195 C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"3266 /opt/microchip/xc8/v1.44/include/pic18f2550.h
+"3266 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [s S131 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S131 . TRISC0 TRISC1 TRISC2 . TRISC6 TRISC7 ]
 "3274
@@ -66,7 +66,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISCbits `VS130 ~T0 @X0 0 e@3988 ]
 "51 Drivers/UART_Driver.h
 [v _D_UART_Enable `(v ~T0 @X0 0 ef1`uc ]
-"4988 /opt/microchip/xc8/v1.44/include/pic18f2550.h
+"4988 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [s S210 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S210 . ABDEN WUE . BRG16 TXCKP RXDTP RCIDL ABDOVF ]
 "4998
@@ -162,7 +162,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "3489
 [v _PIE1bits `VS139 ~T0 @X0 0 e@3997 ]
 [v F3525 `(v ~T0 @X0 1 tf1`ul ]
-"164 /opt/microchip/xc8/v1.44/include/pic18.h
+"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
 [v __delay `JF3525 ~T0 @X0 0 e ]
 [p i __delay ]
 [; ;__size_t.h: 4: typedef unsigned size_t;
@@ -277,7 +277,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;pic18f2550.h: 50: extern volatile unsigned short UFRM @ 0xF66;
-"52 /opt/microchip/xc8/v1.44/include/pic18f2550.h
+"52 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [; ;pic18f2550.h: 52: asm("UFRM equ 0F66h");
 [; <" UFRM equ 0F66h ;# ">
 [; ;pic18f2550.h: 57: extern volatile unsigned char UFRML @ 0xF66;
