@@ -10,6 +10,7 @@
       <logicalFolder name="Drivers" displayName="Drivers" projectFiles="true">
         <itemPath>Drivers/PORT_Driver.h</itemPath>
         <itemPath>Drivers/UART_Driver.h</itemPath>
+        <itemPath>Drivers/TMR0_Driver.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -25,6 +26,7 @@
       <logicalFolder name="Drivers" displayName="Drivers" projectFiles="true">
         <itemPath>Drivers/PORT_Driver.c</itemPath>
         <itemPath>Drivers/UART_Driver.c</itemPath>
+        <itemPath>Drivers/TMR0_Driver.c</itemPath>
       </logicalFolder>
       <itemPath>configuration.c</itemPath>
       <itemPath>main.c</itemPath>
@@ -49,7 +51,7 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.44</languageToolchainVersion>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -150,6 +152,7 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

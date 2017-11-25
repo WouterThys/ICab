@@ -11,15 +11,23 @@
 
 #define DOOR_COUNT  5
 
-#ifdef	__cplusplus
-extern "C" {
-#endif /* __cplusplus */ 
+// PORTB0 and PORTB1 are lock pins
+#define LOCK    0x03    
+#define UNLOCK  0x00    
+
     
     
     typedef struct {
-        uint8_t id;
-        bool    is_open;
-        bool    is_locked;
+        uint8_t  id;
+        
+        bool     locked;        /* Application should clear or set this       */
+        uint8_t* lock_port;     /* Port with pins for locking                 */
+        uint8_t  lock_pin;      /* Pin of port for locking                    */
+        
+        bool     was_open;      /* Previous open/closed state of the door     */
+        bool     is_open;       /* Last open/closed state of the door         */
+        uint8_t* sensor_port;   /* Port with pins for sensors                 */
+        uint8_t  sensor_pin;    /* Pin of port for sensor                     */
     }Door; 
     
     /**
@@ -38,10 +46,27 @@ extern "C" {
      */
     void C_DOOR_LockAll();
     
-
-#ifdef	__cplusplus
-}
-#endif /* __cplusplus */
+    /**
+     * Unlock a door
+     * @param id: id of the door
+     */
+    void C_DOOR_Unlock(uint8_t id);
+    
+    /**
+     * Unlock all doors
+     */
+    void C_DOOR_UnlockAll();
+    
+    /**
+     * Read input sensors
+     */
+    void C_DOOR_ReadSensors();
+    
+    /**
+     * Send door sensor states via UART module if door state has changed.
+     */
+    void C_DOOR_SendStates();
+    
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

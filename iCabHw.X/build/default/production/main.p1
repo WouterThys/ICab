@@ -3,27 +3,53 @@ Version 3.2 HI-TECH Software Intermediate Code
 [s S322 `*Cuc 1 `*Cuc 1 `*Cuc 1 ]
 [n S322 . sender command message ]
 [p mainexit ]
-"20 Drivers/PORT_Driver.h
+"23 Drivers/PORT_Driver.h
 [v _D_PORT_Init `(v ~T0 @X0 0 ef ]
-"28 Controllers/DOOR_Controller.h
-[v _C_DOOR_Init `(v ~T0 @X0 0 ef ]
-"39
-[v _C_DOOR_LockAll `(v ~T0 @X0 0 ef ]
 "32 Drivers/UART_Driver.h
 [v _D_UART_Init `(v ~T0 @X0 0 ef3`*Cuc`ui`uc ]
 "51
 [v _D_UART_Enable `(v ~T0 @X0 0 ef1`uc ]
+"11 Drivers/TMR0_Driver.h
+[v _D_TMR0_Init `(v ~T0 @X0 0 ef ]
+"36 Controllers/DOOR_Controller.h
+[v _C_DOOR_Init `(v ~T0 @X0 0 ef ]
+"58
+[v _C_DOOR_UnlockAll `(v ~T0 @X0 0 ef ]
 [v F3316 `(v ~T0 @X0 1 tf1`ul ]
-"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
+"164 /opt/microchip/xc8/v1.44/include/pic18.h
 [v __delay `JF3316 ~T0 @X0 0 e ]
 [p i __delay ]
 "39 Drivers/UART_Driver.h
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
+"17 Drivers/TMR0_Driver.h
+[v _D_TMR0_Enable `(v ~T0 @X0 0 ef1`uc ]
+"14 Drivers/UART_Driver.h
+[v _readReady `uc ~T0 @X0 0 e ]
+"45
+[v _D_UART_Read `(S322 ~T0 @X0 0 ef ]
+"63 Controllers/DOOR_Controller.h
+[v _C_DOOR_ReadSensors `(v ~T0 @X0 0 ef ]
+"68
+[v _C_DOOR_SendStates `(v ~T0 @X0 0 ef ]
+"7405 /opt/microchip/xc8/v1.44/include/pic18f2550.h
+[s S315 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S315 . RBIF INT0IF TMR0IF RBIE INT0IE TMR0IE PEIE_GIEL GIE_GIEH ]
+"7415
+[s S316 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S316 . . INT0F T0IF . INT0E T0IE PEIE GIE ]
+"7425
+[s S317 :6 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S317 . . GIEL GIEH ]
+"7404
+[u S314 `S315 1 `S316 1 `S317 1 ]
+[n S314 . . . . ]
+"7431
+[v _INTCONbits `VS314 ~T0 @X0 0 e@4082 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
 [; ;pic18f2550.h: 50: extern volatile unsigned short UFRM @ 0xF66;
-"52 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"52 /opt/microchip/xc8/v1.44/include/pic18f2550.h
 [; ;pic18f2550.h: 52: asm("UFRM equ 0F66h");
 [; <" UFRM equ 0F66h ;# ">
 [; ;pic18f2550.h: 57: extern volatile unsigned char UFRML @ 0xF66;
@@ -3180,7 +3206,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;string.h: 58: extern char * strichr(const char *, int);
 [; ;string.h: 59: extern char * strrchr(const char *, int);
 [; ;string.h: 60: extern char * strrichr(const char *, int);
-[; ;PORT_Driver.h: 20: void D_PORT_Init();
+[; ;PORT_Driver.h: 23: void D_PORT_Init();
 [; ;UART_Driver.h: 14: extern bool readReady;
 [; ;UART_Driver.h: 19: typedef struct {
 [; ;UART_Driver.h: 20: const char* sender;
@@ -3191,59 +3217,136 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.h: 39: void D_UART_Write(const char* command, const char* data);
 [; ;UART_Driver.h: 45: READ_Data D_UART_Read();
 [; ;UART_Driver.h: 51: void D_UART_Enable(bool enable);
-[; ;DOOR_Controller.h: 19: typedef struct {
-[; ;DOOR_Controller.h: 20: uint8_t id;
-[; ;DOOR_Controller.h: 21: bool is_open;
-[; ;DOOR_Controller.h: 22: bool is_locked;
-[; ;DOOR_Controller.h: 23: }Door;
-[; ;DOOR_Controller.h: 28: void C_DOOR_Init();
-[; ;DOOR_Controller.h: 34: void C_DOOR_Lock(uint8_t id);
-[; ;DOOR_Controller.h: 39: void C_DOOR_LockAll();
-"12 main.c
-[v _read `S322 ~T0 @X0 1 e ]
-[; ;main.c: 12: READ_Data read;
-[v $root$_main `(v ~T0 @X0 0 e ]
+[; ;TMR0_Driver.h: 11: void D_TMR0_Init();
+[; ;TMR0_Driver.h: 17: void D_TMR0_Enable(bool enable);
+[; ;DOOR_Controller.h: 20: typedef struct {
+[; ;DOOR_Controller.h: 21: uint8_t id;
+[; ;DOOR_Controller.h: 23: bool locked;
+[; ;DOOR_Controller.h: 24: uint8_t* lock_port;
+[; ;DOOR_Controller.h: 25: uint8_t lock_pin;
+[; ;DOOR_Controller.h: 27: bool was_open;
+[; ;DOOR_Controller.h: 28: bool is_open;
+[; ;DOOR_Controller.h: 29: uint8_t* sensor_port;
+[; ;DOOR_Controller.h: 30: uint8_t sensor_pin;
+[; ;DOOR_Controller.h: 31: }Door;
+[; ;DOOR_Controller.h: 36: void C_DOOR_Init();
+[; ;DOOR_Controller.h: 42: void C_DOOR_Lock(uint8_t id);
+[; ;DOOR_Controller.h: 47: void C_DOOR_LockAll();
+[; ;DOOR_Controller.h: 53: void C_DOOR_Unlock(uint8_t id);
+[; ;DOOR_Controller.h: 58: void C_DOOR_UnlockAll();
+[; ;DOOR_Controller.h: 63: void C_DOOR_ReadSensors();
+[; ;DOOR_Controller.h: 68: void C_DOOR_SendStates();
+"13 main.c
+[v _read `S322 ~T0 @X0 1 s ]
+[; ;main.c: 13: static READ_Data read;
 "14
+[v _tick `uc ~T0 @X0 1 s ]
+[; ;main.c: 14: static bool tick;
+[v $root$_main `(v ~T0 @X0 0 e ]
+"16
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 14: void main(void) {
+[; ;main.c: 16: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 16: D_PORT_Init();
-"16
+[; ;main.c: 18: D_PORT_Init();
+"18
 [e ( _D_PORT_Init ..  ]
-[; ;main.c: 19: C_DOOR_Init();
-"19
-[e ( _C_DOOR_Init ..  ]
-[; ;main.c: 20: C_DOOR_LockAll();
-"20
-[e ( _C_DOOR_LockAll ..  ]
-[; ;main.c: 24: D_UART_Init("P", 9600, 1);
-"24
+[; ;main.c: 22: D_UART_Init("P", 9600, 1);
+"22
 [e ( _D_UART_Init (3 , , :s 1C -> -> 9600 `i `ui -> -> 1 `i `uc ]
-[; ;main.c: 25: D_UART_Enable(1);
-"25
+[; ;main.c: 23: D_UART_Enable(1);
+"23
 [e ( _D_UART_Enable (1 -> -> 1 `i `uc ]
-[; ;main.c: 27: _delay((unsigned long)((200)*(16000000/4000.0)));
-"27
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
-[; ;main.c: 28: D_UART_Write("I", "Start");
-"28
-[e ( _D_UART_Write (2 , :s 2C :s 3C ]
-[; ;main.c: 29: while(1) {
+[; ;main.c: 26: D_TMR0_Init();
+"26
+[e ( _D_TMR0_Init ..  ]
+[; ;main.c: 29: C_DOOR_Init();
 "29
+[e ( _C_DOOR_Init ..  ]
+[; ;main.c: 30: C_DOOR_UnlockAll();
+"30
+[e ( _C_DOOR_UnlockAll ..  ]
+[; ;main.c: 32: _delay((unsigned long)((200)*(16000000/4000.0)));
+"32
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 35: D_UART_Write("I", "Start");
+"35
+[e ( _D_UART_Write (2 , :s 2C :s 3C ]
+[; ;main.c: 36: D_TMR0_Enable(1);
+"36
+[e ( _D_TMR0_Enable (1 -> -> 1 `i `uc ]
+[; ;main.c: 38: while(1) {
+"38
 [e :U 326 ]
 {
-"44
+[; ;main.c: 40: if (readReady) {
+"40
+[e $ ! != -> _readReady `i -> -> -> 0 `i `uc `i 328  ]
+{
+[; ;main.c: 41: readReady = 0;
+"41
+[e = _readReady -> -> 0 `i `uc ]
+[; ;main.c: 42: read = D_UART_Read();
+"42
+[e = _read ( _D_UART_Read ..  ]
+"43
+}
+[e :U 328 ]
+[; ;main.c: 43: }
+[; ;main.c: 46: if (tick) {
+"46
+[e $ ! != -> _tick `i -> -> -> 0 `i `uc `i 329  ]
+{
+[; ;main.c: 47: tick = 0;
+"47
+[e = _tick -> -> 0 `i `uc ]
+[; ;main.c: 50: C_DOOR_ReadSensors();
+"50
+[e ( _C_DOOR_ReadSensors ..  ]
+[; ;main.c: 53: C_DOOR_SendStates();
+"53
+[e ( _C_DOOR_SendStates ..  ]
+"54
+}
+[e :U 329 ]
+"56
 }
 [e :U 325 ]
-"29
+"38
 [e $U 326  ]
 [e :U 327 ]
-[; ;main.c: 44: }
-[; ;main.c: 45: }
-"45
+[; ;main.c: 54: }
+[; ;main.c: 56: }
+[; ;main.c: 57: }
+"57
 [e :UE 324 ]
+}
+[v $root$_HighISR `(v ~T0 @X0 0 e ]
+[v F3483 `(v ~T0 @X0 1 tf ]
+"59
+[v _HighISR `IF3483 ~T0 @X0 1 e ]
+{
+[; ;main.c: 59: void interrupt HighISR(void) {
+[e :U _HighISR ]
+[f ]
+[; ;main.c: 60: if (INTCONbits.TMR0IF) {
+"60
+[e $ ! != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i 331  ]
+{
+[; ;main.c: 61: tick = 1;
+"61
+[e = _tick -> -> 1 `i `uc ]
+[; ;main.c: 62: INTCONbits.TMR0IF = 0;
+"62
+[e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
+"63
+}
+[e :U 331 ]
+[; ;main.c: 63: }
+[; ;main.c: 64: }
+"64
+[e :UE 330 ]
 }
 [a 3C 83 116 97 114 116 0 ]
 [a 1C 80 0 ]

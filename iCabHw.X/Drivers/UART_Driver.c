@@ -156,7 +156,7 @@ static void fillDataBuffer(uint8_t data){
                 readReady = true;
             } else {
                 // Convert from (ASCII)char to integer.
-                readBuffer.readId = (data - 0x30);
+                readBuffer.readId = (uint8_t)(data - 0x30);
             }
             break;
             

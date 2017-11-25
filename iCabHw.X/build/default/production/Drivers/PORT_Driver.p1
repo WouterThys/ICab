@@ -1,5 +1,5 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"2835 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"2835 /opt/microchip/xc8/v1.44/include/pic18f2550.h
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
 "2115
 [v _PORTA `Vuc ~T0 @X0 0 e@3968 ]
@@ -125,7 +125,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;pic18f2550.h: 50: extern volatile unsigned short UFRM @ 0xF66;
-"52 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"52 /opt/microchip/xc8/v1.44/include/pic18f2550.h
 [; ;pic18f2550.h: 52: asm("UFRM equ 0F66h");
 [; <" UFRM equ 0F66h ;# ">
 [; ;pic18f2550.h: 57: extern volatile unsigned char UFRML @ 0xF66;
@@ -3226,7 +3226,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic18.h: 164: extern __nonreentrant void _delay(unsigned long);
 [; ;pic18.h: 166: extern __nonreentrant void _delaywdt(unsigned long);
 [; ;pic18.h: 168: extern __nonreentrant void _delay3(unsigned char);
-[; ;PORT_Driver.h: 20: void D_PORT_Init();
+[; ;PORT_Driver.h: 23: void D_PORT_Init();
 "32 Drivers/PORT_Driver.c
 [v _D_PORT_Init `(v ~T0 @X0 1 ef ]
 {

@@ -19,7 +19,7 @@ endif
 endif
 
 # Environment
-MKDIR=gnumkdir -p
+MKDIR=mkdir -p
 RM=rm -f 
 MV=mv 
 CP=cp 
@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=configuration.c main.c Drivers/PORT_Driver.c Drivers/UART_Driver.c Controllers/DOOR_Controller.c
+SOURCEFILES_QUOTED_IF_SPACED=Controllers/DOOR_Controller.c Drivers/PORT_Driver.c Drivers/UART_Driver.c configuration.c main.c Drivers/TMR0_Driver.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/configuration.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/Drivers/PORT_Driver.p1 ${OBJECTDIR}/Drivers/UART_Driver.p1 ${OBJECTDIR}/Controllers/DOOR_Controller.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/configuration.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/Drivers/PORT_Driver.p1.d ${OBJECTDIR}/Drivers/UART_Driver.p1.d ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Controllers/DOOR_Controller.p1 ${OBJECTDIR}/Drivers/PORT_Driver.p1 ${OBJECTDIR}/Drivers/UART_Driver.p1 ${OBJECTDIR}/configuration.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/Drivers/TMR0_Driver.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/Controllers/DOOR_Controller.p1.d ${OBJECTDIR}/Drivers/PORT_Driver.p1.d ${OBJECTDIR}/Drivers/UART_Driver.p1.d ${OBJECTDIR}/configuration.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/configuration.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/Drivers/PORT_Driver.p1 ${OBJECTDIR}/Drivers/UART_Driver.p1 ${OBJECTDIR}/Controllers/DOOR_Controller.p1
+OBJECTFILES=${OBJECTDIR}/Controllers/DOOR_Controller.p1 ${OBJECTDIR}/Drivers/PORT_Driver.p1 ${OBJECTDIR}/Drivers/UART_Driver.p1 ${OBJECTDIR}/configuration.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/Drivers/TMR0_Driver.p1
 
 # Source Files
-SOURCEFILES=configuration.c main.c Drivers/PORT_Driver.c Drivers/UART_Driver.c Controllers/DOOR_Controller.c
+SOURCEFILES=Controllers/DOOR_Controller.c Drivers/PORT_Driver.c Drivers/UART_Driver.c configuration.c main.c Drivers/TMR0_Driver.c
 
 
 CFLAGS=
@@ -93,21 +93,13 @@ MP_PROCESSOR_OPTION=18F2550
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/configuration.p1: configuration.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/configuration.p1.d 
-	@${RM} ${OBJECTDIR}/configuration.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/configuration.p1  configuration.c 
-	@-${MV} ${OBJECTDIR}/configuration.d ${OBJECTDIR}/configuration.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/configuration.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main.p1.d 
-	@${RM} ${OBJECTDIR}/main.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/main.p1  main.c 
-	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/Controllers/DOOR_Controller.p1: Controllers/DOOR_Controller.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Controllers" 
+	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
+	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Controllers/DOOR_Controller.p1  Controllers/DOOR_Controller.c 
+	@-${MV} ${OBJECTDIR}/Controllers/DOOR_Controller.d ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/Drivers/PORT_Driver.p1: Drivers/PORT_Driver.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Drivers" 
@@ -125,20 +117,11 @@ ${OBJECTDIR}/Drivers/UART_Driver.p1: Drivers/UART_Driver.c  nbproject/Makefile-$
 	@-${MV} ${OBJECTDIR}/Drivers/UART_Driver.d ${OBJECTDIR}/Drivers/UART_Driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Drivers/UART_Driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/Controllers/DOOR_Controller.p1: Controllers/DOOR_Controller.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Controllers" 
-	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
-	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Controllers/DOOR_Controller.p1  Controllers/DOOR_Controller.c 
-	@-${MV} ${OBJECTDIR}/Controllers/DOOR_Controller.d ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-else
 ${OBJECTDIR}/configuration.p1: configuration.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/configuration.p1.d 
 	@${RM} ${OBJECTDIR}/configuration.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/configuration.p1  configuration.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/configuration.p1  configuration.c 
 	@-${MV} ${OBJECTDIR}/configuration.d ${OBJECTDIR}/configuration.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/configuration.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
@@ -146,9 +129,26 @@ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.p1.d 
 	@${RM} ${OBJECTDIR}/main.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/main.p1  main.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/main.p1  main.c 
 	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Drivers/TMR0_Driver.p1: Drivers/TMR0_Driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Drivers" 
+	@${RM} ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d 
+	@${RM} ${OBJECTDIR}/Drivers/TMR0_Driver.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Drivers/TMR0_Driver.p1  Drivers/TMR0_Driver.c 
+	@-${MV} ${OBJECTDIR}/Drivers/TMR0_Driver.d ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+else
+${OBJECTDIR}/Controllers/DOOR_Controller.p1: Controllers/DOOR_Controller.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Controllers" 
+	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
+	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Controllers/DOOR_Controller.p1  Controllers/DOOR_Controller.c 
+	@-${MV} ${OBJECTDIR}/Controllers/DOOR_Controller.d ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/Drivers/PORT_Driver.p1: Drivers/PORT_Driver.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Drivers" 
@@ -166,13 +166,29 @@ ${OBJECTDIR}/Drivers/UART_Driver.p1: Drivers/UART_Driver.c  nbproject/Makefile-$
 	@-${MV} ${OBJECTDIR}/Drivers/UART_Driver.d ${OBJECTDIR}/Drivers/UART_Driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Drivers/UART_Driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/Controllers/DOOR_Controller.p1: Controllers/DOOR_Controller.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Controllers" 
-	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
-	@${RM} ${OBJECTDIR}/Controllers/DOOR_Controller.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Controllers/DOOR_Controller.p1  Controllers/DOOR_Controller.c 
-	@-${MV} ${OBJECTDIR}/Controllers/DOOR_Controller.d ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Controllers/DOOR_Controller.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/configuration.p1: configuration.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/configuration.p1.d 
+	@${RM} ${OBJECTDIR}/configuration.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/configuration.p1  configuration.c 
+	@-${MV} ${OBJECTDIR}/configuration.d ${OBJECTDIR}/configuration.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/configuration.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/main.p1.d 
+	@${RM} ${OBJECTDIR}/main.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/main.p1  main.c 
+	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Drivers/TMR0_Driver.p1: Drivers/TMR0_Driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Drivers" 
+	@${RM} ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d 
+	@${RM} ${OBJECTDIR}/Drivers/TMR0_Driver.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Drivers/TMR0_Driver.p1  Drivers/TMR0_Driver.c 
+	@-${MV} ${OBJECTDIR}/Drivers/TMR0_Driver.d ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Drivers/TMR0_Driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 
@@ -213,7 +229,7 @@ endif
 # Enable dependency checking
 .dep.inc: .depcheck-impl
 
-DEPFILES=$(shell mplabwildcard ${POSSIBLE_DEPFILES})
+DEPFILES=$(shell "${PATH_TO_IDE_BIN}"mplabwildcard ${POSSIBLE_DEPFILES})
 ifneq (${DEPFILES},)
 include ${DEPFILES}
 endif
