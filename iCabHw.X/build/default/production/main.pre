@@ -4460,7 +4460,7 @@ void C_DOOR_ReadSensors();
 # 68
 void C_DOOR_SendStates();
 
-# 14 "main.c"
+# 21 "main.c"
 static READ_Data read;
 static bool tick;
 
@@ -4481,9 +4481,9 @@ C_DOOR_Init();
 C_DOOR_UnlockAll();
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
+D_UART_Write("I", "I");
 
 
-D_UART_Write("I", "Start");
 D_TMR0_Enable(1);
 
 while(1) {
@@ -4495,6 +4495,8 @@ if (strcmp(read.command, "L") == 0) {
 C_DOOR_LockAll();
 } else if (strcmp(read.command, "U") == 0) {
 C_DOOR_UnlockAll();
+} else if (strcmp(read.command, "I") == 0) {
+
 } else if (strcmp(read.command, "R") == 0) {
 asm(" reset");
 } else {

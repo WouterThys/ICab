@@ -1,12 +1,13 @@
 package com.galenus.act.gui;
 
+import com.fazecast.jSerialComm.SerialPort;
 import com.galenus.act.classes.User;
-import com.galenus.act.classes.managers.UserManager;
-import com.galenus.act.gui.components.IUserTile;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
-import com.galenus.act.utils.SoapUtils;
+import com.galenus.act.serial.SerialListener;
+import com.galenus.act.serial.SerialManager;
+import com.galenus.act.serial.SerialMessage;
 import com.galenus.act.utils.resources.ImageResource;
-import com.galenus.act.web.OnWebCallListener;
+import com.galenus.act.web.WebCallListener;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
@@ -14,9 +15,10 @@ import java.awt.*;
 import java.util.Vector;
 
 import static com.galenus.act.classes.managers.UserManager.usrMgr;
+import static com.galenus.act.serial.SerialManager.serMgr;
 import static com.galenus.act.web.WebManager.*;
 
-public class Application extends JFrame implements GuiInterface, OnWebCallListener {
+public class Application extends JFrame implements GuiInterface, SerialListener, WebCallListener {
 
     public static String startUpPath;
     public static ImageResource imageResource;
@@ -25,6 +27,8 @@ public class Application extends JFrame implements GuiInterface, OnWebCallListen
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private LogOnPanel logOnPanel;
+
+    private ProgressMonitor monitor;
 
     /*
      *                  VARIABLES
@@ -36,18 +40,79 @@ public class Application extends JFrame implements GuiInterface, OnWebCallListen
     public Application(String startUpPath) {
         Application.startUpPath = startUpPath;
         Application.imageResource = new ImageResource("", "icons.properties");
+
         // Add web call listener
         webMgr().addOnWebCallListener(this);
+
         // Init gui
         initializeComponents();
         initializeLayouts();
+
+        // Start initialize: init serial -> ok = init web -> ok = get users
+        initializeSerial();
+
         // Start register
-        webMgr().registerDevice();
+        //webMgr().registerDevice();
     }
 
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    public void startWait() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    }
+
+    public void stopWait() {
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+
+    private void initializeWebService() {
+        webMgr().init(
+                "ICAB",
+                "http://sp0007test/juliette/oriswsmattteo.asmx",
+                "http://tempuri.org/",
+                60000);
+        webMgr().registerShutDownHook();
+    }
+
+    private void initializeSerial() {
+        serMgr().init(this);
+        serMgr().registerShutDownHook();
+
+        SerialManager.FindComPortThread worker = new SerialManager.FindComPortThread(this);
+
+        initProgressMonitor("Find COM ports", "Searching ");
+        startWait();
+        worker.addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals("state")) {
+                if (evt.getNewValue() == SwingWorker.StateValue.DONE) {
+                    stopWait();
+                }
+            } else if (evt.getPropertyName().equals("progress")) {
+                if (monitor != null) {
+                    int progress = (Integer) evt.getNewValue();
+                    String note = monitor.getNote();
+                    note += ".";
+                    if (note.length() > 50) {
+                        note = ".";
+                    }
+                    monitor.setProgress(progress);
+                    monitor.setNote(note);
+                    if (monitor.isCanceled() || worker.isDone()) {
+                        if (monitor.isCanceled()) {
+                            worker.cancel(true);
+                        }
+                    }
+                }
+            }
+        });
+        worker.execute();
+    }
+
+    private void initProgressMonitor(String message, String note) {
+        monitor = new ProgressMonitor(this, message, note, 0, 100);
+        monitor.setProgress(0);
+    }
 
     private void webRegistered() {
         // Fetch users
@@ -98,6 +163,27 @@ public class Application extends JFrame implements GuiInterface, OnWebCallListen
 
         pack();
 
+    }
+
+    //
+    // Serial stuff
+    //
+    @Override
+    public void onInitSuccess(SerialPort serialPort) {
+        System.out.println("COM port found: " + serialPort.getDescriptivePortName());
+        serMgr().initComPort(serialPort);
+        serMgr().sendLockAll();
+    }
+
+    @Override
+    public void onSerialError(String error) {
+        // TODO show dialog and exit(-1) ??
+        System.err.println(error);
+    }
+
+    @Override
+    public void onNewMessage(SerialMessage message) {
+        System.out.println("New message from " + message.getSender() + ": " + message.getCommand() + "->" + message.getMessage());
     }
 
     //

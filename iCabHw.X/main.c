@@ -10,6 +10,14 @@
 
 #define _XTAL_FREQ 16000000
 
+#define COMMAND_LOCK    "L" /* Command to lock doors                          */
+#define COMMAND_UNLOCK  "U" /* Command to unlock doors                        */
+#define COMMAND_INIT    "I" /* Command send by application when initializing  */
+#define COMMAND_RESET   "R" /* Command to reset PIC                           */
+#define COMMAND_ERROR   "E" /* Command to indicate error                      */
+
+#define ERROR_UNKNOWN   "U" /* Error message to send when unknown command     */
+
 static READ_Data read;
 static bool tick;
 
@@ -30,9 +38,9 @@ void main(void) {
     C_DOOR_UnlockAll();
     
     __delay_ms(200);
+    D_UART_Write(COMMAND_INIT, "I");
     
     // Start
-    D_UART_Write("I", "Start");
     D_TMR0_Enable(true);
     
     while(1) {
@@ -40,14 +48,16 @@ void main(void) {
         if (readReady) {
             readReady = false;
             read = D_UART_Read();
-            if (strcmp(read.command, "L") == 0) {
+            if (strcmp(read.command, COMMAND_LOCK) == 0) {
                 C_DOOR_LockAll();
-            } else if (strcmp(read.command, "U") == 0) {
+            } else if (strcmp(read.command, COMMAND_UNLOCK) == 0) {
                 C_DOOR_UnlockAll();
-            } else if (strcmp(read.command, "R") == 0) {
+            } else if (strcmp(read.command, COMMAND_INIT) == 0) {
+                // Do nothing, acknowledge will answer
+            } else if (strcmp(read.command, COMMAND_RESET) == 0) {
                 Reset();
             } else {
-                D_UART_Write("E", "U");
+                D_UART_Write(COMMAND_ERROR, ERROR_UNKNOWN);
             }
         }
         

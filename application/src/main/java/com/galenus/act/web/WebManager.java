@@ -26,7 +26,7 @@ public class WebManager {
     private int webTimeout;
 
 
-    private List<OnWebCallListener> webCallListenerList = new ArrayList<>();
+    private List<WebCallListener> webCallListenerList = new ArrayList<>();
 
 
     public void init(String deviceName, String webUrl, String webNameSpace, int webTimeout) {
@@ -40,13 +40,21 @@ public class WebManager {
         this.webCallListenerList = new ArrayList<>();
     }
 
-    public void addOnWebCallListener(OnWebCallListener webCallListener) {
+    public void close() {
+
+    }
+
+    public void registerShutDownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    public void addOnWebCallListener(WebCallListener webCallListener) {
         if (!webCallListenerList.contains(webCallListener)) {
             webCallListenerList.add(webCallListener);
         }
     }
 
-    public void removeOnWebCallListener(OnWebCallListener webCallListener) {
+    public void removeOnWebCallListener(WebCallListener webCallListener) {
         if (webCallListenerList.contains(webCallListener)) {
             webCallListenerList.remove(webCallListener);
         }
@@ -56,12 +64,12 @@ public class WebManager {
      * Package private methods
      */
     void onFinishedRequest(String methodName, Vector response) {
-        for (OnWebCallListener listener : webCallListenerList) {
+        for (WebCallListener listener : webCallListenerList) {
             listener.onFinishedRequest(methodName, response);
         }
     }
     void onFailedRequest(String methodName, Exception ex, int fault) {
-        for (OnWebCallListener listener : webCallListenerList) {
+        for (WebCallListener listener : webCallListenerList) {
             listener.onFailedRequest(methodName, ex, fault);
         }
     }
