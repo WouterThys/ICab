@@ -3432,7 +3432,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _mes `uc ~T0 @X0 -> 2 `i a ]
 [; ;DOOR_Controller.c: 107: char com[3];
 [; ;DOOR_Controller.c: 108: char mes[2];
-[; ;DOOR_Controller.c: 109: commandAndMessage(doors[d], &com, &mes);
+[; ;DOOR_Controller.c: 109: commandAndMessage(doors[d], com, mes);
 "109
 [e ( _commandAndMessage (3 , , *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux &U _com &U _mes ]
 [; ;DOOR_Controller.c: 112: D_UART_Write(com, mes);

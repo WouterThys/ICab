@@ -3879,9 +3879,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.c: 205: BAUDCONbits.BRG16 = 0;
 "205
 [e = . . _BAUDCONbits 0 3 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 210: SPBRG = ((16000000/baud)/64)-1;
+[; ;UART_Driver.c: 210: SPBRG = (uint8_t)((16000000/baud)/64)-1;
 "210
-[e = _SPBRG -> - / / -> 16000000 `l -> _baud `l -> -> 64 `i `l -> -> 1 `i `l `uc ]
+[e = _SPBRG -> - -> -> / / -> 16000000 `l -> _baud `l -> -> 64 `i `l `uc `i -> 1 `i `uc ]
 [; ;UART_Driver.c: 213: if (interrupts) {
 "213
 [e $ ! != -> _interrupts `i -> -> -> 0 `i `uc `i 364  ]
@@ -4040,9 +4040,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 370 ]
 }
 [v $root$_LowISR `(v ~T0 @X0 0 e ]
-[v F3674 `(v ~T0 @X0 1 tf ]
+[v F3675 `(v ~T0 @X0 1 tf ]
 "264
-[v _LowISR `ILF3674 ~T0 @X0 1 e ]
+[v _LowISR `ILF3675 ~T0 @X0 1 e ]
 {
 [; ;UART_Driver.c: 264: void interrupt low_priority LowISR(void) {
 [e :U _LowISR ]

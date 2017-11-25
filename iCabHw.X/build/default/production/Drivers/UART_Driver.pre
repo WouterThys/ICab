@@ -4720,7 +4720,7 @@ BAUDCONbits.BRG16 = 0;
 
 
 
-SPBRG = ((16000000/baud)/64)-1;
+SPBRG = (uint8_t)((16000000/baud)/64)-1;
 
 
 if (interrupts) {

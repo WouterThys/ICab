@@ -207,7 +207,7 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     // Invert
     
 
-    SPBRG = ((_XTAL_FREQ/baud)/64)-1; // Baud rate selection
+    SPBRG = (uint8_t)((_XTAL_FREQ/baud)/64)-1; // Baud rate selection
     
     // Interrupts for reading
     if (interrupts) {

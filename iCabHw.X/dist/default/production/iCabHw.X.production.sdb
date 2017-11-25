@@ -75,9 +75,9 @@
 [v i1_putch putch `(v  1 e 1 0 ]
 "264
 [v _LowISR LowISR `IIL(v  1 e 1 0 ]
-"16 D:\Geeken\Projects\ICab\iCabHw.X\main.c
+"17 D:\Geeken\Projects\ICab\iCabHw.X\main.c
 [v _main main `(v  1 e 1 0 ]
-"65
+"69
 [v _HighISR HighISR `II(v  1 e 1 0 ]
 "2115 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [v _PORTA PORTA `VEuc  1 e 1 @3968 ]
@@ -355,14 +355,14 @@
 [v _readData readData `S95  1 e 6 0 ]
 "59
 [v _readReady readReady `uc  1 e 1 0 ]
-"13 D:\Geeken\Projects\ICab\iCabHw.X\main.c
+"14 D:\Geeken\Projects\ICab\iCabHw.X\main.c
 [v _read read `S95  1 s 6 read ]
-"14
+"15
 [v _tick tick `uc  1 s 1 tick ]
-"16
+"17
 [v _main main `(v  1 e 1 0 ]
 {
-"63
+"67
 } 0
 "33 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
 [v _strcmp strcmp `(i  1 e 2 0 ]
@@ -586,8 +586,8 @@
 [v i1___lwdiv@divisor divisor `ui  1 p 2 20 ]
 "31
 } 0
-"65 D:\Geeken\Projects\ICab\iCabHw.X\main.c
+"69 D:\Geeken\Projects\ICab\iCabHw.X\main.c
 [v _HighISR HighISR `II(v  1 e 1 0 ]
 {
-"70
+"74
 } 0

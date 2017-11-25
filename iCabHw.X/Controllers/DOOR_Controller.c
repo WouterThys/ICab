@@ -106,7 +106,7 @@ void C_DOOR_SendStates() {
             
             char com[3];
             char mes[2];
-            commandAndMessage(doors[d], &com, &mes);
+            commandAndMessage(doors[d], com, mes);
 
             // Message
             D_UART_Write(com, mes);

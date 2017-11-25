@@ -42,9 +42,12 @@ void main(void) {
             read = D_UART_Read();
             if (strcmp(read.command, "L") == 0) {
                 C_DOOR_LockAll();
-            }
-            if (strcmp(read.command, "U") == 0) {
+            } else if (strcmp(read.command, "U") == 0) {
                 C_DOOR_UnlockAll();
+            } else if (strcmp(read.command, "R") == 0) {
+                Reset();
+            } else {
+                D_UART_Write("E", "U");
             }
         }
         
