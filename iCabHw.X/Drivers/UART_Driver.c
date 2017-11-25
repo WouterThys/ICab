@@ -61,17 +61,17 @@ bool readReady;
 /*******************************************************************************
  *          BASIC FUNCTIONS
  ******************************************************************************/
-void writeByte(uint8_t data);
-uint8_t readByte(void);
-void fillDataBuffer(uint8_t data);
-void acknowledge();
+static void writeByte(uint8_t data);
+static uint8_t readByte(void);
+static void fillDataBuffer(uint8_t data);
+static void acknowledge();
 
-void writeByte(uint8_t data) {
+static void writeByte(uint8_t data) {
     while(TXSTAbits.TRMT == 0); // Wait while buffer is still full
     TXREG = data;
 }
 
-uint8_t readByte() {
+static uint8_t readByte() {
     if(RCSTAbits.FERR == 1) {
         // TODO: create error handler
     }
@@ -81,7 +81,7 @@ uint8_t readByte() {
     return RCREG;
 }
 
-void fillDataBuffer(uint8_t data){
+static void fillDataBuffer(uint8_t data){
     switch(readBuffer.state) {
         case READ_STATE_START:
             if(data == START_CHAR) {
@@ -166,7 +166,7 @@ void fillDataBuffer(uint8_t data){
     }
 }
 
-void acknowledge() {
+static void acknowledge() {
     printf(startCharacter);
     
     printf(ackCharacter);

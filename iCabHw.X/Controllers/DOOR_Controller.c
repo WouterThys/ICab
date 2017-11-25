@@ -1,37 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <xc.h>
-#include <p18f4550.h>
 
-#include "PORT_Driver.h"
+#include "DOOR_Controller.h"
 
 /*******************************************************************************
  *          DEFINES
  ******************************************************************************/
 
-
 /*******************************************************************************
  *          MACRO FUNCTIONS
  ******************************************************************************/
 
-
 /*******************************************************************************
  *          VARIABLES
  ******************************************************************************/
-
+static Door doors[DOOR_COUNT];
 
 /*******************************************************************************
  *          BASIC FUNCTIONS
  ******************************************************************************/
 
-
 /*******************************************************************************
  *          DRIVER FUNCTIONS
  ******************************************************************************/
-void D_PORT_Init() {
-    TRISA = 0x00;   PORTA = 0x00;
-    TRISB = 0x00;   PORTB = 0x00;
-    TRISC = 0x00;   PORTC = 0x00;
-    ADCON1 = 0x0F;
+void C_DOOR_Init() {
+    // Ports
+    
+    // Doors
+    int d;
+    for (d = 0; d < DOOR_COUNT; d++) {
+        doors[d].id = d;
+        doors[d].is_locked = true;
+        doors[d].is_open = false;
+    }
+}
+
+void C_DOOR_Lock(uint8_t id) {
+    int d;
+    for (d = 0; d < DOOR_COUNT; d++) {
+        if (doors[d].id == id) {
+            doors[d].is_locked = true;
+        }
+    }
+}
+    
+void C_DOOR_LockAll() {
+    int d;
+    for (d = 0; d < DOOR_COUNT; d++) {
+        doors[d].is_locked = true;
+    }
 }
