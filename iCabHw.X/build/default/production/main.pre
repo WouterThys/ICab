@@ -4463,9 +4463,9 @@ void C_DOOR_SendStates();
 # 21 "main.c"
 static READ_Data read;
 static bool tick;
-static bool do_reset;
 
 void main(void) {
+_delay((unsigned long)((200)*(16000000/4000.0)));
 
 D_PORT_Init();
 
@@ -4486,15 +4486,8 @@ D_UART_Write("I", "I");
 
 
 D_TMR0_Enable(1);
-do_reset = 0;
 
 while(1) {
-
-if (do_reset) {
-asm(" reset");
-return;
-}
-
 
 if (readReady) {
 readReady = 0;
@@ -4506,7 +4499,10 @@ C_DOOR_UnlockAll();
 } else if (strcmp(read.command, "I") == 0) {
 
 } else if (strcmp(read.command, "R") == 0) {
-do_reset = 1;
+D_TMR0_Enable(0);
+D_UART_Enable(0);
+_delay((unsigned long)((20)*(16000000/4000.0)));
+asm(" reset");
 } else {
 D_UART_Write("E", "U");
 }

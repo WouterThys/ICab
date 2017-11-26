@@ -3,6 +3,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [s S322 `*Cuc 1 `*Cuc 1 `*Cuc 1 ]
 [n S322 . sender command message ]
 [p mainexit ]
+[v F3316 `(v ~T0 @X0 1 tf1`ul ]
+"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
+[v __delay `JF3316 ~T0 @X0 0 e ]
+[p i __delay ]
 "23 Drivers/PORT_Driver.h
 [v _D_PORT_Init `(v ~T0 @X0 0 ef ]
 "32 Drivers/UART_Driver.h
@@ -15,10 +19,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _C_DOOR_Init `(v ~T0 @X0 0 ef ]
 "58
 [v _C_DOOR_UnlockAll `(v ~T0 @X0 0 ef ]
-[v F3316 `(v ~T0 @X0 1 tf1`ul ]
-"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
-[v __delay `JF3316 ~T0 @X0 0 e ]
-[p i __delay ]
 "39 Drivers/UART_Driver.h
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
 "17 Drivers/TMR0_Driver.h
@@ -3246,16 +3246,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 "22
 [v _tick `uc ~T0 @X0 1 s ]
 [; ;main.c: 22: static bool tick;
-"23
-[v _do_reset `uc ~T0 @X0 1 s ]
-[; ;main.c: 23: static bool do_reset;
 [v $root$_main `(v ~T0 @X0 0 e ]
-"25
+"24
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 25: void main(void) {
+[; ;main.c: 24: void main(void) {
 [e :U _main ]
 [f ]
+[; ;main.c: 25: _delay((unsigned long)((200)*(16000000/4000.0)));
+"25
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
 [; ;main.c: 27: D_PORT_Init();
 "27
 [e ( _D_PORT_Init ..  ]
@@ -3283,144 +3283,136 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 45: D_TMR0_Enable(1);
 "45
 [e ( _D_TMR0_Enable (1 -> -> 1 `i `uc ]
-[; ;main.c: 46: do_reset = 0;
-"46
-[e = _do_reset -> -> 0 `i `uc ]
-[; ;main.c: 48: while(1) {
-"48
+[; ;main.c: 47: while(1) {
+"47
 [e :U 326 ]
 {
-[; ;main.c: 50: if (do_reset) {
+[; ;main.c: 49: if (readReady) {
+"49
+[e $ ! != -> _readReady `i -> -> -> 0 `i `uc `i 328  ]
+{
+[; ;main.c: 50: readReady = 0;
 "50
-[e $ ! != -> _do_reset `i -> -> -> 0 `i `uc `i 328  ]
-{
-[; ;main.c: 51: asm(" reset");
-"51
-[; <"  reset ;# ">
-[; ;main.c: 52: return;
-"52
-[e $UE 324  ]
-"53
-}
-[e :U 328 ]
-[; ;main.c: 53: }
-[; ;main.c: 56: if (readReady) {
-"56
-[e $ ! != -> _readReady `i -> -> -> 0 `i `uc `i 329  ]
-{
-[; ;main.c: 57: readReady = 0;
-"57
 [e = _readReady -> -> 0 `i `uc ]
-[; ;main.c: 58: read = D_UART_Read();
-"58
+[; ;main.c: 51: read = D_UART_Read();
+"51
 [e = _read ( _D_UART_Read ..  ]
-[; ;main.c: 59: if (strcmp(read.command, "L") == 0) {
-"59
-[e $ ! == ( _strcmp (2 , . _read 1 :s 4C -> 0 `i 330  ]
+[; ;main.c: 52: if (strcmp(read.command, "L") == 0) {
+"52
+[e $ ! == ( _strcmp (2 , . _read 1 :s 4C -> 0 `i 329  ]
 {
-[; ;main.c: 60: C_DOOR_LockAll();
-"60
+[; ;main.c: 53: C_DOOR_LockAll();
+"53
 [e ( _C_DOOR_LockAll ..  ]
-"61
+"54
 }
-[; ;main.c: 61: } else if (strcmp(read.command, "U") == 0) {
-[e $U 331  ]
-[e :U 330 ]
-[e $ ! == ( _strcmp (2 , . _read 1 :s 5C -> 0 `i 332  ]
+[; ;main.c: 54: } else if (strcmp(read.command, "U") == 0) {
+[e $U 330  ]
+[e :U 329 ]
+[e $ ! == ( _strcmp (2 , . _read 1 :s 5C -> 0 `i 331  ]
 {
-[; ;main.c: 62: C_DOOR_UnlockAll();
-"62
+[; ;main.c: 55: C_DOOR_UnlockAll();
+"55
 [e ( _C_DOOR_UnlockAll ..  ]
+"56
+}
+[; ;main.c: 56: } else if (strcmp(read.command, "I") == 0) {
+[e $U 332  ]
+[e :U 331 ]
+[e $ ! == ( _strcmp (2 , . _read 1 :s 6C -> 0 `i 333  ]
+{
+"58
+}
+[; ;main.c: 58: } else if (strcmp(read.command, "R") == 0) {
+[e $U 334  ]
+[e :U 333 ]
+[e $ ! == ( _strcmp (2 , . _read 1 :s 7C -> 0 `i 335  ]
+{
+[; ;main.c: 59: D_TMR0_Enable(0);
+"59
+[e ( _D_TMR0_Enable (1 -> -> 0 `i `uc ]
+[; ;main.c: 60: D_UART_Enable(0);
+"60
+[e ( _D_UART_Enable (1 -> -> 0 `i `uc ]
+[; ;main.c: 61: _delay((unsigned long)((20)*(16000000/4000.0)));
+"61
+[e ( __delay (1 -> * -> -> 20 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 62: asm(" reset");
+"62
+[; <"  reset ;# ">
 "63
 }
-[; ;main.c: 63: } else if (strcmp(read.command, "I") == 0) {
-[e $U 333  ]
-[e :U 332 ]
-[e $ ! == ( _strcmp (2 , . _read 1 :s 6C -> 0 `i 334  ]
+[; ;main.c: 63: } else {
+[e $U 336  ]
+[e :U 335 ]
 {
+[; ;main.c: 64: D_UART_Write("E", "U");
+"64
+[e ( _D_UART_Write (2 , :s 8C :s 9C ]
 "65
 }
-[; ;main.c: 65: } else if (strcmp(read.command, "R") == 0) {
-[e $U 335  ]
-[e :U 334 ]
-[e $ ! == ( _strcmp (2 , . _read 1 :s 7C -> 0 `i 336  ]
-{
-[; ;main.c: 66: do_reset = 1;
-"66
-[e = _do_reset -> -> 1 `i `uc ]
-"67
-}
-[; ;main.c: 67: } else {
-[e $U 337  ]
 [e :U 336 ]
-{
-[; ;main.c: 68: D_UART_Write("E", "U");
-"68
-[e ( _D_UART_Write (2 , :s 8C :s 9C ]
+[e :U 334 ]
+[e :U 332 ]
+[e :U 330 ]
+"66
+}
+[e :U 328 ]
+[; ;main.c: 65: }
+[; ;main.c: 66: }
+[; ;main.c: 69: if (tick) {
 "69
+[e $ ! != -> _tick `i -> -> -> 0 `i `uc `i 337  ]
+{
+[; ;main.c: 70: tick = 0;
+"70
+[e = _tick -> -> 0 `i `uc ]
+[; ;main.c: 73: C_DOOR_ReadSensors();
+"73
+[e ( _C_DOOR_ReadSensors ..  ]
+[; ;main.c: 76: C_DOOR_SendStates();
+"76
+[e ( _C_DOOR_SendStates ..  ]
+"77
 }
 [e :U 337 ]
-[e :U 335 ]
-[e :U 333 ]
-[e :U 331 ]
-"70
-}
-[e :U 329 ]
-[; ;main.c: 69: }
-[; ;main.c: 70: }
-[; ;main.c: 73: if (tick) {
-"73
-[e $ ! != -> _tick `i -> -> -> 0 `i `uc `i 338  ]
-{
-[; ;main.c: 74: tick = 0;
-"74
-[e = _tick -> -> 0 `i `uc ]
-[; ;main.c: 77: C_DOOR_ReadSensors();
-"77
-[e ( _C_DOOR_ReadSensors ..  ]
-[; ;main.c: 80: C_DOOR_SendStates();
-"80
-[e ( _C_DOOR_SendStates ..  ]
-"81
-}
-[e :U 338 ]
-"83
+"79
 }
 [e :U 325 ]
-"48
+"47
 [e $U 326  ]
 [e :U 327 ]
-[; ;main.c: 81: }
-[; ;main.c: 83: }
-[; ;main.c: 84: }
-"84
+[; ;main.c: 77: }
+[; ;main.c: 79: }
+[; ;main.c: 80: }
+"80
 [e :UE 324 ]
 }
 [v $root$_HighISR `(v ~T0 @X0 0 e ]
-[v F3484 `(v ~T0 @X0 1 tf ]
-"86
-[v _HighISR `IF3484 ~T0 @X0 1 e ]
+[v F3485 `(v ~T0 @X0 1 tf ]
+"82
+[v _HighISR `IF3485 ~T0 @X0 1 e ]
 {
-[; ;main.c: 86: void interrupt HighISR(void) {
+[; ;main.c: 82: void interrupt HighISR(void) {
 [e :U _HighISR ]
 [f ]
-[; ;main.c: 87: if (INTCONbits.TMR0IF) {
-"87
-[e $ ! != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i 340  ]
+[; ;main.c: 83: if (INTCONbits.TMR0IF) {
+"83
+[e $ ! != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i 339  ]
 {
-[; ;main.c: 88: tick = 1;
-"88
+[; ;main.c: 84: tick = 1;
+"84
 [e = _tick -> -> 1 `i `uc ]
-[; ;main.c: 89: INTCONbits.TMR0IF = 0;
-"89
+[; ;main.c: 85: INTCONbits.TMR0IF = 0;
+"85
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-"90
+"86
 }
-[e :U 340 ]
-[; ;main.c: 90: }
-[; ;main.c: 91: }
-"91
-[e :UE 339 ]
+[e :U 339 ]
+[; ;main.c: 86: }
+[; ;main.c: 87: }
+"87
+[e :UE 338 ]
 }
 [a 5C 85 0 ]
 [a 9C 85 0 ]
