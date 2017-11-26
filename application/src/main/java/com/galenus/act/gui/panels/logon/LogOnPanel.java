@@ -35,9 +35,9 @@ public class LogOnPanel extends LogOnPanelLayout {
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
     @Override
     public void onTileClick(User user) {
         updateComponents(user);
     }
+
 }

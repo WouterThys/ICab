@@ -2,6 +2,7 @@ package com.galenus.act.gui;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.galenus.act.classes.User;
+import com.galenus.act.gui.dialogs.seriallogsdialog.SerialLogsDialog;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.serial.SerialListener;
 import com.galenus.act.serial.SerialManager;
@@ -143,6 +144,20 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     @Override
     public void initializeComponents() {
         logOnPanel = new LogOnPanel();
+
+        // Menu panel
+        JMenuBar menuBar = new JMenuBar();
+        JMenu serialMenu = new JMenu("Serial");
+        JMenuItem serialLogs = new JMenuItem("Serial logs");
+        serialLogs.addActionListener(e -> {
+            SerialLogsDialog dialog = new SerialLogsDialog(this, "Serial logs", serMgr().getSerialPort());
+            dialog.showDialog();
+        });
+
+        serialMenu.add(serialLogs);
+        menuBar.add(serialMenu);
+
+        this.setJMenuBar(menuBar);
     }
 
     @Override

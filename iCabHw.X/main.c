@@ -20,6 +20,7 @@
 
 static READ_Data read;
 static bool tick;
+static bool do_reset;
 
 void main(void) {
     // Initialize ports to defaults
@@ -42,8 +43,15 @@ void main(void) {
     
     // Start
     D_TMR0_Enable(true);
+    do_reset = false;
     
     while(1) {
+        // Reset
+        if (do_reset) {
+            Reset();
+            return;
+        }
+        
         // Serial
         if (readReady) {
             readReady = false;
@@ -55,7 +63,7 @@ void main(void) {
             } else if (strcmp(read.command, COMMAND_INIT) == 0) {
                 // Do nothing, acknowledge will answer
             } else if (strcmp(read.command, COMMAND_RESET) == 0) {
-                Reset();
+                do_reset = true;
             } else {
                 D_UART_Write(COMMAND_ERROR, ERROR_UNKNOWN);
             }

@@ -4432,11 +4432,15 @@ com[1] = door.id + 0x30;
 com[2] = '\0';
 
 
-mes[0] = door.is_open + 0x30;
+if (door.is_open) {
+mes[0] = 'O';
+} else {
+mes[0] = 'C';
+}
 mes[1] = '\0';
 }
 
-# 40
+# 44
 void C_DOOR_Init() {
 
 TRISB &= 0x3F;

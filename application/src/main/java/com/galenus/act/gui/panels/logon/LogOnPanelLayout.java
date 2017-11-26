@@ -39,6 +39,7 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     private IUserTile createTile(User user) {
         IUserTile tileView = new IUserTile(user);
         tileView.addOnTileClickListener(this);
@@ -66,15 +67,14 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
     }
 
     private JPanel createUserPanel() {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
 
         // Add
         JPanel p = new JPanel(new BorderLayout());
         p.add(userNameField, BorderLayout.NORTH);
         p.add(keyPad, BorderLayout.CENTER);
 
-
-        panel.add(p);
+        panel.add(p, BorderLayout.NORTH);
 
         return panel;
     }
@@ -93,7 +93,6 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
 
         keyPad = new IKeyPad();
         keyPad.setPreferredSize(new Dimension(300,400));
-
 
     }
 

@@ -30,7 +30,11 @@ static void commandAndMessage(Door door, char* com, char* mes) {
     com[2] = '\0';
     
     // Message
-    mes[0] = door.is_open + 0x30;
+    if (door.is_open) {
+        mes[0] = 'O';   
+    } else {
+        mes[0] = 'C';   
+    }
     mes[1] = '\0';
 }
 

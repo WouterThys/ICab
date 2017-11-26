@@ -27,9 +27,10 @@ public class SerialManager {
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private SerialListener serialListener;
+    private List<SerialListener> serialListenerList = new ArrayList<>();
     private SerialPort serialPort;
-    private List<SerialMessage> messageList = new ArrayList<>();
+    private List<SerialMessage> sendMessageList = new ArrayList<>();
+    private List<SerialMessage> receivedMessageList = new ArrayList<>();
     private List<SerialMessage> acknowledgedList = new ArrayList<>();
     private String inputString = "";
 
@@ -37,7 +38,7 @@ public class SerialManager {
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public void init(SerialListener serialListener) {
-        this.serialListener = serialListener;
+        serialListenerList.add(serialListener);
     }
 
     public void registerShutDownHook() {
@@ -55,75 +56,126 @@ public class SerialManager {
         }
     }
 
+    public SerialPort getSerialPort() {
+        return serialPort;
+    }
+
+    public String getInputBufferString() {
+        return inputString;
+    }
+
+    public void addSerialListener(SerialListener serialListener) {
+        if (!serialListenerList.contains(serialListener)) {
+            serialListenerList.add(serialListener);
+        }
+    }
+
+    public void removeSerialListener(SerialListener serialListener) {
+        if (serialListenerList.contains(serialListener)) {
+            serialListenerList.remove(serialListener);
+        }
+    }
+
     public void initComPort(SerialPort port) {
         if (port != null) {
             this.serialPort = port;
             this.serialPort.setComPortParameters(9600, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
             addDataAvailableEvent(this.serialPort);
             if (!this.serialPort.openPort()) {
-                setError("Failed to open port: " + port.getDescriptivePortName());
+                onError("Failed to open port: " + port.getDescriptivePortName());
             }
         }
     }
 
     public void sendReset() {
         SerialMessage reset = MessageFactory.createReset();
-        addToMessageList(reset);
-        write(reset.toString());
+        if (addToMessageList(reset)) {
+            write(reset.toString());
+        }
     }
 
     public void sendInit() {
         SerialMessage init = MessageFactory.createInit();
-        addToMessageList(init);
-        write(init.toString());
+        if (addToMessageList(init)) {
+            write(init.toString());
+        }
     }
 
     public void sendLockAll() {
         SerialMessage lock = MessageFactory.createLockAll();
-        addToMessageList(lock);
-        write(lock.toString());
+        if (addToMessageList(lock)) {
+            write(lock.toString());
+        }
     }
 
     public void sendUnlockAll() {
         SerialMessage unlock = MessageFactory.createUnlockAll();
-        addToMessageList(unlock);
-        write(unlock.toString());
+        if (addToMessageList(unlock)) {
+            write(unlock.toString());
+        }
+    }
+
+    public List<SerialMessage> getSendMessageList() {
+        return new ArrayList<>(sendMessageList);
+    }
+
+    public List<SerialMessage> getAcknowledgedList() {
+        return new ArrayList<>(acknowledgedList);
+    }
+
+    public List<SerialMessage> getReceivedMessageList() {
+        return new ArrayList<>(receivedMessageList);
     }
 
     private void write(String data) {
         try {
             if (serialPort != null) {
                 if (serialPort.isOpen()) {
-                    serialPort.writeBytes(data.getBytes(), data.length());
-                    System.out.println("Bytes written: " + data);
+                    SwingUtilities.invokeLater(() -> {
+                        serialPort.writeBytes(data.getBytes(), data.length());
+                        System.out.println("Bytes written: " + data);
+                    });
                 } else {
-                    setError("COM port is closed..");
+                    onError("COM port is closed..");
                 }
             } else {
-                setError("No COM port available..");
+                onError("No COM port available..");
             }
         } catch (Exception e) {
-            setError(e);
+            onError(e);
         }
     }
 
-    private void addToMessageList(SerialMessage message) {
-        for (SerialMessage m : messageList) {
+    private boolean addToMessageList(SerialMessage message) {
+        for (SerialMessage m : sendMessageList) {
             if (m.getId() == message.getId()) {
-                serialListener.onSerialError("Buffer overflow: message with same id found..");
-                return;
+                onError("Buffer overflow: message with same id found..");
+                return false;
             }
         }
-        messageList.add(message);
+        sendMessageList.add(message);
+        return true;
     }
 
-    private void setError(Throwable throwable) {
-        setError(throwable.getMessage());
+    private void onError(Throwable throwable) {
+        onError(throwable.getMessage());
     }
 
-    private void setError(String error) {
-        if (serialListener != null) {
-            serialListener.onSerialError(error);
+    private void onError(String error) {
+        for (SerialListener listener : serialListenerList) {
+            listener.onSerialError(error);
+        }
+    }
+
+    private void onInitSuccess(SerialPort serialPort) {
+        for (SerialListener listener : serialListenerList) {
+            listener.onInitSuccess(serialPort);
+        }
+    }
+
+    private void onNewMessage(SerialMessage message) {
+        for (SerialListener listener : serialListenerList) {
+            listener.onNewMessage(message);
         }
     }
 
@@ -149,13 +201,15 @@ public class SerialManager {
     private void tryAcknowledge(SerialMessage ack) {
         if (ack != null) {
             if (ack.getType().equals(SerialMessage.Acknowledge)) {
-                List<SerialMessage> copy = new ArrayList<>(messageList);
+                List<SerialMessage> copy = new ArrayList<>(sendMessageList);
                 for (SerialMessage message : copy) {
                     if (message.getId() == ack.getId()) {
-                        message.setAcknowledged();
+                        message.setAcknowledged(ack);
+
+                        System.out.println("Acknowledge message: " + message);
 
                         acknowledgedList.add(message);
-                        messageList.remove(message);
+                        sendMessageList.remove(message);
                         return;
                     }
                 }
@@ -163,6 +217,7 @@ public class SerialManager {
         }
     }
 
+    private int retry = 0;
     private void newDataAvailable(byte[] newData) {
         //System.out.println("New data received: " + new String(newData));
         inputString += new String(newData);
@@ -174,17 +229,25 @@ public class SerialManager {
             if (message != null) {
                 if (message.getType().equals(SerialMessage.Acknowledge)) {
                     tryAcknowledge(message);
+                    onNewMessage(message);
                 } else {
-                    if (serialListener != null) {
-                        serialListener.onNewMessage(message);
-                    }
+                    receivedMessageList.add(message);
+                    onNewMessage(message);
                 }
-                inputString = inputString.replace(message.toString(), "");
+                if (inputString.contains(message.toString())) {
+                    retry = 0;
+                    inputString = inputString.replace(message.toString(), "");
+                } else {
+                    retry ++;
+                }
+                if (retry > 5) {
+                    retry = 0;
+                    inputString = "";
+                    onError("Invalid buffer exceeded retry count..");
+                }
             }
         } while (message != null);
-
     }
-
 
 
 

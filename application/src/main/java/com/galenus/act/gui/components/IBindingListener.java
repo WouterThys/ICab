@@ -1,0 +1,112 @@
+package com.galenus.act.gui.components;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class IBindingListener implements DocumentListener {
+
+    private String fieldName = "";
+    public Class fieldClass;
+
+    private Component component;
+    private IEditedListener editedListener;
+    private boolean enabled;
+
+    public IBindingListener(Component component, IEditedListener editedListener, String fieldName, Class fieldClass) {
+        this.component = component;
+        this.editedListener = editedListener;
+        this.fieldClass = fieldClass;
+
+        if (!fieldName.isEmpty()) {
+            String firstChar = String.valueOf(fieldName.charAt(0));
+            if (firstChar.equals(firstChar.toLowerCase())) {
+                fieldName = firstChar.toUpperCase() + fieldName.substring(1, fieldName.length());
+            }
+        }
+
+        this.fieldName = fieldName;
+    }
+
+    public IBindingListener(Component component, IEditedListener editedListener, String fieldName) {
+        this(component, editedListener, fieldName, String.class);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        dataUpdated(e.getDocument());
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        dataUpdated(e.getDocument());
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        dataUpdated(e.getDocument());
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void fireValueEdited(Document d) {
+        dataUpdated(d);
+    }
+
+    private void dataUpdated(Document d) {
+        try {
+            if (editedListener != null && enabled) {
+                Object guiObject = editedListener.getGuiObject();
+                if (guiObject != null) {
+                    String newVal = d.getText(
+                            d.getStartPosition().getOffset(),
+                            d.getEndPosition().getOffset() - 1
+                    );
+                    newVal = newVal.trim();
+
+                    String oldVal = "";
+                    if (!fieldName.isEmpty()) {
+                        Method setMethod = guiObject.getClass().getDeclaredMethod("set" + fieldName, fieldClass);
+                        Method getMethod = guiObject.getClass().getDeclaredMethod("get" + fieldName);
+
+                        oldVal = String.valueOf(getMethod.invoke(guiObject)).trim();
+                        switch (fieldClass.getTypeName()) {
+                            case "int":
+                                if (newVal.isEmpty()) newVal = "0";
+                                setMethod.invoke(guiObject, Integer.valueOf(newVal));
+                                break;
+                            case "double":
+                                if (newVal.isEmpty()) newVal = "0";
+                                setMethod.invoke(guiObject, Double.valueOf(newVal));
+                                break;
+                            case "float":
+                                if (newVal.isEmpty()) newVal = "0";
+                                setMethod.invoke(guiObject, Float.valueOf(newVal));
+                                break;
+                            case "long":
+                                if (newVal.isEmpty()) newVal = "0";
+                                setMethod.invoke(guiObject, Long.valueOf(newVal));
+                                break;
+                            default:
+                                setMethod.invoke(guiObject, newVal);
+                                break;
+                        }
+                    }
+                    editedListener.onValueChanged(component, fieldName, oldVal, newVal);
+                }
+            }
+        } catch (BadLocationException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+            e1.printStackTrace();
+        }
+    }
+}

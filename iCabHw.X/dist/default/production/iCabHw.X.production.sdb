@@ -35,15 +35,15 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "26 D:\Geeken\Projects\ICab\iCabHw.X\Controllers/DOOR_Controller.c
 [v _commandAndMessage commandAndMessage `(v  1 s 1 commandAndMessage ]
-"40
+"44
 [v _C_DOOR_Init C_DOOR_Init `(v  1 e 1 0 ]
-"70
+"74
 [v _C_DOOR_LockAll C_DOOR_LockAll `(v  1 e 1 0 ]
-"87
+"91
 [v _C_DOOR_UnlockAll C_DOOR_UnlockAll `(v  1 e 1 0 ]
-"95
+"99
 [v _C_DOOR_ReadSensors C_DOOR_ReadSensors `(v  1 e 1 0 ]
-"102
+"106
 [v _C_DOOR_SendStates C_DOOR_SendStates `(v  1 e 1 0 ]
 "32 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/PORT_Driver.c
 [v _D_PORT_Init D_PORT_Init `(v  1 e 1 0 ]
@@ -62,22 +62,22 @@
 [v _acknowledge acknowledge `(v  1 s 1 acknowledge ]
 "182
 [v _D_UART_Init D_UART_Init `(v  1 e 1 0 ]
-"223
+"226
 [v _D_UART_Write D_UART_Write `(v  1 e 1 0 ]
 "19 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.h
 [s S95 . 6 `*.39Cuc 1 sender 2 0 `*.39Cuc 1 command 2 2 `*.39Cuc 1 message 2 4 ]
-"237 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"240 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _D_UART_Read D_UART_Read `(S95  1 e 6 0 ]
-"244
+"247
 [v _D_UART_Enable D_UART_Enable `(v  1 e 1 0 ]
-"260
+"263
 [v _putch putch `(v  1 e 1 0 ]
 [v i1_putch putch `(v  1 e 1 0 ]
-"264
+"267
 [v _LowISR LowISR `IIL(v  1 e 1 0 ]
-"24 D:\Geeken\Projects\ICab\iCabHw.X\main.c
+"25 D:\Geeken\Projects\ICab\iCabHw.X\main.c
 [v _main main `(v  1 e 1 0 ]
-"78
+"86
 [v _HighISR HighISR `II(v  1 e 1 0 ]
 "2115 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [v _PORTA PORTA `VEuc  1 e 1 @3968 ]
@@ -359,10 +359,12 @@
 [v _read read `S95  1 s 6 read ]
 "22
 [v _tick tick `uc  1 s 1 tick ]
-"24
+"23
+[v _do_reset do_reset `uc  1 s 1 do_reset ]
+"25
 [v _main main `(v  1 e 1 0 ]
 {
-"76
+"84
 } 0
 "33 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
 [v _strcmp strcmp `(i  1 e 2 0 ]
@@ -376,10 +378,10 @@
 } 0
 "19 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.h
 [s S95 . 6 `*.39Cuc 1 sender 2 0 `*.39Cuc 1 command 2 2 `*.39Cuc 1 message 2 4 ]
-"237 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"240 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _D_UART_Read D_UART_Read `(S95  1 e 6 0 ]
 {
-"242
+"245
 } 0
 "182
 [v _D_UART_Init D_UART_Init `(v  1 e 1 0 ]
@@ -387,7 +389,7 @@
 [v D_UART_Init@name name `*.32Cuc  1 p 2 14 ]
 [v D_UART_Init@baud baud `ui  1 p 2 16 ]
 [v D_UART_Init@interrupts interrupts `uc  1 p 1 18 ]
-"221
+"224
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\aldiv.c
 [v ___aldiv __aldiv `(l  1 e 4 0 ]
@@ -402,13 +404,13 @@
 [v ___aldiv@divisor divisor `l  1 p 4 4 ]
 "42
 } 0
-"244 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"247 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _D_UART_Enable D_UART_Enable `(v  1 e 1 0 ]
 {
 [v D_UART_Enable@enable enable `uc  1 a 1 wreg ]
 [v D_UART_Enable@enable enable `uc  1 a 1 wreg ]
 [v D_UART_Enable@enable enable `uc  1 a 1 0 ]
-"258
+"261
 } 0
 "31 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/TMR0_Driver.c
 [v _D_TMR0_Init D_TMR0_Init `(v  1 e 1 0 ]
@@ -428,21 +430,21 @@
 {
 "37
 } 0
-"87 D:\Geeken\Projects\ICab\iCabHw.X\Controllers/DOOR_Controller.c
+"91 D:\Geeken\Projects\ICab\iCabHw.X\Controllers/DOOR_Controller.c
 [v _C_DOOR_UnlockAll C_DOOR_UnlockAll `(v  1 e 1 0 ]
 {
-"93
+"97
 } 0
-"102
+"106
 [v _C_DOOR_SendStates C_DOOR_SendStates `(v  1 e 1 0 ]
 {
-"107
+"111
 [v C_DOOR_SendStates@com com `[3]uc  1 a 3 25 ]
-"108
+"112
 [v C_DOOR_SendStates@mes mes `[2]uc  1 a 2 28 ]
-"103
+"107
 [v C_DOOR_SendStates@d d `uc  1 a 1 30 ]
-"117
+"121
 } 0
 "26
 [v _commandAndMessage commandAndMessage `(v  1 s 1 commandAndMessage ]
@@ -451,14 +453,14 @@
 [v commandAndMessage@door door `S21  1 p 10 0 ]
 [v commandAndMessage@com com `*.39uc  1 p 2 10 ]
 [v commandAndMessage@mes mes `*.39uc  1 p 2 12 ]
-"35
+"39
 } 0
-"223 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"226 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _D_UART_Write D_UART_Write `(v  1 e 1 0 ]
 {
 [v D_UART_Write@command command `*.34Cuc  1 p 2 18 ]
 [v D_UART_Write@data data `*.34Cuc  1 p 2 20 ]
-"235
+"238
 } 0
 "464 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
@@ -479,13 +481,13 @@
 [v printf@f f `*.36Cuc  1 p 3 7 ]
 "1541
 } 0
-"260 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"263 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _putch putch `(v  1 e 1 0 ]
 {
 [v putch@data data `uc  1 a 1 wreg ]
 [v putch@data data `uc  1 a 1 wreg ]
 [v putch@data data `uc  1 a 1 1 ]
-"262
+"265
 } 0
 "69
 [v _writeByte writeByte `(v  1 s 1 writeByte ]
@@ -507,29 +509,29 @@
 [v ___lwdiv@divisor divisor `ui  1 p 2 2 ]
 "31
 } 0
-"95 D:\Geeken\Projects\ICab\iCabHw.X\Controllers/DOOR_Controller.c
+"99 D:\Geeken\Projects\ICab\iCabHw.X\Controllers/DOOR_Controller.c
 [v _C_DOOR_ReadSensors C_DOOR_ReadSensors `(v  1 e 1 0 ]
 {
-"96
-[v C_DOOR_ReadSensors@d d `uc  1 a 1 4 ]
 "100
+[v C_DOOR_ReadSensors@d d `uc  1 a 1 4 ]
+"104
 } 0
-"70
+"74
 [v _C_DOOR_LockAll C_DOOR_LockAll `(v  1 e 1 0 ]
 {
-"76
+"80
 } 0
-"40
+"44
 [v _C_DOOR_Init C_DOOR_Init `(v  1 e 1 0 ]
 {
-"46
+"50
 [v C_DOOR_Init@d d `uc  1 a 1 0 ]
-"59
+"63
 } 0
-"264 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"267 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v _LowISR LowISR `IIL(v  1 e 1 0 ]
 {
-"269
+"272
 } 0
 "74
 [v _readByte readByte `(uc  1 s 1 readByte ]
@@ -561,13 +563,13 @@
 [v i1printf@f f `*.36Cuc  1 p 3 25 ]
 "1541
 } 0
-"260 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
+"263 D:\Geeken\Projects\ICab\iCabHw.X\Drivers/UART_Driver.c
 [v i1_putch putch `(v  1 e 1 0 ]
 {
 [v i1putch@data data `uc  1 a 1 wreg ]
 [v i1putch@data data `uc  1 a 1 wreg ]
 [v i1putch@data data `uc  1 a 1 19 ]
-"262
+"265
 } 0
 "69
 [v i1_writeByte writeByte `(v  1 s 1 i1_writeByte ]
@@ -586,8 +588,8 @@
 [v i1___lwdiv@divisor divisor `ui  1 p 2 20 ]
 "31
 } 0
-"78 D:\Geeken\Projects\ICab\iCabHw.X\main.c
+"86 D:\Geeken\Projects\ICab\iCabHw.X\main.c
 [v _HighISR HighISR `II(v  1 e 1 0 ]
 {
-"83
+"91
 } 0

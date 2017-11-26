@@ -3192,269 +3192,286 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 30: com[2] = '\0';
 "30
 [e = *U + _com * -> -> 2 `i `x -> -> # *U _com `i `x -> -> 0 `ui `uc ]
-[; ;DOOR_Controller.c: 33: mes[0] = door.is_open + 0x30;
+[; ;DOOR_Controller.c: 33: if (door.is_open) {
 "33
-[e = *U + _mes * -> -> 0 `i `x -> -> # *U _mes `i `x -> + -> . _door 5 `i -> 48 `i `uc ]
-[; ;DOOR_Controller.c: 34: mes[1] = '\0';
+[e $ ! != -> . _door 5 `i -> -> -> 0 `i `uc `i 325  ]
+{
+[; ;DOOR_Controller.c: 34: mes[0] = 'O';
 "34
-[e = *U + _mes * -> -> 1 `i `x -> -> # *U _mes `i `x -> -> 0 `ui `uc ]
-[; ;DOOR_Controller.c: 35: }
+[e = *U + _mes * -> -> 0 `i `x -> -> # *U _mes `i `x -> -> 79 `ui `uc ]
 "35
+}
+[; ;DOOR_Controller.c: 35: } else {
+[e $U 326  ]
+[e :U 325 ]
+{
+[; ;DOOR_Controller.c: 36: mes[0] = 'C';
+"36
+[e = *U + _mes * -> -> 0 `i `x -> -> # *U _mes `i `x -> -> 67 `ui `uc ]
+"37
+}
+[e :U 326 ]
+[; ;DOOR_Controller.c: 37: }
+[; ;DOOR_Controller.c: 38: mes[1] = '\0';
+"38
+[e = *U + _mes * -> -> 1 `i `x -> -> # *U _mes `i `x -> -> 0 `ui `uc ]
+[; ;DOOR_Controller.c: 39: }
+"39
 [e :UE 324 ]
 }
-"40
+"44
 [v _C_DOOR_Init `(v ~T0 @X0 1 ef ]
 {
-[; ;DOOR_Controller.c: 40: void C_DOOR_Init() {
+[; ;DOOR_Controller.c: 44: void C_DOOR_Init() {
 [e :U _C_DOOR_Init ]
 [f ]
-[; ;DOOR_Controller.c: 42: TRISB &= 0x3F;
-"42
-[e =& _TRISB -> -> 63 `i `uc ]
-[; ;DOOR_Controller.c: 43: TRISB |= 0x3F;
-"43
-[e =| _TRISB -> -> 63 `i `uc ]
+[; ;DOOR_Controller.c: 46: TRISB &= 0x3F;
 "46
-[v _d `uc ~T0 @X0 1 a ]
-[; ;DOOR_Controller.c: 46: uint8_t d;
-[; ;DOOR_Controller.c: 47: for (d = 0; d < 5; d++) {
+[e =& _TRISB -> -> 63 `i `uc ]
+[; ;DOOR_Controller.c: 47: TRISB |= 0x3F;
 "47
+[e =| _TRISB -> -> 63 `i `uc ]
+"50
+[v _d `uc ~T0 @X0 1 a ]
+[; ;DOOR_Controller.c: 50: uint8_t d;
+[; ;DOOR_Controller.c: 51: for (d = 0; d < 5; d++) {
+"51
 {
 [e = _d -> -> 0 `i `uc ]
-[e $ < -> _d `i -> 5 `i 326  ]
-[e $U 327  ]
-[e :U 326 ]
+[e $ < -> _d `i -> 5 `i 328  ]
+[e $U 329  ]
+[e :U 328 ]
 {
-[; ;DOOR_Controller.c: 48: doors[d].id = d;
-"48
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 _d ]
-[; ;DOOR_Controller.c: 50: doors[d].locked = 1;
-"50
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 1 -> -> 1 `i `uc ]
-[; ;DOOR_Controller.c: 51: doors[d].lock_port = &PORTB;
-"51
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> &U _PORTB `*uc ]
-[; ;DOOR_Controller.c: 52: doors[d].lock_pin = 7;
+[; ;DOOR_Controller.c: 52: doors[d].id = d;
 "52
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 -> -> 7 `i `uc ]
-[; ;DOOR_Controller.c: 54: doors[d].is_open = 0;
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 _d ]
+[; ;DOOR_Controller.c: 54: doors[d].locked = 1;
 "54
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
-[; ;DOOR_Controller.c: 55: doors[d].was_open = 0;
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 1 -> -> 1 `i `uc ]
+[; ;DOOR_Controller.c: 55: doors[d].lock_port = &PORTB;
 "55
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> 0 `i `uc ]
-[; ;DOOR_Controller.c: 56: doors[d].sensor_port = &PORTB;
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> &U _PORTB `*uc ]
+[; ;DOOR_Controller.c: 56: doors[d].lock_pin = 7;
 "56
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 -> &U _PORTB `*uc ]
-[; ;DOOR_Controller.c: 57: doors[d].sensor_pin = d;
-"57
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 _d ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 -> -> 7 `i `uc ]
+[; ;DOOR_Controller.c: 58: doors[d].is_open = 0;
 "58
-}
-"47
-[e ++ _d -> -> 1 `i `uc ]
-[e $ < -> _d `i -> 5 `i 326  ]
-[e :U 327 ]
-"58
-}
-[; ;DOOR_Controller.c: 58: }
-[; ;DOOR_Controller.c: 59: }
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
+[; ;DOOR_Controller.c: 59: doors[d].was_open = 0;
 "59
-[e :UE 325 ]
-}
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> 0 `i `uc ]
+[; ;DOOR_Controller.c: 60: doors[d].sensor_port = &PORTB;
+"60
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 -> &U _PORTB `*uc ]
+[; ;DOOR_Controller.c: 61: doors[d].sensor_pin = d;
 "61
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 _d ]
+"62
+}
+"51
+[e ++ _d -> -> 1 `i `uc ]
+[e $ < -> _d `i -> 5 `i 328  ]
+[e :U 329 ]
+"62
+}
+[; ;DOOR_Controller.c: 62: }
+[; ;DOOR_Controller.c: 63: }
+"63
+[e :UE 327 ]
+}
+"65
 [v _C_DOOR_Lock `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;DOOR_Controller.c: 61: void C_DOOR_Lock(uint8_t id) {
+[; ;DOOR_Controller.c: 65: void C_DOOR_Lock(uint8_t id) {
 [e :U _C_DOOR_Lock ]
 [v _id `uc ~T0 @X0 1 r1 ]
 [f ]
-"62
+"66
 [v _d `uc ~T0 @X0 1 a ]
-[; ;DOOR_Controller.c: 62: uint8_t d;
-[; ;DOOR_Controller.c: 63: for (d = 0; d < 5; d++) {
-"63
+[; ;DOOR_Controller.c: 66: uint8_t d;
+[; ;DOOR_Controller.c: 67: for (d = 0; d < 5; d++) {
+"67
 {
 [e = _d -> -> 0 `i `uc ]
-[e $ < -> _d `i -> 5 `i 330  ]
-[e $U 331  ]
-[e :U 330 ]
+[e $ < -> _d `i -> 5 `i 332  ]
+[e $U 333  ]
+[e :U 332 ]
 {
-[; ;DOOR_Controller.c: 64: if (doors[d].id == id) {
-"64
-[e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 333  ]
-{
-[; ;DOOR_Controller.c: 65: *doors[d].lock_port |= 1 << doors[d].lock_pin;
-"65
-[e =| *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
-"66
-}
-[e :U 333 ]
-"67
-}
-"63
-[e ++ _d -> -> 1 `i `uc ]
-[e $ < -> _d `i -> 5 `i 330  ]
-[e :U 331 ]
-"67
-}
-[; ;DOOR_Controller.c: 66: }
-[; ;DOOR_Controller.c: 67: }
-[; ;DOOR_Controller.c: 68: }
+[; ;DOOR_Controller.c: 68: if (doors[d].id == id) {
 "68
-[e :UE 329 ]
-}
+[e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 335  ]
+{
+[; ;DOOR_Controller.c: 69: *doors[d].lock_port |= 1 << doors[d].lock_pin;
+"69
+[e =| *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
 "70
+}
+[e :U 335 ]
+"71
+}
+"67
+[e ++ _d -> -> 1 `i `uc ]
+[e $ < -> _d `i -> 5 `i 332  ]
+[e :U 333 ]
+"71
+}
+[; ;DOOR_Controller.c: 70: }
+[; ;DOOR_Controller.c: 71: }
+[; ;DOOR_Controller.c: 72: }
+"72
+[e :UE 331 ]
+}
+"74
 [v _C_DOOR_LockAll `(v ~T0 @X0 1 ef ]
 {
-[; ;DOOR_Controller.c: 70: void C_DOOR_LockAll() {
+[; ;DOOR_Controller.c: 74: void C_DOOR_LockAll() {
 [e :U _C_DOOR_LockAll ]
 [f ]
-[; ;DOOR_Controller.c: 75: *doors[0].lock_port |= 0xC0;
-"75
+[; ;DOOR_Controller.c: 79: *doors[0].lock_port |= 0xC0;
+"79
 [e =| *U . *U + &U _doors * -> -> -> 0 `i `ui `ux -> -> # *U &U _doors `ui `ux 2 -> -> 192 `i `uc ]
-[; ;DOOR_Controller.c: 76: }
-"76
-[e :UE 334 ]
+[; ;DOOR_Controller.c: 80: }
+"80
+[e :UE 336 ]
 }
-"78
+"82
 [v _C_DOOR_Unlock `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;DOOR_Controller.c: 78: void C_DOOR_Unlock(uint8_t id) {
+[; ;DOOR_Controller.c: 82: void C_DOOR_Unlock(uint8_t id) {
 [e :U _C_DOOR_Unlock ]
 [v _id `uc ~T0 @X0 1 r1 ]
 [f ]
-"79
+"83
 [v _d `uc ~T0 @X0 1 a ]
-[; ;DOOR_Controller.c: 79: uint8_t d;
-[; ;DOOR_Controller.c: 80: for (d = 0; d < 5; d++) {
-"80
+[; ;DOOR_Controller.c: 83: uint8_t d;
+[; ;DOOR_Controller.c: 84: for (d = 0; d < 5; d++) {
+"84
 {
 [e = _d -> -> 0 `i `uc ]
-[e $ < -> _d `i -> 5 `i 336  ]
-[e $U 337  ]
-[e :U 336 ]
+[e $ < -> _d `i -> 5 `i 338  ]
+[e $U 339  ]
+[e :U 338 ]
 {
-[; ;DOOR_Controller.c: 81: if (doors[d].id == id) {
-"81
-[e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 339  ]
-{
-[; ;DOOR_Controller.c: 82: *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
-"82
-[e =& *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> ~ << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
-"83
-}
-[e :U 339 ]
-"84
-}
-"80
-[e ++ _d -> -> 1 `i `uc ]
-[e $ < -> _d `i -> 5 `i 336  ]
-[e :U 337 ]
-"84
-}
-[; ;DOOR_Controller.c: 83: }
-[; ;DOOR_Controller.c: 84: }
-[; ;DOOR_Controller.c: 85: }
+[; ;DOOR_Controller.c: 85: if (doors[d].id == id) {
 "85
-[e :UE 335 ]
-}
+[e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 341  ]
+{
+[; ;DOOR_Controller.c: 86: *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
+"86
+[e =& *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> ~ << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
 "87
+}
+[e :U 341 ]
+"88
+}
+"84
+[e ++ _d -> -> 1 `i `uc ]
+[e $ < -> _d `i -> 5 `i 338  ]
+[e :U 339 ]
+"88
+}
+[; ;DOOR_Controller.c: 87: }
+[; ;DOOR_Controller.c: 88: }
+[; ;DOOR_Controller.c: 89: }
+"89
+[e :UE 337 ]
+}
+"91
 [v _C_DOOR_UnlockAll `(v ~T0 @X0 1 ef ]
 {
-[; ;DOOR_Controller.c: 87: void C_DOOR_UnlockAll() {
+[; ;DOOR_Controller.c: 91: void C_DOOR_UnlockAll() {
 [e :U _C_DOOR_UnlockAll ]
 [f ]
-[; ;DOOR_Controller.c: 92: *doors[0].lock_port &= 0x3F;
-"92
+[; ;DOOR_Controller.c: 96: *doors[0].lock_port &= 0x3F;
+"96
 [e =& *U . *U + &U _doors * -> -> -> 0 `i `ui `ux -> -> # *U &U _doors `ui `ux 2 -> -> 63 `i `uc ]
-[; ;DOOR_Controller.c: 93: }
-"93
-[e :UE 340 ]
+[; ;DOOR_Controller.c: 97: }
+"97
+[e :UE 342 ]
 }
-"95
+"99
 [v _C_DOOR_ReadSensors `(v ~T0 @X0 1 ef ]
 {
-[; ;DOOR_Controller.c: 95: void C_DOOR_ReadSensors() {
+[; ;DOOR_Controller.c: 99: void C_DOOR_ReadSensors() {
 [e :U _C_DOOR_ReadSensors ]
 [f ]
-"96
+"100
 [v _d `uc ~T0 @X0 1 a ]
-[; ;DOOR_Controller.c: 96: uint8_t d;
-[; ;DOOR_Controller.c: 97: for (d = 0; d < 5; d++) {
-"97
+[; ;DOOR_Controller.c: 100: uint8_t d;
+[; ;DOOR_Controller.c: 101: for (d = 0; d < 5; d++) {
+"101
 {
 [e = _d -> -> 0 `i `uc ]
-[e $ < -> _d `i -> 5 `i 342  ]
-[e $U 343  ]
-[e :U 342 ]
+[e $ < -> _d `i -> 5 `i 344  ]
+[e $U 345  ]
+[e :U 344 ]
 {
-[; ;DOOR_Controller.c: 98: doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
-"98
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i `uc ]
-"99
-}
-"97
-[e ++ _d -> -> 1 `i `uc ]
-[e $ < -> _d `i -> 5 `i 342  ]
-[e :U 343 ]
-"99
-}
-[; ;DOOR_Controller.c: 99: }
-[; ;DOOR_Controller.c: 100: }
-"100
-[e :UE 341 ]
-}
+[; ;DOOR_Controller.c: 102: doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
 "102
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i `uc ]
+"103
+}
+"101
+[e ++ _d -> -> 1 `i `uc ]
+[e $ < -> _d `i -> 5 `i 344  ]
+[e :U 345 ]
+"103
+}
+[; ;DOOR_Controller.c: 103: }
+[; ;DOOR_Controller.c: 104: }
+"104
+[e :UE 343 ]
+}
+"106
 [v _C_DOOR_SendStates `(v ~T0 @X0 1 ef ]
 {
-[; ;DOOR_Controller.c: 102: void C_DOOR_SendStates() {
+[; ;DOOR_Controller.c: 106: void C_DOOR_SendStates() {
 [e :U _C_DOOR_SendStates ]
 [f ]
-"103
+"107
 [v _d `uc ~T0 @X0 1 a ]
-[; ;DOOR_Controller.c: 103: uint8_t d;
-[; ;DOOR_Controller.c: 104: for (d = 0; d < 5; d++) {
-"104
+[; ;DOOR_Controller.c: 107: uint8_t d;
+[; ;DOOR_Controller.c: 108: for (d = 0; d < 5; d++) {
+"108
 {
 [e = _d -> -> 0 `i `uc ]
-[e $ < -> _d `i -> 5 `i 346  ]
-[e $U 347  ]
-[e :U 346 ]
+[e $ < -> _d `i -> 5 `i 348  ]
+[e $U 349  ]
+[e :U 348 ]
 {
-[; ;DOOR_Controller.c: 105: if (doors[d].was_open != doors[d].is_open) {
-"105
-[e $ ! != -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 `i -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 `i 349  ]
-{
-"107
-[v _com `uc ~T0 @X0 -> 3 `i a ]
-"108
-[v _mes `uc ~T0 @X0 -> 2 `i a ]
-[; ;DOOR_Controller.c: 107: char com[3];
-[; ;DOOR_Controller.c: 108: char mes[2];
-[; ;DOOR_Controller.c: 109: commandAndMessage(doors[d], com, mes);
+[; ;DOOR_Controller.c: 109: if (doors[d].was_open != doors[d].is_open) {
 "109
-[e ( _commandAndMessage (3 , , *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux &U _com &U _mes ]
-[; ;DOOR_Controller.c: 112: D_UART_Write(com, mes);
+[e $ ! != -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 `i -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 `i 351  ]
+{
+"111
+[v _com `uc ~T0 @X0 -> 3 `i a ]
 "112
+[v _mes `uc ~T0 @X0 -> 2 `i a ]
+[; ;DOOR_Controller.c: 111: char com[3];
+[; ;DOOR_Controller.c: 112: char mes[2];
+[; ;DOOR_Controller.c: 113: commandAndMessage(doors[d], com, mes);
+"113
+[e ( _commandAndMessage (3 , , *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux &U _com &U _mes ]
+[; ;DOOR_Controller.c: 116: D_UART_Write(com, mes);
+"116
 [e ( _D_UART_Write (2 , -> &U _com `*Cuc -> &U _mes `*Cuc ]
-[; ;DOOR_Controller.c: 114: doors[d].was_open = doors[d].is_open;
-"114
+[; ;DOOR_Controller.c: 118: doors[d].was_open = doors[d].is_open;
+"118
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 ]
-"115
+"119
 }
-[e :U 349 ]
-"116
+[e :U 351 ]
+"120
 }
-"104
+"108
 [e ++ _d -> -> 1 `i `uc ]
-[e $ < -> _d `i -> 5 `i 346  ]
-[e :U 347 ]
-"116
+[e $ < -> _d `i -> 5 `i 348  ]
+[e :U 349 ]
+"120
 }
-[; ;DOOR_Controller.c: 115: }
-[; ;DOOR_Controller.c: 116: }
-[; ;DOOR_Controller.c: 117: }
-"117
-[e :UE 345 ]
+[; ;DOOR_Controller.c: 119: }
+[; ;DOOR_Controller.c: 120: }
+[; ;DOOR_Controller.c: 121: }
+"121
+[e :UE 347 ]
 }

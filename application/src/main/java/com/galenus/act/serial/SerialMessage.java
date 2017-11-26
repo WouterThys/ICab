@@ -1,6 +1,7 @@
 package com.galenus.act.serial;
 
-import java.util.Calendar;
+import com.galenus.act.utils.DateUtils;
+
 import java.util.Date;
 
 public class SerialMessage {
@@ -17,7 +18,7 @@ public class SerialMessage {
     private String command;
     private String message;
     private Date date; // Send/Receive date
-    private boolean acknowledged;
+    private SerialMessage ackMessage;
 
     private static int ackId;
 
@@ -39,8 +40,8 @@ public class SerialMessage {
         this.sender = sender;
         this.command = command;
         this.message = message;
-        this.acknowledged = false;
-        this.date = Calendar.getInstance().getTime();
+        this.ackMessage = null;
+        this.date = DateUtils.now();
     }
 
     private static int createId() {
@@ -125,15 +126,23 @@ public class SerialMessage {
         return message;
     }
 
-    public void setAcknowledged() {
-        this.acknowledged = true;
+    public void setAcknowledged(SerialMessage ack) {
+        this.ackMessage = ack;
     }
 
     public boolean isAcknowledged() {
-        return acknowledged;
+        return (ackMessage != null) && (ackMessage.getId() == getId());
+    }
+
+    public SerialMessage getAckMessage() {
+        return ackMessage;
     }
 
     public int getId() {
         return id;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

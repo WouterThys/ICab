@@ -203,10 +203,13 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     BAUDCONbits.RXDTP = 0; // RX data is inverted
     BAUDCONbits.TXCKP = 0; // TX data is inverted
     BAUDCONbits.BRG16 = 0; // 8-bit Baud Rate Generator
+   
+    // Clear
+    RCSTAbits.FERR = 0;
+    RCSTAbits.OERR = 0;
+    RCREG = 0x00;
     
-    // Invert
-    
-
+    // Baud
     SPBRG = (uint8_t)((_XTAL_FREQ/baud)/64)-1; // Baud rate selection
     
     // Interrupts for reading

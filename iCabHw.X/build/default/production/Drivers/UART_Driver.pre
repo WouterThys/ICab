@@ -4718,6 +4718,9 @@ BAUDCONbits.TXCKP = 0;
 BAUDCONbits.BRG16 = 0;
 
 
+RCSTAbits.FERR = 0;
+RCSTAbits.OERR = 0;
+RCREG = 0x00;
 
 
 SPBRG = (uint8_t)((16000000/baud)/64)-1;
