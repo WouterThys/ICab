@@ -29,9 +29,9 @@ public class SerialManager {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private List<SerialListener> serialListenerList = new ArrayList<>();
     private SerialPort serialPort;
-    private List<SerialMessage> sendMessageList = new ArrayList<>();
-    private List<SerialMessage> receivedMessageList = new ArrayList<>();
-    private List<SerialMessage> acknowledgedList = new ArrayList<>();
+    private List<SerialMessage> txMessageList = new ArrayList<>();
+    private List<SerialMessage> rxMessageList = new ArrayList<>();
+    private List<SerialMessage> ackMessageList = new ArrayList<>();
     private String inputString = "";
 
     /*
@@ -64,6 +64,15 @@ public class SerialManager {
         return inputString;
     }
 
+    public void clearRxMessages() {
+        rxMessageList.clear();
+    }
+
+    public void clearTxMessages() {
+        txMessageList.clear();
+        ackMessageList.clear();
+    }
+
     public void addSerialListener(SerialListener serialListener) {
         if (!serialListenerList.contains(serialListener)) {
             serialListenerList.add(serialListener);
@@ -74,6 +83,13 @@ public class SerialManager {
         if (serialListenerList.contains(serialListener)) {
             serialListenerList.remove(serialListener);
         }
+    }
+
+    public SerialListener getMainSerialListener() {
+        if (serialListenerList.size() > 0) {
+            return serialListenerList.get(0);
+        }
+        return null;
     }
 
     public void initComPort(SerialPort port) {
@@ -115,16 +131,16 @@ public class SerialManager {
         }
     }
 
-    public List<SerialMessage> getSendMessageList() {
-        return new ArrayList<>(sendMessageList);
+    public List<SerialMessage> getTxMessageList() {
+        return new ArrayList<>(txMessageList);
     }
 
-    public List<SerialMessage> getAcknowledgedList() {
-        return new ArrayList<>(acknowledgedList);
+    public List<SerialMessage> getAckMessageList() {
+        return new ArrayList<>(ackMessageList);
     }
 
-    public List<SerialMessage> getReceivedMessageList() {
-        return new ArrayList<>(receivedMessageList);
+    public List<SerialMessage> getRxMessageList() {
+        return new ArrayList<>(rxMessageList);
     }
 
     private void write(String data) {
@@ -147,13 +163,13 @@ public class SerialManager {
     }
 
     private boolean addToMessageList(SerialMessage message) {
-        for (SerialMessage m : sendMessageList) {
+        for (SerialMessage m : txMessageList) {
             if (m.getId() == message.getId()) {
                 onError("Buffer overflow: message with same id found..");
                 return false;
             }
         }
-        sendMessageList.add(message);
+        txMessageList.add(message);
         return true;
     }
 
@@ -201,15 +217,15 @@ public class SerialManager {
     private void tryAcknowledge(SerialMessage ack) {
         if (ack != null) {
             if (ack.getType().equals(SerialMessage.Acknowledge)) {
-                List<SerialMessage> copy = new ArrayList<>(sendMessageList);
+                List<SerialMessage> copy = new ArrayList<>(txMessageList);
                 for (SerialMessage message : copy) {
                     if (message.getId() == ack.getId()) {
                         message.setAcknowledged(ack);
 
                         System.out.println("Acknowledge message: " + message);
 
-                        acknowledgedList.add(message);
-                        sendMessageList.remove(message);
+                        ackMessageList.add(message);
+                        txMessageList.remove(message);
                         return;
                     }
                 }
@@ -231,7 +247,7 @@ public class SerialManager {
                     tryAcknowledge(message);
                     onNewMessage(message);
                 } else {
-                    receivedMessageList.add(message);
+                    rxMessageList.add(message);
                     onNewMessage(message);
                 }
                 if (inputString.contains(message.toString())) {
@@ -286,7 +302,7 @@ public class SerialManager {
                         setProgress((int) (progress * 100));
 
                         port.openPort();
-                        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 500, 100);
+                        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 200, 100);
                         try {
                             byte[] readBuffer = new byte[1024];
 

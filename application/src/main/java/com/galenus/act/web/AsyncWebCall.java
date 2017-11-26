@@ -1,5 +1,6 @@
 package com.galenus.act.web;
 
+import com.galenus.act.gui.Application;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -12,10 +13,12 @@ import static com.galenus.act.web.WebManager.webMgr;
 
 abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
 
+    private Application application;
     private String methodName;
     private boolean success;
 
-    AsyncWebCall(String methodName) {
+    AsyncWebCall(Application application, String methodName) {
+        this.application = application;
         this.methodName = methodName;
     }
 
@@ -37,6 +40,7 @@ abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
     protected AsyncWebResult<Object> doInBackground() throws Exception {
         AsyncWebResult<Object> result = null;
         success = true;
+        application.startWait(application);
         try {
             SoapObject soapRequest = new SoapObject(webMgr().getWebNameSpace(), methodName);
             onAddProperties(soapRequest);
@@ -49,6 +53,8 @@ abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
         } catch (Exception ex) {
             webMgr().onFailedRequest(methodName, ex, 0);
             success = false;
+        } finally {
+            application.stopWait(application);
         }
         return result;
     }

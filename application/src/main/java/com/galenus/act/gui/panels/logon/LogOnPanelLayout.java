@@ -69,9 +69,13 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
     private JPanel createUserPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
+        JPanel namePnl = new JPanel();
+        namePnl.add(userNameField);
+        namePnl.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+
         // Add
         JPanel p = new JPanel(new BorderLayout());
-        p.add(userNameField, BorderLayout.NORTH);
+        p.add(namePnl, BorderLayout.NORTH);
         p.add(keyPad, BorderLayout.CENTER);
 
         panel.add(p, BorderLayout.NORTH);
@@ -93,6 +97,7 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
 
         keyPad = new IKeyPad();
         keyPad.setPreferredSize(new Dimension(300,400));
+        keyPad.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
     }
 

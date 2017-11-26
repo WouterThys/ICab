@@ -20,7 +20,7 @@ import java.util.List;
 import static com.galenus.act.gui.Application.imageResource;
 import static com.galenus.act.serial.SerialManager.serMgr;
 
-public abstract class SerialLogsDialogLayout extends IDialog {
+abstract class SerialLogsDialogLayout extends IDialog {
 
     /*
      *                  COMPONENTS
@@ -40,6 +40,10 @@ public abstract class SerialLogsDialogLayout extends IDialog {
     private AbstractAction lockAa;
     private AbstractAction unlockAa;
     private AbstractAction errorAa;
+
+    private AbstractAction deleteRxAa;
+    private AbstractAction deleteTxAa;
+    private AbstractAction retryAa;
 
     private SerialLogTableModel logTxModel;
     private ITable<SerialMessage> logTxTable;
@@ -65,6 +69,10 @@ public abstract class SerialLogsDialogLayout extends IDialog {
     abstract void onPicUnlock();
     abstract void onPicError();
 
+    abstract void onDeleteRx();
+    abstract void onDeleteTx();
+    abstract void onRetry();
+
     private void setSerialData(SerialPort port) {
         if (port != null) {
             serialNameLbl.setText(port.getDescriptivePortName());
@@ -80,6 +88,11 @@ public abstract class SerialLogsDialogLayout extends IDialog {
             } else {
                 serialStateLbl.setIcon(imageResource.readImage("Serial.Port.Nok"));
             }
+            initAa.setEnabled(true);
+            resetAa.setEnabled(true);
+            lockAa.setEnabled(true);
+            unlockAa.setEnabled(true);
+            errorAa.setEnabled(true);
         } else {
             serialNameLbl.setText("");
             serialBaudTf.clearText();
@@ -89,16 +102,21 @@ public abstract class SerialLogsDialogLayout extends IDialog {
             serialWriteTimeoutTf.clearText();
             serialStateLbl.setIcon(imageResource.readImage("Serial.Port.Nok"));
             serialBufferStringLbl.setText("");
+            initAa.setEnabled(false);
+            resetAa.setEnabled(false);
+            lockAa.setEnabled(false);
+            unlockAa.setEnabled(false);
+            errorAa.setEnabled(false);
         }
     }
 
-    void setTableData() {
+    void updateTableData() {
         java.util.List<SerialMessage> txList = new ArrayList<>();
         List<SerialMessage> rxList = new ArrayList<>();
 
-        txList.addAll(serMgr().getSendMessageList());
-        txList.addAll(serMgr().getAcknowledgedList());
-        rxList.addAll(serMgr().getReceivedMessageList());
+        txList.addAll(serMgr().getTxMessageList());
+        txList.addAll(serMgr().getAckMessageList());
+        rxList.addAll(serMgr().getRxMessageList());
 
         txList.sort(new LogMessageSorter());
         rxList.sort(new LogMessageSorter());
@@ -107,11 +125,71 @@ public abstract class SerialLogsDialogLayout extends IDialog {
         logTxModel.setItemList(txList);
     }
 
+    private JPanel createTxPanel() {
+        JPanel txPanel = new JPanel(new BorderLayout());
+
+        // Table
+        JScrollPane scrollTxPane = new JScrollPane(logTxTable);
+        scrollTxPane.setPreferredSize(new Dimension(600,200));
+        getContentPanel().add(scrollTxPane);
+
+        // Toolbar
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        toolBar.setFloatable(false);
+        toolBar.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        toolBar.add(deleteTxAa);
+
+        // Extra
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(new ILabel("Send messages: "), BorderLayout.CENTER);
+        topPanel.add(toolBar, BorderLayout.EAST);
+
+        // Add
+        txPanel.add(topPanel, BorderLayout.PAGE_START);
+        txPanel.add(scrollTxPane, BorderLayout.CENTER);
+        txPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+
+        return txPanel;
+    }
+
+    private JPanel createRxPanel() {
+        JPanel rxPanel = new JPanel(new BorderLayout());
+
+        // Table
+        JScrollPane scrollRxPane = new JScrollPane(logRxTable);
+        scrollRxPane.setPreferredSize(new Dimension(600,200));
+        getContentPanel().add(scrollRxPane);
+
+        // Toolbar
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        toolBar.setFloatable(false);
+        toolBar.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        toolBar.add(deleteRxAa);
+
+        // Extra
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(new ILabel("Received messages: "), BorderLayout.CENTER);
+        topPanel.add(toolBar, BorderLayout.EAST);
+
+        // Add
+        rxPanel.add(topPanel, BorderLayout.PAGE_START);
+        rxPanel.add(scrollRxPane, BorderLayout.CENTER);
+        rxPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+
+        return rxPanel;
+    }
+
     private JPanel createSerialPanel() {
         JPanel serialPanel = new JPanel(new BorderLayout());
 
         // Extra
+        JToolBar retryTb = new JToolBar();
+        retryTb.setFloatable(false);
+        retryTb.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        retryTb.add(retryAa);
+
         JPanel iconPanel = new JPanel(new BorderLayout());
+        iconPanel.add(retryTb, BorderLayout.WEST);
         iconPanel.add(serialNameLbl, BorderLayout.CENTER);
         iconPanel.add(serialStateLbl, BorderLayout.EAST);
         GuiUtils.GridBagHelper gbc;
@@ -221,30 +299,32 @@ public abstract class SerialLogsDialogLayout extends IDialog {
             }
         };
         errorAa.putValue(AbstractAction.SHORT_DESCRIPTION, "Error");
+
+        deleteRxAa = new AbstractAction("Delete logs") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onDeleteRx();
+            }
+        };
+        deleteTxAa = new AbstractAction("Delete logs") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onDeleteTx();
+            }
+        };
+        retryAa = new AbstractAction("Retry", imageResource.readImage("Serial.Retry")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onRetry();
+            }
+        };
     }
 
     @Override
     public void initializeLayouts() {
-        // Serial panel
         JPanel serialPanel = createSerialPanel();
-
-        // Tx table
-        JScrollPane scrollTxPane = new JScrollPane(logTxTable);
-        scrollTxPane.setPreferredSize(new Dimension(600,200));
-        getContentPanel().add(scrollTxPane);
-        JPanel txPanel = new JPanel(new BorderLayout());
-        txPanel.add(new ILabel("Send messages: "), BorderLayout.NORTH);
-        txPanel.add(scrollTxPane, BorderLayout.CENTER);
-        txPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-
-        // Rx table
-        JScrollPane scrollRxPane = new JScrollPane(logRxTable);
-        scrollRxPane.setPreferredSize(new Dimension(600,200));
-        getContentPanel().add(scrollRxPane);
-        JPanel rxPanel = new JPanel(new BorderLayout());
-        rxPanel.add(new ILabel("Received messages: "), BorderLayout.NORTH);
-        rxPanel.add(scrollRxPane, BorderLayout.CENTER);
-        rxPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+        JPanel txPanel = createTxPanel();
+        JPanel rxPanel = createRxPanel();
 
         // Add
         JPanel tablePanel = new JPanel();
@@ -270,7 +350,7 @@ public abstract class SerialLogsDialogLayout extends IDialog {
         }
 
         // Tables
-        setTableData();
+        updateTableData();
     }
 
     private static class LogMessageSorter implements Comparator<SerialMessage> {

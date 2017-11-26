@@ -1,11 +1,9 @@
 package com.galenus.act.classes.managers;
 
 import com.galenus.act.classes.User;
-import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class UserManager {
 
@@ -27,8 +25,24 @@ public class UserManager {
         }
     }
 
-    public void updateUserList(Vector<SoapObject> soapObjectVector) {
+    // Very much illegal!!
+    public void printAllUserPins() {
+        for (User user : userList) {
+            int n = 0;
+            while (n < 10000) {
+                try {
+                    String num = String.format("%04d", n);
 
+                    String test = User.getEncryptedPassword(num);
+                    if (test.equals(user.getEncodedPin())) {
+                        System.out.println(user.getFirstName() + ": Pin = " + num);
+                    }
+                    n++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

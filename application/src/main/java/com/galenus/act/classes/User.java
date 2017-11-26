@@ -4,6 +4,9 @@ import com.galenus.act.utils.SoapUtils;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static com.galenus.act.gui.Application.imageResource;
 
@@ -150,4 +153,32 @@ public class User extends BaseClass {
         }
         return avatar;
     }
+
+    public static String getEncryptedPassword(String originalPassword) {
+        String encrypted;
+
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(originalPassword.getBytes(),0,originalPassword.length());
+
+            encrypted = new BigInteger(1,md5.digest()).toString(16);
+            StringBuilder str = new StringBuilder(encrypted);
+
+            int i = 2;
+            int length = encrypted.length();
+            while (i < length) {
+                str.insert(i,'-');
+                length++;
+                i += 3;
+            }
+            encrypted = str.toString().toUpperCase();
+
+        } catch (final NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return encrypted;
+    }
+
 }

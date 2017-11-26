@@ -13,10 +13,12 @@ import java.util.List;
 public class IKeyPad extends JPanel {
 
     private int maxDigits = 4;
-    private final JTextPane text = new JTextPane();
-    private final JButton clear = new JButton(new Clear("Clear"));
-    private final JButton enter = new JButton(new Enter("Enter"));
+    private final JTextPane pinField = new JTextPane();
+    private final JButton clearBtn = new JButton(new Clear("Clear"));
+    private final JButton enterBtn = new JButton(new Enter("Enter"));
     private final List<NumberButton> numbers = new ArrayList<NumberButton>();
+
+    private String password = "";
 
     /**
      * Construct a numeric key pad that accepts up to ten digits.
@@ -25,17 +27,17 @@ public class IKeyPad extends JPanel {
         super(new BorderLayout());
 
         JPanel display = new JPanel();
-        text.setFont(new Font("Dialog", Font.PLAIN, 60));
-        text.setEditable(false);
-        text.setFocusable(false);
-        text.setPreferredSize(new Dimension(200, 80));
+        pinField.setFont(new Font("Dialog", Font.PLAIN, 60));
+        pinField.setEditable(false);
+        pinField.setFocusable(false);
+        pinField.setPreferredSize(new Dimension(200, 80));
 
-        StyledDocument doc = text.getStyledDocument();
+        StyledDocument doc = pinField.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        display.add(text);
+        display.add(pinField);
         this.add(display, BorderLayout.NORTH);
 
         JPanel pad = new JPanel(new GridLayout(4, 3));
@@ -46,15 +48,15 @@ public class IKeyPad extends JPanel {
                 pad.add(n);
             }
         }
-        pad.add(clear);
-        clear.setFocusable(false);
-        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0), clear.getText());
-        this.getActionMap().put(clear.getText(), new Click(clear));
+        pad.add(clearBtn);
+        clearBtn.setFocusable(false);
+        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0), clearBtn.getText());
+        this.getActionMap().put(clearBtn.getText(), new Click(clearBtn));
         pad.add(numbers.get(0));
-        pad.add(enter);
-        enter.setFocusable(false);
-        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), enter.getText());
-        this.getActionMap().put(enter.getText(), new Click(enter));
+        pad.add(enterBtn);
+        enterBtn.setFocusable(false);
+        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), enterBtn.getText());
+        this.getActionMap().put(enterBtn.getText(), new Click(enterBtn));
         this.add(pad, BorderLayout.CENTER);
     }
 
@@ -64,11 +66,12 @@ public class IKeyPad extends JPanel {
     public IKeyPad(int maxDigits) {
         this();
         this.maxDigits = maxDigits;
-        //this.text.setColumns(maxDigits);
+        //this.pinField.setColumns(maxDigits);
     }
 
     public void clear() {
-        text.setText("");
+        pinField.setText("");
+        password = "";
         for (NumberButton n : numbers) {
             n.setEnabled(true);
         }
@@ -94,8 +97,8 @@ public class IKeyPad extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Entered: " + text.getText());
-            clear.getAction().actionPerformed(e);
+            System.out.println("Entered: " + pinField.getText());
+            clearBtn.getAction().actionPerformed(e);
         }
     }
 
@@ -115,7 +118,7 @@ public class IKeyPad extends JPanel {
 
     /*
      * A numeric button with digit key bindings that appends to
-     * <code>text<code>, accepting no more than <code>maxDigits<code>.
+     * <code>pinField<code>, accepting no more than <code>maxDigits<code>.
      */
     private class NumberButton extends JButton {
 
@@ -129,11 +132,17 @@ public class IKeyPad extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String cmd = e.getActionCommand();
-                    if (text.getText().length() < maxDigits) {
-                        String txt = text.getText() + cmd;
-                        text.setText(txt);
+                    if (pinField.getText().length() < maxDigits) {
+                        password += cmd;
+
+                        StringBuilder newTxt = new StringBuilder();
+                        for (int i = 0; i < password.length(); i++) {
+                            newTxt.append("*");
+                        }
+                        //newTxt.append(password.substring(password.length()-1));
+                        pinField.setText(newTxt.toString());
                     }
-                    if (text.getText().length() == maxDigits) {
+                    if (pinField.getText().length() == maxDigits) {
                         for (NumberButton n : numbers) {
                             n.setEnabled(false);
                         }

@@ -1,5 +1,6 @@
 package com.galenus.act.web;
 
+import com.galenus.act.gui.Application;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class WebManager {
     public static final String WebCall_DeviceUnRegister = "UnRegisterDevice";
     public static final String WebCall_DeviceGetUsers = "GetDeviceUsers";
 
+    private Application application;
+
     private String deviceName;
     private int deviceType;
 
@@ -29,7 +32,9 @@ public class WebManager {
     private List<WebCallListener> webCallListenerList = new ArrayList<>();
 
 
-    public void init(String deviceName, String webUrl, String webNameSpace, int webTimeout) {
+    public void init(Application application, String deviceName, String webUrl, String webNameSpace, int webTimeout) {
+        this.application = application;
+
         this.deviceName = deviceName;
         this.deviceType = 1;
 
@@ -80,7 +85,7 @@ public class WebManager {
      */
 
     public void registerDevice() {
-        new AsyncWebCall(WebCall_DeviceRegister) {
+        new AsyncWebCall(application, WebCall_DeviceRegister) {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
@@ -94,7 +99,7 @@ public class WebManager {
     }
 
     public void getDeviceUsers() {
-        new AsyncWebCall(WebCall_DeviceGetUsers) {
+        new AsyncWebCall(application, WebCall_DeviceGetUsers) {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());

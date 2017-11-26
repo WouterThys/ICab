@@ -39,6 +39,10 @@ public class Main {
         test = test.substring(5, 9);
     }
 
+    public static void shutDown() {
+        System.exit(-1);
+    }
+
     private static void readArguments(String[] args) {
         if (args.length > 0) {
             for (String arg : args) {
@@ -72,6 +76,10 @@ public class Main {
                     UIDefaults defaults = super.getDefaults();
 
                     defaults.put("defaultFont", new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+                    defaults.put("ProgressBar.background", Color.YELLOW);
+                    defaults.put("ProgressBar.foreground", Color.BLUE);
+                    defaults.put("ProgressBar.selectionBackground", Color.RED);
+                    defaults.put("ProgressBar.selectionForeground", Color.GREEN);
                     return defaults;
                 }
             });
@@ -79,10 +87,10 @@ public class Main {
             e.printStackTrace();
         }
 
-        UIManager.put("ProgressBar.background", Color.YELLOW);
-        UIManager.put("ProgressBar.foreground", Color.BLUE);
-        UIManager.put("ProgressBar.selectionBackground", Color.RED);
-        UIManager.put("ProgressBar.selectionForeground", Color.GREEN);
+//        UIManager.put("ProgressBar.background", Color.YELLOW);
+//        UIManager.put("ProgressBar.foreground", Color.BLUE);
+//        UIManager.put("ProgressBar.selectionBackground", Color.RED);
+//        UIManager.put("ProgressBar.selectionForeground", Color.GREEN);
 
     }
 

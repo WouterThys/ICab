@@ -35,6 +35,44 @@ public class SerialLogsDialog extends SerialLogsDialogLayout implements SerialLi
     }
 
     //
+    // Actions
+    //
+    @Override
+    void onRetry() {
+        //application.initializeSerial(SerialLogsDialog.this, serMgr().getMainSerialListener());
+    }
+
+    @Override
+    void onDeleteRx() {
+        int res = JOptionPane.showConfirmDialog(
+                SerialLogsDialog.this,
+                "Delete all received messages?",
+                "Delete",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (res == JOptionPane.YES_OPTION) {
+            serMgr().clearRxMessages();
+            updateTableData();
+        }
+    }
+
+    @Override
+    void onDeleteTx() {
+        int res = JOptionPane.showConfirmDialog(
+                SerialLogsDialog.this,
+                "Delete all send messages?",
+                "Delete",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (res == JOptionPane.YES_OPTION) {
+            serMgr().clearTxMessages();
+            updateTableData();
+        }
+    }
+
+    //
     // Test
     //
     @Override
@@ -67,16 +105,21 @@ public class SerialLogsDialog extends SerialLogsDialogLayout implements SerialLi
     //
     @Override
     public void onInitSuccess(SerialPort serialPort) {
-        //
+        updateComponents(serialPort);
     }
 
     @Override
     public void onSerialError(String error) {
-        //
+        JOptionPane.showMessageDialog(
+                SerialLogsDialog.this,
+                error,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 
     @Override
     public void onNewMessage(SerialMessage message) {
-        SwingUtilities.invokeLater(this::setTableData);
+        SwingUtilities.invokeLater(this::updateTableData);
     }
 }

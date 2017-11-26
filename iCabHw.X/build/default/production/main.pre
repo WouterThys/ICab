@@ -4499,8 +4499,6 @@ C_DOOR_UnlockAll();
 } else if (strcmp(read.command, "I") == 0) {
 
 } else if (strcmp(read.command, "R") == 0) {
-D_TMR0_Enable(0);
-D_UART_Enable(0);
 _delay((unsigned long)((20)*(16000000/4000.0)));
 asm(" reset");
 } else {

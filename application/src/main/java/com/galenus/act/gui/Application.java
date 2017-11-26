@@ -1,11 +1,12 @@
 package com.galenus.act.gui;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.galenus.act.Main;
 import com.galenus.act.classes.User;
+import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.seriallogsdialog.SerialLogsDialog;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.serial.SerialListener;
-import com.galenus.act.serial.SerialManager;
 import com.galenus.act.serial.SerialMessage;
 import com.galenus.act.utils.resources.ImageResource;
 import com.galenus.act.web.WebCallListener;
@@ -13,6 +14,9 @@ import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 import static com.galenus.act.classes.managers.UserManager.usrMgr;
@@ -28,12 +32,25 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private LogOnPanel logOnPanel;
-
-    private ProgressMonitor monitor;
+    private JMenuBar menuBar;
 
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    private Action showMenuAction = new AbstractAction("ShowMenu") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean isVisible = (getJMenuBar() != null);
+            setMenuVisible(!isVisible);
+        }
+    };
+
+    private Action showUserPinsAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            usrMgr().printAllUserPins();
+        }
+    };
 
     /*
      *                  CONSTRUCTOR
@@ -49,70 +66,23 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         initializeComponents();
         initializeLayouts();
 
-        // Start initialize: init serial -> ok = init web -> ok = get users
-        initializeSerial();
+        // Start initialize:
+        SwingUtilities.invokeLater(() -> {
+            InitializationDialog dialog = new InitializationDialog(this, "Initializing", this, this);
+            dialog.showDialog();
+        });
 
-        // Start register
-        //webMgr().registerDevice();
     }
 
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    public void startWait() {
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    public void startWait(Component component) {
+        component.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
 
-    public void stopWait() {
-        this.setCursor(Cursor.getDefaultCursor());
-    }
-
-    private void initializeWebService() {
-        webMgr().init(
-                "ICAB",
-                "http://sp0007test/juliette/oriswsmattteo.asmx",
-                "http://tempuri.org/",
-                60000);
-        webMgr().registerShutDownHook();
-    }
-
-    private void initializeSerial() {
-        serMgr().init(this);
-        serMgr().registerShutDownHook();
-
-        SerialManager.FindComPortThread worker = new SerialManager.FindComPortThread(this);
-
-        initProgressMonitor("Find COM ports", "Searching ");
-        startWait();
-        worker.addPropertyChangeListener(evt -> {
-            if (evt.getPropertyName().equals("state")) {
-                if (evt.getNewValue() == SwingWorker.StateValue.DONE) {
-                    stopWait();
-                }
-            } else if (evt.getPropertyName().equals("progress")) {
-                if (monitor != null) {
-                    int progress = (Integer) evt.getNewValue();
-                    String note = monitor.getNote();
-                    note += ".";
-                    if (note.length() > 50) {
-                        note = ".";
-                    }
-                    monitor.setProgress(progress);
-                    monitor.setNote(note);
-                    if (monitor.isCanceled() || worker.isDone()) {
-                        if (monitor.isCanceled()) {
-                            worker.cancel(true);
-                        }
-                    }
-                }
-            }
-        });
-        worker.execute();
-    }
-
-    private void initProgressMonitor(String message, String note) {
-        monitor = new ProgressMonitor(this, message, note, 0, 100);
-        monitor.setProgress(0);
+    public void stopWait(Component component) {
+        component.setCursor(Cursor.getDefaultCursor());
     }
 
     private void webRegistered() {
@@ -135,6 +105,15 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         }
     }
 
+    private void setMenuVisible(boolean visible) {
+        if (visible) {
+            setJMenuBar(menuBar);
+        } else {
+            setJMenuBar(null);
+        }
+        pack();
+    }
+
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -146,7 +125,7 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         logOnPanel = new LogOnPanel();
 
         // Menu panel
-        JMenuBar menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
         JMenu serialMenu = new JMenu("Serial");
         JMenuItem serialLogs = new JMenuItem("Serial logs");
         serialLogs.addActionListener(e -> {
@@ -157,7 +136,17 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         serialMenu.add(serialLogs);
         menuBar.add(serialMenu);
 
-        this.setJMenuBar(menuBar);
+        // Key strokes
+        this.getRootPane().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+                InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK),
+                "debugModeKey");
+        this.getRootPane().getActionMap().put("debugModeKey", showMenuAction);
+
+        this.getRootPane().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_U,
+                InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK),
+                "usersKey");
+        this.getRootPane().getActionMap().put("usersKey", showUserPinsAction);
+
     }
 
     @Override
@@ -165,6 +154,10 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         setLayout(new BorderLayout());
 
         add(logOnPanel, BorderLayout.CENTER);
+
+        if (Main.DEBUG_MODE) {
+            setMenuVisible(true);
+        }
 
         pack();
     }
@@ -194,6 +187,15 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     public void onSerialError(String error) {
         // TODO show dialog and exit(-1) ??
         System.err.println(error);
+        JOptionPane.showMessageDialog(
+                Application.this,
+                error,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+        if (!Main.DEBUG_MODE) {
+            Main.shutDown();
+        }
     }
 
     @Override
@@ -221,5 +223,11 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     @Override
     public void onFailedRequest(String methodName, Exception ex, int fault) {
         System.err.println("Web call error for: " + methodName + " -> " + ex);
+        JOptionPane.showMessageDialog(
+                Application.this,
+                "Web call error for: " + methodName + " -> " + ex,
+                "Web call error",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 }

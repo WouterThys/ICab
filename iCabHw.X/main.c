@@ -56,8 +56,6 @@ void main(void) {
             } else if (strcmp(read.command, COMMAND_INIT) == 0) {
                 // Do nothing, acknowledge will answer
             } else if (strcmp(read.command, COMMAND_RESET) == 0) {
-                D_TMR0_Enable(false);
-                D_UART_Enable(false);
                 __delay_ms(20);
                 Reset();
             } else {
