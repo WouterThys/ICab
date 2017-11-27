@@ -47,6 +47,10 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    public void updateTimer(String newTime) {
+        timerPanel.updateComponents(newTime);
+    }
+
     private void updateUserInfo(User user) {
         if (user != null) {
             userNameLbl.setText(user.getFirstName());

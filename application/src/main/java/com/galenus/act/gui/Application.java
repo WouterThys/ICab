@@ -230,7 +230,10 @@ public class Application extends JFrame implements
 
             // TODO: send login to Juliette
 
+            // DO this when web request success
             cardLayout.show(mainPanel, VIEW_INVENTORY);
+            usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
+
 
             return true;
         }

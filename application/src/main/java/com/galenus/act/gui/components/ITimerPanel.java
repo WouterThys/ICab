@@ -60,6 +60,8 @@ public class ITimerPanel extends JPanel implements GuiInterface {
 
     @Override
     public void updateComponents(Object... args) {
-
+        if (args.length > 0 && args[0] != null) {
+            timeLbl.setText(args[0].toString());
+        }
     }
 }

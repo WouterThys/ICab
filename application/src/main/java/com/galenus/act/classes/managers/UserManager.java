@@ -1,9 +1,13 @@
 package com.galenus.act.classes.managers;
 
 import com.galenus.act.classes.User;
+import com.galenus.act.classes.interfaces.TimerListener;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserManager {
 
@@ -15,6 +19,7 @@ public class UserManager {
 
     private List<User> userList = new ArrayList<>();
     private User selectedUser;
+    private Timer timer;
 
     public List<User> getUserList() {
         return userList;
@@ -46,6 +51,22 @@ public class UserManager {
             }
         }
         return result;
+    }
+
+    private int t = 100;
+    public void startTimer(final TimerListener timerListener) {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                SwingUtilities.invokeLater(() -> {
+                    if (timerListener != null) {
+                        t--;
+                        timerListener.onTimerElapse(String.valueOf(t));
+                    }
+                });
+            }
+        }, 0, 1000);
     }
 
     // Very much illegal!!
