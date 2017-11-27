@@ -2,6 +2,7 @@ package com.galenus.act.gui.panels.logon;
 
 import com.galenus.act.classes.User;
 
+import java.awt.*;
 import java.util.List;
 
 public class LogOnPanel extends LogOnPanelLayout {
@@ -35,9 +36,25 @@ public class LogOnPanel extends LogOnPanelLayout {
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    //
+    // Tiles
+    //
     @Override
     public void onTileClick(User user) {
         updateComponents(user);
     }
 
+    //
+    // Key pad
+    //
+    @Override
+    public void onDigitsEntered(String entered) {
+        if (selectedUser != null) {
+            if (selectedUser.isPinCorrect(entered)) {
+                keyPad.setBackgroundColor(Color.GREEN);
+            } else {
+                keyPad.setBackgroundColor(Color.RED);
+            }
+        }
+    }
 }

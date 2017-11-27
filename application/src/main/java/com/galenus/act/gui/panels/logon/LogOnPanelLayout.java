@@ -9,7 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTile.OnTileClickListener {
+abstract class LogOnPanelLayout extends JPanel implements
+        GuiInterface,
+        IUserTile.OnTileClickListener,
+        IKeyPad.KeyPadListener {
 
     /*
      *                  COMPONENTS
@@ -18,7 +21,7 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
 
     private JLabel userNameField;
 
-    private IKeyPad keyPad;
+    IKeyPad keyPad;
 
     /*
      *                  VARIABLES
@@ -96,6 +99,7 @@ abstract class LogOnPanelLayout extends JPanel implements GuiInterface, IUserTil
         userNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         keyPad = new IKeyPad();
+        keyPad.addKeyPadListener(this);
         keyPad.setPreferredSize(new Dimension(300,400));
         keyPad.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 

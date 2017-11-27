@@ -154,12 +154,17 @@ public class User extends BaseClass {
         return avatar;
     }
 
-    public static String getEncryptedPassword(String originalPassword) {
+    public boolean isPinCorrect(String pin) {
+        String encoded = getEncryptedString(pin);
+        return encoded.equals(getEncodedPin());
+    }
+
+    public static String getEncryptedString(String original) {
         String encrypted;
 
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(originalPassword.getBytes(),0,originalPassword.length());
+            md5.update(original.getBytes(),0,original.length());
 
             encrypted = new BigInteger(1,md5.digest()).toString(16);
             StringBuilder str = new StringBuilder(encrypted);

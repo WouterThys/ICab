@@ -10,15 +10,23 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.galenus.act.gui.Application.imageResource;
+
 public class IKeyPad extends JPanel {
 
+    public interface KeyPadListener {
+        void onDigitsEntered(String entered);
+    }
+
     private int maxDigits = 4;
-    private final JTextPane pinField = new JTextPane();
-    private final JButton clearBtn = new JButton(new Clear("Clear"));
-    private final JButton enterBtn = new JButton(new Enter("Enter"));
+    //private final JTextPane pinField = new JTextPane();
+    private final JLabel pinField = new JLabel("", SwingConstants.CENTER);
+    private final JButton clearBtn = new JButton(new Clear("", imageResource.readImage("KeyPad.Clear")));
+    private final JButton enterBtn = new JButton(new Enter("", imageResource.readImage("KeyPad.Enter")));
     private final List<NumberButton> numbers = new ArrayList<NumberButton>();
 
     private String password = "";
+    private KeyPadListener keyPadListener;
 
     /**
      * Construct a numeric key pad that accepts up to ten digits.
@@ -28,14 +36,16 @@ public class IKeyPad extends JPanel {
 
         JPanel display = new JPanel();
         pinField.setFont(new Font("Dialog", Font.PLAIN, 60));
-        pinField.setEditable(false);
+        //pinField.setEditable(false);
         pinField.setFocusable(false);
+        pinField.setOpaque(true);
+        pinField.setBackground(Color.YELLOW);
         pinField.setPreferredSize(new Dimension(200, 80));
 
-        StyledDocument doc = pinField.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+//        StyledDocument doc = pinField.getStyledDocument();
+//        SimpleAttributeSet center = new SimpleAttributeSet();
+//        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+//        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         display.add(pinField);
         this.add(display, BorderLayout.NORTH);
@@ -69,11 +79,26 @@ public class IKeyPad extends JPanel {
         //this.pinField.setColumns(maxDigits);
     }
 
+    public void addKeyPadListener(KeyPadListener keyPadListener) {
+        this.keyPadListener = keyPadListener;
+    }
+
+    public void setBackgroundColor(Color color) {
+        pinField.setBackground(color);
+    }
+
     public void clear() {
         pinField.setText("");
+        pinField.setBackground(Color.white);
         password = "";
         for (NumberButton n : numbers) {
             n.setEnabled(true);
+        }
+    }
+
+    private void enter() {
+        if (keyPadListener != null) {
+            keyPadListener.onDigitsEntered(password);
         }
     }
 
@@ -81,6 +106,10 @@ public class IKeyPad extends JPanel {
 
         public Clear(String name) {
             super(name);
+        }
+
+        public Clear(String name, Icon icon) {
+            super(name, icon);
         }
 
         @Override
@@ -95,10 +124,13 @@ public class IKeyPad extends JPanel {
             super(name);
         }
 
+        public Enter(String name, Icon icon) {
+            super(name, icon);
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Entered: " + pinField.getText());
-            clearBtn.getAction().actionPerformed(e);
+            enter();
         }
     }
 
@@ -146,6 +178,7 @@ public class IKeyPad extends JPanel {
                         for (NumberButton n : numbers) {
                             n.setEnabled(false);
                         }
+                        enter();
                     }
                 }
             });

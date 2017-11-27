@@ -33,7 +33,7 @@ public class UserManager {
                 try {
                     String num = String.format("%04d", n);
 
-                    String test = User.getEncryptedPassword(num);
+                    String test = User.getEncryptedString(num);
                     if (test.equals(user.getEncodedPin())) {
                         System.out.println(user.getFirstName() + ": Pin = " + num);
                     }
