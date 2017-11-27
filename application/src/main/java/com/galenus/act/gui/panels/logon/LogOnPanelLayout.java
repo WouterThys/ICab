@@ -11,17 +11,12 @@ import java.util.List;
 
 abstract class LogOnPanelLayout extends JPanel implements
         GuiInterface,
-        IUserTile.OnTileClickListener,
-        IKeyPad.KeyPadListener {
+        IUserTile.OnTileClickListener {
 
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private JPanel gridPanel;
-
-    private JLabel userNameField;
-
-    IKeyPad keyPad;
 
     /*
      *                  VARIABLES
@@ -59,32 +54,6 @@ abstract class LogOnPanelLayout extends JPanel implements
         }
     }
 
-    private void updateUserInfo(User user) {
-        if (user != null) {
-            userNameField.setText(user.getFirstName());
-            keyPad.clear();
-        } else {
-            userNameField.setText("");
-            keyPad.clear();
-        }
-    }
-
-    private JPanel createUserPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-
-        JPanel namePnl = new JPanel();
-        namePnl.add(userNameField);
-        namePnl.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-
-        // Add
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(namePnl, BorderLayout.NORTH);
-        p.add(keyPad, BorderLayout.CENTER);
-
-        panel.add(p, BorderLayout.NORTH);
-
-        return panel;
-    }
 
     /*
      *                  LISTENERS
@@ -92,17 +61,6 @@ abstract class LogOnPanelLayout extends JPanel implements
     @Override
     public void initializeComponents() {
         gridPanel = new JPanel(new GridLayout(rows,cols));
-
-        userNameField = new JLabel("", JLabel.CENTER);
-        Font f = userNameField.getFont();
-        userNameField.setFont(new Font(f.getName(), Font.BOLD, 50));
-        userNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        keyPad = new IKeyPad();
-        keyPad.addKeyPadListener(this);
-        keyPad.setPreferredSize(new Dimension(300,400));
-        keyPad.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
     }
 
     @Override
@@ -112,12 +70,8 @@ abstract class LogOnPanelLayout extends JPanel implements
         // Grid
         JScrollPane scrollPane = new JScrollPane(gridPanel);
 
-        // User
-        JPanel userPanel = createUserPanel();
-
         // Add
         add(scrollPane, BorderLayout.CENTER);
-        add(userPanel, BorderLayout.EAST);
     }
 
     @Override
@@ -127,7 +81,5 @@ abstract class LogOnPanelLayout extends JPanel implements
         } else {
             selectedUser = null;
         }
-
-        updateUserInfo(selectedUser);
     }
 }
