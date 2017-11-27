@@ -11,6 +11,7 @@ import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.seriallogsdialog.SerialLogsDialog;
 import com.galenus.act.gui.panels.doors.DoorsPanel;
+import com.galenus.act.gui.panels.inventory.InventoryPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.gui.panels.user.UserPanel;
 import com.galenus.act.serial.SerialMessage;
@@ -35,15 +36,22 @@ public class Application extends JFrame implements
         WebCallListener,
         UserListener {
 
-    public static String startUpPath;
     public static ImageResource imageResource;
+
+    private static final String VIEW_MAIN = "Main";
+    private static final String VIEW_INVENTORY = "Inventory";
 
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private JMenuBar menuBar;
 
+    private JPanel mainPanel;
+    private CardLayout cardLayout;
+
     private LogOnPanel logOnPanel;
+    private InventoryPanel inventoryPanel;
+
     private UserPanel userPanel;
     private DoorsPanel doorsPanel;
 
@@ -70,7 +78,6 @@ public class Application extends JFrame implements
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public Application(String startUpPath) {
-        Application.startUpPath = startUpPath;
         Application.imageResource = new ImageResource("", "icons.properties");
 
         // Doors
@@ -138,8 +145,15 @@ public class Application extends JFrame implements
     public void initializeComponents() {
         // Panels
         logOnPanel = new LogOnPanel(this);
+        inventoryPanel = new InventoryPanel();
         userPanel = new UserPanel(this);
         doorsPanel = new DoorsPanel();
+
+        // Cards
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        mainPanel.add(VIEW_MAIN, logOnPanel);
+        mainPanel.add(VIEW_INVENTORY, inventoryPanel);
 
         // Menu panel
         menuBar = new JMenuBar();
@@ -170,11 +184,13 @@ public class Application extends JFrame implements
     public void initializeLayouts() {
         setLayout(new BorderLayout());
 
+        // East panel
         JPanel eastPanel = new JPanel(new BorderLayout());
         eastPanel.add(userPanel, BorderLayout.CENTER);
         eastPanel.add(doorsPanel, BorderLayout.SOUTH);
 
-        add(logOnPanel, BorderLayout.CENTER);
+        // Add
+        add(mainPanel, BorderLayout.CENTER);
         add(eastPanel, BorderLayout.EAST);
 
         if (Main.DEBUG_MODE) {
@@ -186,6 +202,9 @@ public class Application extends JFrame implements
 
     @Override
     public void updateComponents(Object... args) {
+        // Main layout
+        cardLayout.show(mainPanel, VIEW_MAIN);
+
         // Users
         logOnPanel.setUsers(usrMgr().getUserList());
 
@@ -209,7 +228,9 @@ public class Application extends JFrame implements
         if (usrMgr().getSelectedUser() != null && usrMgr().logInUser(password)) {
             userPanel.updateComponents(usrMgr().getSelectedUser());
 
-            // TODO: change views
+            // TODO: send login to Juliette
+
+            cardLayout.show(mainPanel, VIEW_INVENTORY);
 
             return true;
         }

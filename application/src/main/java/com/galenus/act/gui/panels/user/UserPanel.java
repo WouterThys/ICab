@@ -5,12 +5,16 @@ import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.gui.components.IKeyPad;
 import com.galenus.act.gui.components.ILabel;
+import com.galenus.act.gui.components.ITimerPanel;
 import com.galenus.act.utils.DateUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadListener {
+
+    private static final String VIEW_KEYPAD = "KeyPad";
+    private static final String VIEW_TIMER = "Timer";
 
     /*
      *                  COMPONENTS
@@ -19,7 +23,12 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     private JLabel userLastNameLbl;
     private JLabel userLastLogInLbl;
     private JLabel userAvatarLbl;
+
+    private CardLayout cardLayout;
+    private JPanel centerPanel;
     private IKeyPad keyPad;
+    private ITimerPanel timerPanel;
+
 
     /*
      *                  VARIABLES
@@ -57,7 +66,6 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     }
 
     private JPanel createUserPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
         JPanel userPnl = new JPanel(new BorderLayout());
         JPanel infoPnl = new JPanel();
 
@@ -72,17 +80,7 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
         userPnl.add(infoPnl, BorderLayout.CENTER);
         userPnl.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
-        // Add
-        JPanel p = new JPanel(new BorderLayout());
-        JPanel k = new JPanel();
-        k.add(keyPad);
-        p.add(userPnl, BorderLayout.NORTH);
-        p.add(k, BorderLayout.CENTER);
-
-        panel.add(p, BorderLayout.NORTH);
-        panel.setPreferredSize(new Dimension(300,400));
-
-        return panel;
+        return userPnl;
     }
 
     /*
@@ -98,20 +96,43 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
         userLastLogInLbl = new ILabel();
         userAvatarLbl = new ILabel();
 
+        // Key pad
         keyPad = new IKeyPad();
         keyPad.addKeyPadListener(this);
-        keyPad.setPreferredSize(new Dimension(300,400));
         keyPad.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        keyPad.setPreferredSize(new Dimension(300, 400));
+
+        // Timer
+        timerPanel = new ITimerPanel();
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        timerPanel.setPreferredSize(new Dimension(300, 400));
+
+        // Cards
+        cardLayout = new CardLayout();
+        centerPanel = new JPanel(cardLayout);
     }
 
     @Override
     public void initializeLayouts() {
         setLayout(new BorderLayout());
+
         // User
         JPanel userPanel = createUserPanel();
 
+        // Center
+        JPanel t = new JPanel();
+        JPanel k = new JPanel();
+
+        t.add(timerPanel);
+        k.add(keyPad);
+
+        centerPanel.add(VIEW_KEYPAD, k);
+        centerPanel.add(VIEW_TIMER, t);
+        cardLayout.show(centerPanel, VIEW_KEYPAD);
+
         // Add
-        add(userPanel, BorderLayout.CENTER);
+        add(userPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
     }
 
     @Override
@@ -127,10 +148,9 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     public void onDigitsEntered(String entered) {
         if (userListener != null) {
             if (userListener.onPasswordEntered(entered)) {
-                System.out.println("Login user");
-//                keyPad.setBackgroundColor(Color.GREEN);
-//            } else {
-//                keyPad.setBackgroundColor(Color.RED);
+               cardLayout.show(centerPanel, VIEW_TIMER);
+            } else {
+                cardLayout.show(centerPanel, VIEW_KEYPAD);
             }
         }
     }
