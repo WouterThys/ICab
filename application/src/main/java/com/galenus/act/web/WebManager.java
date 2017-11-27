@@ -1,5 +1,6 @@
 package com.galenus.act.web;
 
+import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.gui.Application;
 import org.ksoap2.serialization.SoapObject;
 

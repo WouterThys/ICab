@@ -11,9 +11,11 @@ public class Main {
 
     private static final String DM = "DEBUG_MODE";
     private static final String FS = "FULL_SCREEN";
+    private static final String DC = "DOOR_COUNT";
 
     public static boolean DEBUG_MODE = false;
     public static boolean FULL_SCREEN = false;
+    public static int DOOR_COUNT = 5;
 
     public static void main(String[] args) {
         String startUpPath = new File("").getAbsolutePath() + File.separator;
@@ -58,6 +60,9 @@ public class Main {
                             break;
                         case FS:
                             FULL_SCREEN = Boolean.valueOf(value);
+                            break;
+                        case DC:
+                            DOOR_COUNT = Integer.valueOf(value);
                             break;
                     }
                 } catch (Exception e) {

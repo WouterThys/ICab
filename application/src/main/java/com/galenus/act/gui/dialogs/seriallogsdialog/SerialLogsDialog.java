@@ -1,8 +1,9 @@
 package com.galenus.act.gui.dialogs.seriallogsdialog;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.galenus.act.Main;
 import com.galenus.act.gui.Application;
-import com.galenus.act.serial.SerialListener;
+import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.serial.SerialManager;
 import com.galenus.act.serial.SerialMessage;
 
@@ -77,7 +78,7 @@ public class SerialLogsDialog extends SerialLogsDialogLayout implements SerialLi
     //
     @Override
     void onPicInit() {
-        serMgr().sendInit();
+        serMgr().sendInit(Main.DOOR_COUNT);
     }
 
     @Override

@@ -14,6 +14,7 @@ public class UserManager {
     private UserManager() {}
 
     private List<User> userList = new ArrayList<>();
+    private User selectedUser;
 
     public List<User> getUserList() {
         return userList;
@@ -23,6 +24,28 @@ public class UserManager {
         if (!userList.contains(user)) {
             userList.add(user);
         }
+    }
+
+    public void setSelectedUser(User user) {
+        if (selectedUser != null) {
+            selectedUser.logOut();
+        }
+        selectedUser = user;
+    }
+
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+
+    public boolean logInUser(String pin) {
+        boolean result = false;
+        if (selectedUser != null) {
+            if (selectedUser.isPinCorrect(pin)) {
+                selectedUser.logIn();
+                return true;
+            }
+        }
+        return result;
     }
 
     // Very much illegal!!

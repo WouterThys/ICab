@@ -2,14 +2,19 @@ package com.galenus.act.gui;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.galenus.act.Main;
+import com.galenus.act.classes.Door;
 import com.galenus.act.classes.User;
+import com.galenus.act.classes.interfaces.GuiInterface;
+import com.galenus.act.classes.interfaces.SerialListener;
+import com.galenus.act.classes.interfaces.UserListener;
+import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.seriallogsdialog.SerialLogsDialog;
+import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
-import com.galenus.act.serial.SerialListener;
+import com.galenus.act.gui.panels.user.UserPanel;
 import com.galenus.act.serial.SerialMessage;
 import com.galenus.act.utils.resources.ImageResource;
-import com.galenus.act.web.WebCallListener;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
@@ -19,11 +24,16 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
 
+import static com.galenus.act.classes.managers.DoorManager.doorMgr;
 import static com.galenus.act.classes.managers.UserManager.usrMgr;
 import static com.galenus.act.serial.SerialManager.serMgr;
 import static com.galenus.act.web.WebManager.*;
 
-public class Application extends JFrame implements GuiInterface, SerialListener, WebCallListener {
+public class Application extends JFrame implements
+        GuiInterface,
+        SerialListener,
+        WebCallListener,
+        UserListener {
 
     public static String startUpPath;
     public static ImageResource imageResource;
@@ -31,8 +41,12 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private LogOnPanel logOnPanel;
     private JMenuBar menuBar;
+
+    private LogOnPanel logOnPanel;
+    private UserPanel userPanel;
+    private DoorsPanel doorsPanel;
+
 
     /*
      *                  VARIABLES
@@ -59,8 +73,8 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
         Application.startUpPath = startUpPath;
         Application.imageResource = new ImageResource("", "icons.properties");
 
-        // Add web call listener
-        webMgr().addOnWebCallListener(this);
+        // Doors
+        doorMgr().init(Main.DOOR_COUNT);
 
         // Init gui
         initializeComponents();
@@ -122,7 +136,10 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     //
     @Override
     public void initializeComponents() {
-        logOnPanel = new LogOnPanel();
+        // Panels
+        logOnPanel = new LogOnPanel(this);
+        userPanel = new UserPanel(this);
+        doorsPanel = new DoorsPanel();
 
         // Menu panel
         menuBar = new JMenuBar();
@@ -153,7 +170,12 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     public void initializeLayouts() {
         setLayout(new BorderLayout());
 
+        JPanel eastPanel = new JPanel(new BorderLayout());
+        eastPanel.add(userPanel, BorderLayout.CENTER);
+        eastPanel.add(doorsPanel, BorderLayout.SOUTH);
+
         add(logOnPanel, BorderLayout.CENTER);
+        add(eastPanel, BorderLayout.EAST);
 
         if (Main.DEBUG_MODE) {
             setMenuVisible(true);
@@ -174,13 +196,34 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     }
 
     //
+    // User stuff
+    //
+    @Override
+    public void onUserSelected(User user) {
+        usrMgr().setSelectedUser(user);
+        userPanel.updateComponents(user);
+    }
+
+    @Override
+    public boolean onPasswordEntered(String password) {
+        if (usrMgr().getSelectedUser() != null && usrMgr().logInUser(password)) {
+            userPanel.updateComponents(usrMgr().getSelectedUser());
+
+            // TODO: change views
+
+            return true;
+        }
+        return false;
+    }
+
+    //
     // Serial stuff
     //
     @Override
     public void onInitSuccess(SerialPort serialPort) {
         System.out.println("COM port found: " + serialPort.getDescriptivePortName());
         serMgr().initComPort(serialPort);
-        serMgr().sendLockAll();
+        serMgr().sendInit(Main.DOOR_COUNT);
     }
 
     @Override
@@ -201,6 +244,13 @@ public class Application extends JFrame implements GuiInterface, SerialListener,
     @Override
     public void onNewMessage(SerialMessage message) {
         System.out.println("New message from " + message.getSender() + ": " + message.getCommand() + "->" + message.getMessage());
+
+        if (message.getCommand().contains("D")) {
+            Door door = doorMgr().updateDoor(message);
+            if (door != null) {
+                doorsPanel.updateDoor(door);
+            }
+        }
     }
 
     //

@@ -4384,7 +4384,7 @@ READ_Data D_UART_Read();
 # 51
 void D_UART_Enable(bool enable);
 
-# 20 "Controllers/DOOR_Controller.h"
+# 18 "Controllers/DOOR_Controller.h"
 typedef struct {
 uint8_t id;
 
@@ -4398,57 +4398,59 @@ uint8_t* sensor_port;
 uint8_t sensor_pin;
 }Door;
 
-# 36
-void C_DOOR_Init();
+# 35
+void C_DOOR_Init(uint8_t door_cnt);
 
-# 42
+# 41
 void C_DOOR_Lock(uint8_t id);
 
-# 47
+# 46
 void C_DOOR_LockAll();
 
-# 53
+# 52
 void C_DOOR_Unlock(uint8_t id);
 
-# 58
+# 57
 void C_DOOR_UnlockAll();
 
-# 63
+# 62
 void C_DOOR_ReadSensors();
 
-# 68
+# 67
 void C_DOOR_SendStates();
 
 # 19 "Controllers/DOOR_Controller.c"
-static Door doors[5];
+static int door_cnt;
+static Door doors[10];
 
-# 24
+# 25
 static void commandAndMessage(Door door, char* com, char* mes);
 
 static void commandAndMessage(Door door, char* com, char* mes) {
 
-com[0] = 'P';
-com[1] = door.id + 0x30;
+com[0] = 'D';
+com[1] = (uint8_t)(door.id + 0x30);
 com[2] = '\0';
 
 
 if (door.is_open) {
-mes[0] = 'O';
-} else {
 mes[0] = 'C';
+} else {
+mes[0] = 'O';
 }
 mes[1] = '\0';
 }
 
-# 44
-void C_DOOR_Init() {
+# 45
+void C_DOOR_Init(uint8_t cnt) {
 
 TRISB &= 0x3F;
 TRISB |= 0x3F;
 
 
+door_cnt = cnt;
 uint8_t d;
-for (d = 0; d < 5; d++) {
+for (d = 0; d < door_cnt; d++) {
 doors[d].id = d;
 
 doors[d].locked = 1;
@@ -4464,7 +4466,7 @@ doors[d].sensor_pin = d;
 
 void C_DOOR_Lock(uint8_t id) {
 uint8_t d;
-for (d = 0; d < 5; d++) {
+for (d = 0; d < door_cnt; d++) {
 if (doors[d].id == id) {
 *doors[d].lock_port |= 1 << doors[d].lock_pin;
 }
@@ -4481,7 +4483,7 @@ void C_DOOR_LockAll() {
 
 void C_DOOR_Unlock(uint8_t id) {
 uint8_t d;
-for (d = 0; d < 5; d++) {
+for (d = 0; d < door_cnt; d++) {
 if (doors[d].id == id) {
 *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
 }
@@ -4498,14 +4500,14 @@ void C_DOOR_UnlockAll() {
 
 void C_DOOR_ReadSensors() {
 uint8_t d;
-for (d = 0; d < 5; d++) {
+for (d = 0; d < door_cnt; d++) {
 doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
 }
 }
 
 void C_DOOR_SendStates() {
 uint8_t d;
-for (d = 0; d < 5; d++) {
+for (d = 0; d < door_cnt; d++) {
 if (doors[d].was_open != doors[d].is_open) {
 
 char com[3];

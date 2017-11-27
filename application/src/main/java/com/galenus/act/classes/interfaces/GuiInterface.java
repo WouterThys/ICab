@@ -1,4 +1,4 @@
-package com.galenus.act.gui;
+package com.galenus.act.classes.interfaces;
 
 public interface GuiInterface {
     void initializeComponents();

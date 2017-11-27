@@ -81,10 +81,6 @@ public class DateUtils {
     // DATE STUFF
     //
 
-    public static Date min() {
-        return new Date(0);
-    }
-
     public static Date convertServerDate(String time) {
         return convertServerCalendar(time).getTime();
     }

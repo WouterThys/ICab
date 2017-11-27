@@ -1,6 +1,6 @@
 package com.galenus.act.utils;
 
-import com.galenus.act.gui.components.IEditedListener;
+import com.galenus.act.classes.interfaces.IEditedListener;
 import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITextField;
 import com.galenus.act.gui.components.ITextFieldButtonPanel;

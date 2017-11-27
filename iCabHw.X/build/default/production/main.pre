@@ -4425,7 +4425,7 @@ void D_TMR0_Init();
 # 17
 void D_TMR0_Enable(bool enable);
 
-# 20 "Controllers/DOOR_Controller.h"
+# 18 "Controllers/DOOR_Controller.h"
 typedef struct {
 uint8_t id;
 
@@ -4439,30 +4439,44 @@ uint8_t* sensor_port;
 uint8_t sensor_pin;
 }Door;
 
-# 36
-void C_DOOR_Init();
+# 35
+void C_DOOR_Init(uint8_t door_cnt);
 
-# 42
+# 41
 void C_DOOR_Lock(uint8_t id);
 
-# 47
+# 46
 void C_DOOR_LockAll();
 
-# 53
+# 52
 void C_DOOR_Unlock(uint8_t id);
 
-# 58
+# 57
 void C_DOOR_UnlockAll();
 
-# 63
+# 62
 void C_DOOR_ReadSensors();
 
-# 68
+# 67
 void C_DOOR_SendStates();
 
-# 21 "main.c"
+# 22 "main.c"
 static READ_Data read;
 static bool tick;
+
+static void initDoors(uint8_t door_cnt);
+
+static void initDoors(uint8_t door_cnt) {
+if (door_cnt < 1) {
+door_cnt = 1;
+}
+
+C_DOOR_Init(door_cnt);
+C_DOOR_UnlockAll();
+
+
+D_TMR0_Enable(1);
+}
 
 void main(void) {
 _delay((unsigned long)((200)*(16000000/4000.0)));
@@ -4477,16 +4491,7 @@ D_UART_Enable(1);
 
 D_TMR0_Init();
 
-
-C_DOOR_Init();
-C_DOOR_UnlockAll();
-
 _delay((unsigned long)((200)*(16000000/4000.0)));
-D_UART_Write("I", "I");
-
-
-D_TMR0_Enable(1);
-
 while(1) {
 
 if (readReady) {
@@ -4497,10 +4502,12 @@ C_DOOR_LockAll();
 } else if (strcmp(read.command, "U") == 0) {
 C_DOOR_UnlockAll();
 } else if (strcmp(read.command, "I") == 0) {
-
+initDoors((uint8_t)(*read.message - 0x30));
 } else if (strcmp(read.command, "R") == 0) {
 _delay((unsigned long)((20)*(16000000/4000.0)));
 asm(" reset");
+} else if (strcmp(read.command, "P") == 0) {
+
 } else {
 D_UART_Write("E", "U");
 }

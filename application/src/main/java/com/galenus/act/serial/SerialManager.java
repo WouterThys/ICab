@@ -3,6 +3,7 @@ package com.galenus.act.serial;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
+import com.galenus.act.classes.interfaces.SerialListener;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -110,8 +111,8 @@ public class SerialManager {
         }
     }
 
-    public void sendInit() {
-        SerialMessage init = MessageFactory.createInit();
+    public void sendInit(int doorCount) {
+        SerialMessage init = MessageFactory.createInit(doorCount);
         if (addToMessageList(init)) {
             write(init.toString());
         }
@@ -307,8 +308,8 @@ public class SerialManager {
                             byte[] readBuffer = new byte[1024];
 
                             // Write reset
-                            String reset = MessageFactory.createInit().toString();
-                            port.writeBytes(reset.getBytes(), reset.length());
+                            String ping = MessageFactory.createPing().toString();
+                            port.writeBytes(ping.getBytes(), ping.length());
 
                             // Wait for read
                             int numRead = port.readBytes(readBuffer, readBuffer.length);

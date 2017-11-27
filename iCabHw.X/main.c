@@ -12,14 +12,29 @@
 
 #define COMMAND_LOCK    "L" /* Command to lock doors                          */
 #define COMMAND_UNLOCK  "U" /* Command to unlock doors                        */
-#define COMMAND_INIT    "I" /* Command send by application when initializing  */
+#define COMMAND_INIT    "I" /* Command to initialize                          */
 #define COMMAND_RESET   "R" /* Command to reset PIC                           */
+#define COMMAND_PING    "P" /* Command to ping PIC                            */
 #define COMMAND_ERROR   "E" /* Command to indicate error                      */
 
 #define ERROR_UNKNOWN   "U" /* Error message to send when unknown command     */
 
 static READ_Data read;
 static bool tick;
+
+static void initDoors(uint8_t door_cnt);
+
+static void initDoors(uint8_t door_cnt) {
+    if (door_cnt < 1) {
+        door_cnt = 1;
+    }
+    // Doors
+    C_DOOR_Init(door_cnt);
+    C_DOOR_UnlockAll();
+    
+    // Start timer
+    D_TMR0_Enable(true);
+}
 
 void main(void) {
     __delay_ms(200);
@@ -34,16 +49,7 @@ void main(void) {
     // Initialize timer
     D_TMR0_Init();
     
-    // Initialize doors
-    C_DOOR_Init();
-    C_DOOR_UnlockAll();
-    
     __delay_ms(200);
-    D_UART_Write(COMMAND_INIT, "I");
-    
-    // Start
-    D_TMR0_Enable(true);
-    
     while(1) {
         // Serial
         if (readReady) {
@@ -54,10 +60,12 @@ void main(void) {
             } else if (strcmp(read.command, COMMAND_UNLOCK) == 0) {
                 C_DOOR_UnlockAll();
             } else if (strcmp(read.command, COMMAND_INIT) == 0) {
-                // Do nothing, acknowledge will answer
+                initDoors((uint8_t)(*read.message - 0x30));
             } else if (strcmp(read.command, COMMAND_RESET) == 0) {
                 __delay_ms(20);
                 Reset();
+            } else if (strcmp(read.command, COMMAND_PING) == 0) {
+                // Do nothing, acknowledge message will be send automatically
             } else {
                 D_UART_Write(COMMAND_ERROR, ERROR_UNKNOWN);
             }

@@ -9,8 +9,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DOOR_COUNT  5
-
 // PORTB0 and PORTB1 are lock pins
 #define LOCK    0x03    
 #define UNLOCK  0x00    
@@ -32,8 +30,9 @@
     
     /**
      * Initialize doors
+     * @param: number of doors
      */
-    void C_DOOR_Init();
+    void C_DOOR_Init(uint8_t door_cnt);
     
     /**
      * Lock a door

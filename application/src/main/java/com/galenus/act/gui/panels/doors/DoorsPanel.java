@@ -1,80 +1,67 @@
-package com.galenus.act.gui.panels.logon;
+package com.galenus.act.gui.panels.doors;
 
-import com.galenus.act.classes.User;
+import com.galenus.act.classes.Door;
 import com.galenus.act.classes.interfaces.GuiInterface;
-import com.galenus.act.gui.components.IUserTile;
+import com.galenus.act.gui.components.IDoorTile;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-abstract class LogOnPanelLayout extends JPanel implements
-        GuiInterface,
-        IUserTile.OnTileClickListener {
+import static com.galenus.act.classes.managers.DoorManager.doorMgr;
 
-
+public class DoorsPanel extends JPanel implements GuiInterface {
 
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private JPanel gridPanel;
+    private List<IDoorTile> doorTiles = new ArrayList<>();
 
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private int rows = -1;
-    private int cols = -1;
 
     /*
     *                  CONSTRUCTOR
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    LogOnPanelLayout(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+    public DoorsPanel() {
+        initializeComponents();
+        initializeLayouts();
+        updateComponents();
     }
 
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-    private IUserTile createTile(User user) {
-        IUserTile tileView = new IUserTile(user);
-        tileView.addOnTileClickListener(this);
-        return  tileView;
-    }
-
-    void drawTiles(List<User> userList) {
-        gridPanel.removeAll();
-        for (User user : userList) {
-            gridPanel.add(createTile(user));
-        }
-        if (userList.size() > 0) {
-            updateComponents(userList.get(0));
+    public void updateDoor(Door door) {
+        if (door != null) {
+            for (IDoorTile doorTile : doorTiles) {
+                if (doorTile.getDoor().equals(door)) {
+                    doorTile.updateComponents();
+                }
+            }
         }
     }
-
 
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @Override
     public void initializeComponents() {
-        gridPanel = new JPanel(new GridLayout(rows,cols));
+        for (Door door : doorMgr().getDoorList()) {
+            doorTiles.add(new IDoorTile(door));
+        }
     }
 
     @Override
     public void initializeLayouts() {
-        setLayout(new BorderLayout());
-
-        // Grid
-        JScrollPane scrollPane = new JScrollPane(gridPanel);
-
-        // Add
-        add(scrollPane, BorderLayout.CENTER);
+        for (IDoorTile doorTile : doorTiles) {
+            add(doorTile);
+        }
     }
 
     @Override
     public void updateComponents(Object... args) {
-
     }
+
 }

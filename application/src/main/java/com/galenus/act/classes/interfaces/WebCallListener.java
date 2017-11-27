@@ -1,4 +1,4 @@
-package com.galenus.act.web;
+package com.galenus.act.classes.interfaces;
 
 import java.util.Vector;
 

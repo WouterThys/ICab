@@ -1,5 +1,7 @@
 package com.galenus.act.gui.components;
 
+import com.galenus.act.classes.interfaces.IEditedListener;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;

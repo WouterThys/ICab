@@ -1,4 +1,4 @@
-package com.galenus.act.gui.components;
+package com.galenus.act.classes.interfaces;
 
 import java.awt.*;
 

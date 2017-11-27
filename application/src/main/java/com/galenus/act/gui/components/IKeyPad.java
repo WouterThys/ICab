@@ -1,9 +1,6 @@
 package com.galenus.act.gui.components;
 
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -39,7 +36,7 @@ public class IKeyPad extends JPanel {
         //pinField.setEditable(false);
         pinField.setFocusable(false);
         pinField.setOpaque(true);
-        pinField.setBackground(Color.YELLOW);
+        pinField.setBackground(Color.WHITE);
         pinField.setPreferredSize(new Dimension(200, 80));
 
 //        StyledDocument doc = pinField.getStyledDocument();

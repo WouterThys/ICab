@@ -1,6 +1,7 @@
 package com.galenus.act.gui.components;
 
-import com.galenus.act.gui.GuiInterface;
+import com.galenus.act.classes.interfaces.GuiInterface;
+import com.galenus.act.classes.interfaces.IEditedListener;
 
 import javax.swing.*;
 import java.awt.*;

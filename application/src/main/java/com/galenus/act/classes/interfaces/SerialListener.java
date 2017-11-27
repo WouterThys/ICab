@@ -1,6 +1,7 @@
-package com.galenus.act.serial;
+package com.galenus.act.classes.interfaces;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.galenus.act.serial.SerialMessage;
 
 public interface SerialListener {
     void onInitSuccess(SerialPort serialPort);

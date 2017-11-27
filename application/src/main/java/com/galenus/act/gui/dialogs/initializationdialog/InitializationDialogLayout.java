@@ -3,8 +3,8 @@ package com.galenus.act.gui.dialogs.initializationdialog;
 import com.galenus.act.gui.Application;
 import com.galenus.act.gui.components.IDialog;
 import com.galenus.act.gui.components.ILabel;
-import com.galenus.act.serial.SerialListener;
-import com.galenus.act.web.WebCallListener;
+import com.galenus.act.classes.interfaces.SerialListener;
+import com.galenus.act.classes.interfaces.WebCallListener;
 
 import javax.swing.*;
 import java.awt.*;

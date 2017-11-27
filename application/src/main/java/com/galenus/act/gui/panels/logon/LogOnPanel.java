@@ -1,8 +1,8 @@
 package com.galenus.act.gui.panels.logon;
 
 import com.galenus.act.classes.User;
+import com.galenus.act.classes.interfaces.UserListener;
 
-import java.awt.*;
 import java.util.List;
 
 public class LogOnPanel extends LogOnPanelLayout {
@@ -15,12 +15,15 @@ public class LogOnPanel extends LogOnPanelLayout {
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    private UserListener userListener;
 
     /*
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    public LogOnPanel() {
+    public LogOnPanel(UserListener userListener) {
         super(5, 50);
+
+        this.userListener = userListener;
 
         initializeComponents();
         initializeLayouts();
@@ -41,6 +44,8 @@ public class LogOnPanel extends LogOnPanelLayout {
     //
     @Override
     public void onTileClick(User user) {
-        updateComponents(user);
+        if (userListener != null) {
+            userListener.onUserSelected(user);
+        }
     }
 }

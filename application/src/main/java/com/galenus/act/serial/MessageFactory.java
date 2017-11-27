@@ -7,16 +7,21 @@ public class MessageFactory {
 
     private static final String PIC_INIT = "I";
     private static final String PIC_RESET = "R";
+    private static final String PIC_PING = "P";
     private static final String PIC_LOCK = "L";
     private static final String PIC_UNLOCK = "U";
     private static final String PIC_ERROR = "E";
 
-    public static SerialMessage createInit() {
-        return new SerialMessage(SerialMessage.Message, PIC_INIT);
+    public static SerialMessage createInit(int doorCount) {
+        return new SerialMessage(SerialMessage.Message, PIC_INIT, String.valueOf(doorCount));
     }
 
     public static SerialMessage createReset() {
         return new SerialMessage(SerialMessage.Message, PIC_RESET);
+    }
+
+    public static SerialMessage createPing() {
+        return new SerialMessage(SerialMessage.Message, PIC_PING);
     }
 
     public static SerialMessage createLockAll() {

@@ -1,9 +1,9 @@
 package com.galenus.act.gui.dialogs.initializationdialog;
 
 import com.galenus.act.gui.Application;
-import com.galenus.act.serial.SerialListener;
+import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.serial.SerialManager;
-import com.galenus.act.web.WebCallListener;
+import com.galenus.act.classes.interfaces.WebCallListener;
 
 import javax.swing.*;
 
@@ -21,10 +21,15 @@ public class InitializationDialog extends InitializationDialogLayout {
         initializeLayouts();
         updateComponents();
 
-        SwingUtilities.invokeLater(this::one_initSerial);
+        SwingUtilities.invokeLater(this::one_initDoors);
     }
 
-    private void one_initSerial() {
+    private void one_initDoors() {
+        //doorMgr().init(Main.DOOR_COUNT);
+        two_initSerial();
+    }
+
+    private void two_initSerial() {
         serMgr().init(serialListener);
         serMgr().registerShutDownHook();
 
@@ -35,7 +40,7 @@ public class InitializationDialog extends InitializationDialogLayout {
         serialInitWorker.addPropertyChangeListener(evt -> {
             if (evt.getPropertyName().equals("state")) {
                 if (evt.getNewValue() == SwingWorker.StateValue.DONE) {
-                    two_initWebService();
+                    three_initWebService();
                 }
             } else if (evt.getPropertyName().equals("progress")) {
                 int progress = (Integer) evt.getNewValue();
@@ -45,7 +50,7 @@ public class InitializationDialog extends InitializationDialogLayout {
         serialInitWorker.execute();
     }
 
-    private void two_initWebService() {
+    private void three_initWebService() {
         webMgr().init( application,
                 "ICAB",
                 "http://sp0007test/juliette/oriswsmattteo.asmx",

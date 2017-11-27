@@ -1,7 +1,7 @@
 package com.galenus.act.gui.components;
 
 import com.galenus.act.classes.User;
-import com.galenus.act.gui.GuiInterface;
+import com.galenus.act.classes.interfaces.GuiInterface;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;

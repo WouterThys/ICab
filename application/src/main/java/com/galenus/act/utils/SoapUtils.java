@@ -2,7 +2,6 @@ package com.galenus.act.utils;
 
 import org.ksoap2.serialization.SoapObject;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class SoapUtils {
@@ -106,7 +105,7 @@ public class SoapUtils {
             String value = object.getProperty(name).toString();
             if (value.contains("anyType")) {
                 System.err.println("Convert to string error: anyType");
-                return DateUtils.min();
+                return DateUtils.minDate();
             }
             else {
                 return DateUtils.convertServerDate(value);
@@ -118,7 +117,7 @@ public class SoapUtils {
                 System.err.println("Null object passed in convertToString(...)");
             }
         }
-        return DateUtils.min();
+        return DateUtils.minDate();
     }
 
 }

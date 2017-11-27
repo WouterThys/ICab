@@ -1,5 +1,6 @@
 package com.galenus.act.gui.components;
 
+import com.galenus.act.classes.interfaces.IEditedListener;
 import com.galenus.act.utils.Error;
 import com.galenus.act.utils.IconBorder;
 
