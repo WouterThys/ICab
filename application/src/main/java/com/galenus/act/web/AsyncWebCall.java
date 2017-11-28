@@ -1,21 +1,25 @@
 package com.galenus.act.web;
 
 import com.galenus.act.gui.Application;
+import com.galenus.act.utils.DateUtils;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import javax.swing.*;
+import java.util.Date;
 import java.util.Vector;
 
 import static com.galenus.act.web.WebManager.webMgr;
 
-abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
+public abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
 
     private Application application;
     private String methodName;
     private boolean success;
+    private Date date;
 
     AsyncWebCall(Application application, String methodName) {
         this.application = application;
@@ -38,8 +42,13 @@ abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
 
     @Override
     protected AsyncWebResult<Object> doInBackground() throws Exception {
+        // Set variables
         AsyncWebResult<Object> result = null;
         success = true;
+        date = DateUtils.now();
+        webMgr().addWebCallToList(AsyncWebCall.this);
+
+        //Start
         application.startWait(application);
         try {
             SoapObject soapRequest = new SoapObject(webMgr().getWebNameSpace(), methodName);
@@ -64,10 +73,34 @@ abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
         if (success) {
             try {
                 AsyncWebResult<Object> result = get();
-                webMgr().onFinishedRequest(methodName, (Vector) result.getResult());
+                if (result.getResult() instanceof SoapPrimitive) {
+                     Vector<Object> res = new Vector<>();
+                     res.add(result.getResult());
+                     webMgr().onFinishedRequest(methodName, res);
+                } else {
+                    webMgr().onFinishedRequest(methodName, (Vector) result.getResult());
+                }
             } catch (Exception ex) {
                 webMgr().onFailedRequest(methodName, ex, 0);
             }
         }
+    }
+
+    public String getMethodName() {
+        if (methodName == null) {
+            methodName = "";
+        }
+        return methodName;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public Date getDate() {
+        if (date == null) {
+            date = DateUtils.minDate();
+        }
+        return date;
     }
 }

@@ -1,8 +1,9 @@
-package com.galenus.act.gui.dialogs.seriallogsdialog;
+package com.galenus.act.gui.dialogs.logsdialog;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.galenus.act.Main;
+import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.gui.Application;
-import com.galenus.act.gui.components.IDialog;
 import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.components.ITextField;
@@ -20,7 +21,7 @@ import java.util.List;
 import static com.galenus.act.gui.Application.imageResource;
 import static com.galenus.act.serial.SerialManager.serMgr;
 
-abstract class SerialLogsDialogLayout extends IDialog {
+class SerialLogsPanel extends JPanel implements GuiInterface {
 
     /*
      *                  COMPONENTS
@@ -54,24 +55,62 @@ abstract class SerialLogsDialogLayout extends IDialog {
     /*
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    SerialLogsDialogLayout(Application application, String title) {
-        super(application, title);
-        setResizable(true);
+    SerialLogsPanel() {
+        initializeComponents();
+        initializeLayouts();
     }
 
 
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    abstract void onPicInit();
-    abstract void onPicReset();
-    abstract void onPicLock();
-    abstract void onPicUnlock();
-    abstract void onPicError();
 
-    abstract void onDeleteRx();
-    abstract void onDeleteTx();
-    abstract void onRetry();
+    private void onRetry() {
+        //application.initializeSerial(LogsDialog.this, serMgr().getMainSerialListener());
+    }
+
+    private void onDeleteRx() {
+        int res = JOptionPane.showConfirmDialog(
+                SerialLogsPanel.this,
+                "Delete all received messages?",
+                "Delete",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (res == JOptionPane.YES_OPTION) {
+            serMgr().clearRxMessages();
+            updateTableData();
+        }
+    }
+
+    private void onDeleteTx() {
+        int res = JOptionPane.showConfirmDialog(
+                SerialLogsPanel.this,
+                "Delete all send messages?",
+                "Delete",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (res == JOptionPane.YES_OPTION) {
+            serMgr().clearTxMessages();
+            updateTableData();
+        }
+    }
+    private void onPicInit() {
+        serMgr().sendInit(Main.DOOR_COUNT);
+    }
+    private void onPicReset() {
+        serMgr().sendReset();
+    }
+    private void onPicLock() {
+        serMgr().sendLockAll();
+    }
+    private void onPicUnlock() {
+        serMgr().sendUnlockAll();
+    }
+    private void onPicError() {
+
+    }
 
     private void setSerialData(SerialPort port) {
         if (port != null) {
@@ -118,8 +157,8 @@ abstract class SerialLogsDialogLayout extends IDialog {
         txList.addAll(serMgr().getAckMessageList());
         rxList.addAll(serMgr().getRxMessageList());
 
-        txList.sort(new LogMessageSorter());
-        rxList.sort(new LogMessageSorter());
+        txList.sort(new SerialLogsPanel.LogMessageSorter());
+        rxList.sort(new SerialLogsPanel.LogMessageSorter());
 
         logRxModel.setItemList(rxList);
         logTxModel.setItemList(txList);
@@ -131,7 +170,6 @@ abstract class SerialLogsDialogLayout extends IDialog {
         // Table
         JScrollPane scrollTxPane = new JScrollPane(logTxTable);
         scrollTxPane.setPreferredSize(new Dimension(600,200));
-        getContentPanel().add(scrollTxPane);
 
         // Toolbar
         JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
@@ -158,7 +196,6 @@ abstract class SerialLogsDialogLayout extends IDialog {
         // Table
         JScrollPane scrollRxPane = new JScrollPane(logRxTable);
         scrollRxPane.setPreferredSize(new Dimension(600,200));
-        getContentPanel().add(scrollRxPane);
 
         // Toolbar
         JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
@@ -235,10 +272,6 @@ abstract class SerialLogsDialogLayout extends IDialog {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @Override
     public void initializeComponents() {
-        // Title
-        setTitleIcon(imageResource.readImage("Serial.Log.Title"));
-        setTitleName(getTitle());
-
         // Serial
         serialStateLbl = new ILabel();
         serialNameLbl = new ILabel("", ILabel.CENTER);
@@ -333,11 +366,9 @@ abstract class SerialLogsDialogLayout extends IDialog {
         tablePanel.add(rxPanel);
         tablePanel.setBorder(GuiUtils.createTitleBorder("Logs"));
 
-        getContentPanel().setLayout(new BorderLayout());
-        getContentPanel().add(serialPanel, BorderLayout.NORTH);
-        getContentPanel().add(tablePanel, BorderLayout.CENTER);
-
-        pack();
+        setLayout(new BorderLayout());
+        add(serialPanel, BorderLayout.NORTH);
+        add(tablePanel, BorderLayout.CENTER);
     }
 
     @Override

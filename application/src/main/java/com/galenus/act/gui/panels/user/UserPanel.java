@@ -29,6 +29,8 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     private IKeyPad keyPad;
     private ITimerPanel timerPanel;
 
+    private String currentView = "";
+
 
     /*
      *                  VARIABLES
@@ -51,12 +53,25 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
         timerPanel.updateComponents(newTime);
     }
 
+    private void showView(String key) {
+        if (!currentView.equals(key)) {
+            cardLayout.show(centerPanel, key);
+        }
+        currentView = key;
+    }
+
     private void updateUserInfo(User user) {
         if (user != null) {
             userNameLbl.setText(user.getFirstName());
             userLastNameLbl.setText(user.getLastName());
             userAvatarLbl.setIcon(user.getAvatar());
             userLastLogInLbl.setText(DateUtils.formatDateTime(user.getLastLogIn()));
+
+            if (user.isLoggedIn()) {
+                showView(VIEW_TIMER);
+            } else {
+                showView(VIEW_KEYPAD);
+            }
 
             keyPad.clear();
         } else {
@@ -152,9 +167,9 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     public void onDigitsEntered(String entered) {
         if (userListener != null) {
             if (userListener.onPasswordEntered(entered)) {
-               cardLayout.show(centerPanel, VIEW_TIMER);
+               showView(VIEW_TIMER);
             } else {
-                cardLayout.show(centerPanel, VIEW_KEYPAD);
+                showView(VIEW_KEYPAD);
             }
         }
     }

@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalTime;
 import java.util.Date;
 
 import static com.galenus.act.gui.Application.imageResource;
@@ -72,6 +73,7 @@ public class User extends BaseClass {
 
     private boolean isLoggedIn = false;
     private Date lastLogIn = DateUtils.minDate();
+    private int loggedInTime;
 
     public User() {
         language = UserLanguage.French;
@@ -101,11 +103,13 @@ public class User extends BaseClass {
 
     public void logIn() {
         this.isLoggedIn = true;
+        this.loggedInTime = 0;
         this.lastLogIn = DateUtils.now();
     }
 
     public void logOut() {
         this.isLoggedIn = false;
+        this.loggedInTime = 0;
     }
 
     public boolean isPinCorrect(String pin) {
@@ -140,7 +144,18 @@ public class User extends BaseClass {
         return encrypted;
     }
 
+    public String getLoggedInTimeString(int maxTime) {
+        int timeRemaining = maxTime - loggedInTime;
+        int minutes = 0;
+        int seconds = timeRemaining;
 
+        while (seconds >= 60) {
+            minutes++;
+            seconds -= 60;
+        }
+
+        return String.valueOf(minutes) + ":" + String.format("%02d", seconds);
+    }
 
 
     public String getFirstName() {
@@ -211,6 +226,11 @@ public class User extends BaseClass {
         return avatar;
     }
 
+    public int getLoggedInTime() {
+        return loggedInTime;
+    }
 
-
+    public void setLoggedInTime(int loggedInTime) {
+        this.loggedInTime = loggedInTime;
+    }
 }

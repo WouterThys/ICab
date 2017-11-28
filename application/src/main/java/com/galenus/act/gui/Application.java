@@ -9,7 +9,7 @@ import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
-import com.galenus.act.gui.dialogs.seriallogsdialog.SerialLogsDialog;
+import com.galenus.act.gui.dialogs.logsdialog.LogsDialog;
 import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.inventory.InventoryPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
@@ -82,6 +82,7 @@ public class Application extends JFrame implements
 
         // Doors
         doorMgr().init(Main.DOOR_COUNT);
+        usrMgr().init(Main.USER_LOGON_TIME, this);
 
         // Init gui
         initializeComponents();
@@ -160,7 +161,7 @@ public class Application extends JFrame implements
         JMenu serialMenu = new JMenu("Serial");
         JMenuItem serialLogs = new JMenuItem("Serial logs");
         serialLogs.addActionListener(e -> {
-            SerialLogsDialog dialog = new SerialLogsDialog(this, "Serial logs", serMgr().getSerialPort());
+            LogsDialog dialog = new LogsDialog(this, "Serial logs", serMgr().getSerialPort());
             dialog.showDialog();
         });
 
@@ -226,18 +227,17 @@ public class Application extends JFrame implements
     @Override
     public boolean onPasswordEntered(String password) {
         if (usrMgr().getSelectedUser() != null && usrMgr().logInUser(password)) {
-            userPanel.updateComponents(usrMgr().getSelectedUser());
-
-            // TODO: send login to Juliette
-
-            // DO this when web request success
-            cardLayout.show(mainPanel, VIEW_INVENTORY);
-            usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
-
-
+            webMgr().logOn(usrMgr().getSelectedUser());
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onUserShouldLogOff(User user) {
+        if (user != null) {
+            webMgr().logOff(user);
+        }
     }
 
     //
@@ -283,20 +283,32 @@ public class Application extends JFrame implements
     @Override
     public void onFinishedRequest(String methodName, Vector response) {
         switch (methodName) {
-            case WebCall_DeviceRegister:
+            case WebCall_Register:
                 webRegistered();
                 break;
-            case WebCall_DeviceUnRegister:
+            case WebCall_UnRegister:
                 break;
-            case WebCall_DeviceGetUsers:
+            case WebCall_LogOn:
+                cardLayout.show(mainPanel, VIEW_INVENTORY);
+                userPanel.updateComponents(usrMgr().getSelectedUser());
+                usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
+                break;
+            case WebCall_LogOff:
+                cardLayout.show(mainPanel, VIEW_MAIN);
+                usrMgr().logOffUser();
+                userPanel.updateComponents(usrMgr().getSelectedUser());
+                break;
+            case WebCall_GetUsers:
                 webReceivedUsers(response);
                 break;
         }
+        webMgr().setWebSuccess(true);
     }
 
     @Override
     public void onFailedRequest(String methodName, Exception ex, int fault) {
         System.err.println("Web call error for: " + methodName + " -> " + ex);
+        webMgr().setWebSuccess(false);
         JOptionPane.showMessageDialog(
                 Application.this,
                 "Web call error for: " + methodName + " -> " + ex,

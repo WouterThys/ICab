@@ -1,7 +1,10 @@
 package com.galenus.act.web;
 
+import com.galenus.act.classes.Door;
+import com.galenus.act.classes.User;
 import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.gui.Application;
+import com.galenus.act.utils.DateUtils;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
@@ -16,11 +19,20 @@ public class WebManager {
     }
     private WebManager() {}
 
-    public static final String WebCall_DeviceRegister = "RegisterDevice";
-    public static final String WebCall_DeviceUnRegister = "UnRegisterDevice";
-    public static final String WebCall_DeviceGetUsers = "GetDeviceUsers";
+    public static final String WebCall_Ping = "Ping";
+    public static final String WebCall_Register = "RegisterDevice";
+    public static final String WebCall_UnRegister = "UnRegisterDevice";
+    public static final String WebCall_GetUsers = "GetDeviceUsers";
+    public static final String WebCall_LogOn = "SignalLogOn";
+    public static final String WebCall_LogOff = "SignalLogOff";
+    public static final String WebCall_DoorOpen = "SignalDoorOpen";
+    public static final String WebCall_DoorClose = "SignalDoorClose";
+    public static final String WebCall_AlarmDoorNotClosed = "SignalAlarmDoorNotClosed";
+    public static final String WebCall_AlarmDoorForced = "SignalAlarmDoorForced";
 
     private Application application;
+    private List<WebCallListener> webCallListenerList = new ArrayList<>();
+    private List<AsyncWebCall> webCallList = new ArrayList<>();
 
     private String deviceName;
     private int deviceType;
@@ -28,9 +40,7 @@ public class WebManager {
     private String webUrl;
     private String webNameSpace;
     private int webTimeout;
-
-
-    private List<WebCallListener> webCallListenerList = new ArrayList<>();
+    private boolean webSuccess;
 
 
     public void init(Application application, String deviceName, String webUrl, String webNameSpace, int webTimeout) {
@@ -80,13 +90,37 @@ public class WebManager {
         }
     }
 
+    void addWebCallToList(AsyncWebCall webCall) {
+        if (!webCallList.contains(webCall)) {
+            webCallList.add(webCall);
+        }
+    }
+
+    public List<AsyncWebCall> getWebCallList() {
+        return webCallList;
+    }
+
+    public void clearWebCallList() {
+        webCallList.clear();
+    }
+
 
     /*
      * Web calls
      */
 
+    public void ping() {
+        new AsyncWebCall(application, WebCall_Ping) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aDTMostRecentInventory", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
     public void registerDevice() {
-        new AsyncWebCall(application, WebCall_DeviceRegister) {
+        new AsyncWebCall(application, WebCall_Register) {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
@@ -100,7 +134,7 @@ public class WebManager {
     }
 
     public void getDeviceUsers() {
-        new AsyncWebCall(application, WebCall_DeviceGetUsers) {
+        new AsyncWebCall(application, WebCall_GetUsers) {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
@@ -108,6 +142,69 @@ public class WebManager {
         }.execute();
     }
 
+    public void logOn(User user) {
+        new AsyncWebCall(application, WebCall_LogOn) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(user.getLastLogIn()));
+            }
+        }.execute();
+    }
+
+    public void logOff(User user) {
+        new AsyncWebCall(application, WebCall_LogOff) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUserCode", user.getCode());
+                soapRequest.addProperty("aLoggedOffHow", 0); //??
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void doorOpen(User user) {
+        new AsyncWebCall(application, WebCall_DoorOpen) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void doorClose() {
+        new AsyncWebCall(application, WebCall_DoorClose) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void alarmDoorNotClosed() {
+        new AsyncWebCall(application, WebCall_AlarmDoorNotClosed) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void alarmDoorForced() {
+        new AsyncWebCall(application, WebCall_AlarmDoorForced) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aTimeStamp", "");
+            }
+        }.execute();
+    }
 
     /*
      * Getters and setters
@@ -131,5 +228,13 @@ public class WebManager {
 
     public int getWebTimeout() {
         return webTimeout;
+    }
+
+    public boolean isWebSuccess() {
+        return webSuccess;
+    }
+
+    public void setWebSuccess(boolean webSuccess) {
+        this.webSuccess = webSuccess;
     }
 }
