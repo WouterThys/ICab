@@ -15,6 +15,7 @@ import com.galenus.act.gui.panels.inventory.InventoryPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.gui.panels.user.UserPanel;
 import com.galenus.act.serial.SerialMessage;
+import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
 import org.ksoap2.serialization.SoapObject;
 
@@ -37,6 +38,7 @@ public class Application extends JFrame implements
         UserListener {
 
     public static ImageResource imageResource;
+    public static ColorResource colorResource;
 
     private static final String VIEW_MAIN = "Main";
     private static final String VIEW_INVENTORY = "Inventory";
@@ -79,6 +81,7 @@ public class Application extends JFrame implements
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public Application(String startUpPath) {
         Application.imageResource = new ImageResource("", "icons.properties");
+        Application.colorResource = new ColorResource("", "colors.properties");
 
         // Doors
         doorMgr().init(Main.DOOR_COUNT);
@@ -275,6 +278,8 @@ public class Application extends JFrame implements
                 doorsPanel.updateDoor(door);
             }
         }
+
+        doorsPanel.updateState(doorMgr().getDoorState());
     }
 
     //
@@ -286,18 +291,22 @@ public class Application extends JFrame implements
             case WebCall_Register:
                 webRegistered();
                 break;
+
             case WebCall_UnRegister:
                 break;
+
             case WebCall_LogOn:
                 cardLayout.show(mainPanel, VIEW_INVENTORY);
                 userPanel.updateComponents(usrMgr().getSelectedUser());
                 usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
                 break;
+
             case WebCall_LogOff:
                 cardLayout.show(mainPanel, VIEW_MAIN);
                 usrMgr().logOffUser();
                 userPanel.updateComponents(usrMgr().getSelectedUser());
                 break;
+
             case WebCall_GetUsers:
                 webReceivedUsers(response);
                 break;

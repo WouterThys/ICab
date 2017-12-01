@@ -8,6 +8,12 @@ import java.util.List;
 
 public class DoorManager {
 
+    public enum DoorState {
+        Ok,
+        Warning,
+        Error
+    }
+
     private static final DoorManager Instance = new DoorManager();
     public static DoorManager doorMgr() {
         return Instance;
@@ -37,6 +43,18 @@ public class DoorManager {
             }
         }
         return null;
+    }
+
+    public DoorState getDoorState() {
+        for (Door door : getDoorList()) {
+            if (door.isOpen() && door.isLocked()) {
+                return DoorState.Error;
+            }
+        }
+
+        // TODO: door state overtime
+
+        return DoorState.Ok;
     }
 
     public List<Door> getDoorList() {

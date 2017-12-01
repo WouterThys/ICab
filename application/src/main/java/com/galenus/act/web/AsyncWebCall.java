@@ -20,6 +20,7 @@ public abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, V
     private String methodName;
     private boolean success;
     private Date date;
+    private Exception exception;
 
     AsyncWebCall(Application application, String methodName) {
         this.application = application;
@@ -60,6 +61,7 @@ public abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, V
             httpTransport.call(webMgr().getWebNameSpace() + methodName, envelope);
             result = new AsyncWebResult<>(envelope.getResponse());
         } catch (Exception ex) {
+            this.exception = ex;
             webMgr().onFailedRequest(methodName, ex, 0);
             success = false;
         } finally {
@@ -81,6 +83,7 @@ public abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, V
                     webMgr().onFinishedRequest(methodName, (Vector) result.getResult());
                 }
             } catch (Exception ex) {
+                this.exception = ex;
                 webMgr().onFailedRequest(methodName, ex, 0);
             }
         }

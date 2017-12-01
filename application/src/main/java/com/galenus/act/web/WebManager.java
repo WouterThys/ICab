@@ -19,7 +19,7 @@ public class WebManager {
     }
     private WebManager() {}
 
-    public static final String WebCall_Ping = "Ping";
+    public static final String WebCall_Ping = "PingData";
     public static final String WebCall_Register = "RegisterDevice";
     public static final String WebCall_UnRegister = "UnRegisterDevice";
     public static final String WebCall_GetUsers = "GetDeviceUsers";

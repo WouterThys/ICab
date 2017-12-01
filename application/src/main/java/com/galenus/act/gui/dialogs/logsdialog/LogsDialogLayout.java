@@ -30,7 +30,6 @@ abstract class LogsDialogLayout extends IDialog {
     /*
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
     void updateSerialTableData() {
         serialLogsPanel.updateTableData();
     }
