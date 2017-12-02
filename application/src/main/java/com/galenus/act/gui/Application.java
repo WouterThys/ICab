@@ -276,6 +276,7 @@ public class Application extends JFrame implements
             Door door = doorMgr().updateDoor(message);
             if (door != null) {
                 doorsPanel.updateDoor(door);
+
             }
         }
 
