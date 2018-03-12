@@ -29,6 +29,18 @@ public class DoorManager {
         }
     }
 
+    public void unlockDoors() {
+        for (Door door : doorList) {
+            door.setLocked(false);
+        }
+    }
+
+    public void lockDoors() {
+        for (Door door : doorList) {
+            door.setLocked(true);
+        }
+    }
+
     public Door updateDoor(SerialMessage message) {
         if (message.getCommand().contains("D")) {
             for (Door door : doorList) {

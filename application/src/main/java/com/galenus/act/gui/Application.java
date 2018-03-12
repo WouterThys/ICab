@@ -299,12 +299,16 @@ public class Application extends JFrame implements
             case WebCall_LogOn:
                 cardLayout.show(mainPanel, VIEW_INVENTORY);
                 userPanel.updateComponents(usrMgr().getSelectedUser());
+                doorMgr().unlockDoors();
+                serMgr().sendUnlockAll();
                 usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
                 break;
 
             case WebCall_LogOff:
                 cardLayout.show(mainPanel, VIEW_MAIN);
                 usrMgr().logOffUser();
+                doorMgr().lockDoors();
+                serMgr().sendLockAll();
                 userPanel.updateComponents(usrMgr().getSelectedUser());
                 break;
 

@@ -48,4 +48,8 @@ public class Door {
     public boolean isLocked() {
         return isLocked;
     }
+
+    public void setLocked(boolean locked) {
+        this.isLocked = locked;
+    }
 }

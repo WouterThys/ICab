@@ -17,9 +17,10 @@ public class StringValues {
                     return "Error";
             }
 
-            if (command.contains("P")) {
-                return command.replace("P", "Port ");
+            if (command.contains("D")) {
+                return command.replace("D", "Door ");
             }
+            return command;
         }
         return "/";
     }
@@ -30,6 +31,7 @@ public class StringValues {
                 case "O": return "Open";
                 case "C": return "Closed";
             }
+            return message;
         }
         return "/";
     }

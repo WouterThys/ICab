@@ -53,7 +53,7 @@ public class InitializationDialog extends InitializationDialogLayout {
     private void three_initWebService() {
         webMgr().init( application,
                 "ICAB",
-                "http://sp0007test/juliette/oriswsmattteo.asmx",
+                "http://sp0007acc/juliette/oriswsmattteo.asmx",
                 "http://tempuri.org/",
                 60000);
         webMgr().registerShutDownHook();

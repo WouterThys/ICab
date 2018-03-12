@@ -51,7 +51,7 @@ wtemp6 45 0 COMRAM 1
 __CFG_WDTPS$32768 0 0 ABS 0
 __Hconfig 30000E 0 CONFIG 0
 __Lconfig 300000 0 CONFIG 0
-_C_DOOR_LockAll 1672 0 CODE 0
+_C_DOOR_LockAll 1648 0 CODE 0
 __end_ofi1_putch 1696 0 CODE 0
 _readByte 1696 0 CODE 0
 __Hbigram 0 0 ABS 0
@@ -61,7 +61,7 @@ __Lrparam 0 0 COMRAM 1
 __Hram 0 0 ABS 0
 __Lram 0 0 ABS 0
 __Hcomram 0 0 ABS 0
-_putch 1656 0 CODE 0
+_putch 1664 0 CODE 0
 __Lcomram 0 0 ABS 0
 __Hsfr 0 0 ABS 0
 __Lsfr 0 0 ABS 0
@@ -80,7 +80,7 @@ __size_of_HighISR 0 0 ABS 0
 _ADCON1 FC1 0 ABS 0
 _startCharacter 41 0 COMRAM 1
 putch@data D8 0 BANK0 1
-__end_of_putch 1664 0 CODE 0
+__end_of_putch 1672 0 CODE 0
 _PIE1bits F9D 0 ABS 0
 __Heeprom_data 0 0 EEDATA 0
 __Leeprom_data 0 0 EEDATA 0
@@ -130,7 +130,7 @@ __size_of_D_UART_Init 0 0 ABS 0
 _D_TMR0_Init 15D0 0 CODE 0
 __CFG_EBTR2$OFF 0 0 ABS 0
 __end_ofi1___lwdiv 1530 0 CODE 0
-_writeByte 1664 0 CODE 0
+_writeByte 1672 0 CODE 0
 __Hdata 0 0 ABS 0
 __Ldata 0 0 ABS 0
 __CFG_EBTR3$OFF 0 0 ABS 0
@@ -320,7 +320,7 @@ ___lwdiv 148A 0 CODE 0
 __size_of_main 0 0 ABS 0
 __Hconst 0 0 CONST 0
 __Lconst 0 0 CONST 0
-__end_of_writeByte 1672 0 CODE 0
+__end_of_writeByte 1680 0 CODE 0
 _readBuffer 100 0 BANK1 1
 __HidataBANK0 0 0 ABS 0
 __LidataBANK0 0 0 ABS 0
@@ -349,40 +349,40 @@ __ptext10 1634 0 CODE 0
 i1putch@data 14 0 COMRAM 1
 __Htext11 0 0 ABS 0
 __Ltext11 0 0 ABS 0
-__ptext20 1672 0 CODE 0
+__ptext20 12D4 0 CODE 0
 __ptext11 1616 0 CODE 0
 __Htext12 0 0 ABS 0
 __Ltext12 0 0 ABS 0
 __Htext22 0 0 ABS 0
 __Ltext22 0 0 ABS 0
-__ptext12 FDE 0 CODE 0
+__ptext12 1656 0 CODE 0
 __Htext13 0 0 ABS 0
 __Ltext13 0 0 ABS 0
 __ptext22 1696 0 CODE 0
 __CFG_CCP2MX$OFF 0 0 ABS 0
 __Htext23 0 0 ABS 0
 __Ltext23 0 0 ABS 0
-__ptext13 136E 0 CODE 0
+__ptext13 FDE 0 CODE 0
 __Htext14 0 0 ABS 0
 __Ltext14 0 0 ABS 0
 __ptext23 838 0 CODE 0
 __Htext24 0 0 ABS 0
 __Ltext24 0 0 ABS 0
-__ptext14 EFE 0 CODE 0
+__ptext14 136E 0 CODE 0
 __Htext15 0 0 ABS 0
 __Ltext15 0 0 ABS 0
 __ptext24 13CE 0 CODE 0
 __size_of_acknowledge 0 0 ABS 0
 __Htext25 0 0 ABS 0
 __Ltext25 0 0 ABS 0
-__ptext15 B44 0 CODE 0
+__ptext15 EFE 0 CODE 0
 ___inthi_sp 0 0 STACK 2
 __Htext16 0 0 ABS 0
 __Ltext16 0 0 ABS 0
 __ptext25 C9E 0 CODE 0
 __Htext26 0 0 ABS 0
 __Ltext26 0 0 ABS 0
-__ptext16 1656 0 CODE 0
+__ptext16 B44 0 CODE 0
 __Htext17 0 0 ABS 0
 __Ltext17 0 0 ABS 0
 __ptext26 168C 0 CODE 0
@@ -397,11 +397,11 @@ __Ltext18 0 0 ABS 0
 __ptext27 1680 0 CODE 0
 __Htext28 0 0 ABS 0
 __Ltext28 0 0 ABS 0
-__ptext18 148A 0 CODE 0
+__ptext18 1672 0 CODE 0
 __Htext19 0 0 ABS 0
 __Ltext19 0 0 ABS 0
 __ptext28 14DE 0 CODE 0
-__ptext19 12D4 0 CODE 0
+__ptext19 148A 0 CODE 0
 __CFG_BORV$3 0 0 ABS 0
 ___intlo_sp 0 0 STACK 2
 __size_of_writeByte 0 0 ABS 0
@@ -417,13 +417,13 @@ ___lwdiv@divisor D9 0 BANK0 1
 __pidataCOMRAM 169E 0 CODE 0
 _messageCharacter F9 0 BANK0 1
 D_UART_Write@command E9 0 BANK0 1
-_C_DOOR_UnlockAll 1648 0 CODE 0
+_C_DOOR_UnlockAll 1656 0 CODE 0
 _ackCharacter 3D 0 COMRAM 1
 __CFG_CP0$OFF 0 0 ABS 0
 ?i1___lwdiv 13 0 COMRAM 1
 __smallconst 800 0 SMALLCONST 0
 __CFG_CP1$OFF 0 0 ABS 0
-__end_of_C_DOOR_UnlockAll 1656 0 CODE 0
+__end_of_C_DOOR_UnlockAll 1664 0 CODE 0
 __Hreset_vec 4 0 CODE 0
 __Lreset_vec 0 0 CODE 0
 writeByte@data D7 0 BANK0 1
@@ -470,7 +470,7 @@ D_UART_Enable@enable D7 0 BANK0 1
 __CFG_LPT1OSC$OFF 0 0 ABS 0
 C_DOOR_SendStates@d F6 0 BANK0 1
 __activetblptr 3 0 ABS 0
-__end_of_C_DOOR_LockAll 1680 0 CODE 0
+__end_of_C_DOOR_LockAll 1656 0 CODE 0
 __CFG_WDT$OFF 0 0 ABS 0
 __size_of_strcmp 0 0 ABS 0
 i1printf@c 26 0 COMRAM 1
@@ -493,7 +493,7 @@ text23 838 16A5 CODE 838 0
 %locals
 dist/default/production\iCabHw.X.production.obj
 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
-C:\Users\thys_\AppData\Local\Temp\s4d8.
+C:\Users\thys_\AppData\Local\Temp\s8eg.
 2233 142E 0 CODE 0
 2235 142E 0 CODE 0
 2238 142E 0 CODE 0
@@ -548,25 +548,25 @@ main.c
 50 A0C 0 CODE 0
 52 A10 0 CODE 0
 53 A28 0 CODE 0
-55 A28 0 CODE 0
-56 A30 0 CODE 0
-57 A34 0 CODE 0
-58 A46 0 CODE 0
-59 A66 0 CODE 0
-60 A6A 0 CODE 0
-61 A8C 0 CODE 0
-62 A90 0 CODE 0
-63 AB2 0 CODE 0
-64 AC2 0 CODE 0
-65 AE4 0 CODE 0
-66 AF6 0 CODE 0
-67 AF8 0 CODE 0
-70 B1A 0 CODE 0
-71 B2E 0 CODE 0
-75 B2E 0 CODE 0
-76 B36 0 CODE 0
-79 B3A 0 CODE 0
-82 B3E 0 CODE 0
+56 A28 0 CODE 0
+57 A30 0 CODE 0
+58 A34 0 CODE 0
+59 A46 0 CODE 0
+60 A66 0 CODE 0
+61 A6A 0 CODE 0
+62 A8C 0 CODE 0
+63 A90 0 CODE 0
+64 AB2 0 CODE 0
+65 AC2 0 CODE 0
+66 AE4 0 CODE 0
+67 AF6 0 CODE 0
+68 AF8 0 CODE 0
+71 B1A 0 CODE 0
+72 B2E 0 CODE 0
+76 B2E 0 CODE 0
+77 B36 0 CODE 0
+80 B3A 0 CODE 0
+83 B3E 0 CODE 0
 53 B42 0 CODE 0
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
 33 1530 0 CODE 0
@@ -586,9 +586,9 @@ main.c
 36 160E 0 CODE 0
 37 1614 0 CODE 0
 Controllers/DOOR_Controller.c
-93 1648 0 CODE 0
-98 1648 0 CODE 0
-99 1654 0 CODE 0
+76 1648 0 CODE 0
+81 1648 0 CODE 0
+82 1654 0 CODE 0
 Controllers/DOOR_Controller.c
 45 DE6 0 CODE 0
 47 DEA 0 CODE 0
@@ -707,6 +707,10 @@ Drivers/PORT_Driver.c
 36 162E 0 CODE 0
 37 1632 0 CODE 0
 Controllers/DOOR_Controller.c
+93 1656 0 CODE 0
+98 1656 0 CODE 0
+99 1662 0 CODE 0
+Controllers/DOOR_Controller.c
 108 FDE 0 CODE 0
 110 FDE 0 CODE 0
 111 FE6 0 CODE 0
@@ -763,14 +767,14 @@ C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
 1474 C5C 0 CODE 0
 536 C66 0 CODE 0
 Drivers/UART_Driver.c
-263 1656 0 CODE 0
-264 165A 0 CODE 0
-265 1662 0 CODE 0
+263 1664 0 CODE 0
+264 1668 0 CODE 0
+265 1670 0 CODE 0
 Drivers/UART_Driver.c
-69 1664 0 CODE 0
-70 1668 0 CODE 0
-71 166C 0 CODE 0
-72 1670 0 CODE 0
+69 1672 0 CODE 0
+70 1676 0 CODE 0
+71 167A 0 CODE 0
+72 167E 0 CODE 0
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c
 8 148A 0 CODE 0
 14 148A 0 CODE 0
@@ -796,11 +800,7 @@ Controllers/DOOR_Controller.c
 104 12DC 0 CODE 0
 103 1350 0 CODE 0
 Controllers/DOOR_Controller.c
-76 1672 0 CODE 0
-81 1672 0 CODE 0
-82 167E 0 CODE 0
-Controllers/DOOR_Controller.c
-82 18 0 CODE 0
+106 18 0 CODE 0
 Drivers/UART_Driver.c
 267 18 0 CODE 0
 268 6E 0 CODE 0
@@ -943,11 +943,11 @@ C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c
 31 8 0 CODE 0
 main.c
-88 8 0 CODE 0
+89 8 0 CODE 0
 main.c
-88 1232 0 CODE 0
-89 127C 0 CODE 0
-90 1280 0 CODE 0
-91 1286 0 CODE 0
-92 1288 0 CODE 0
+89 1232 0 CODE 0
+90 127C 0 CODE 0
+91 1280 0 CODE 0
+92 1286 0 CODE 0
 93 1288 0 CODE 0
+94 1288 0 CODE 0

@@ -8,7 +8,7 @@
 #include "Drivers/TMR0_Driver.h"
 #include "Controllers/DOOR_Controller.h"
 
-#define _XTAL_FREQ 16000000
+#define _XTAL_FREQ 16000000 /* 16 MHz crystal                                 */
 
 #define COMMAND_LOCK    "L" /* Command to lock doors                          */
 #define COMMAND_UNLOCK  "U" /* Command to unlock doors                        */
@@ -30,7 +30,7 @@ static void initDoors(uint8_t door_cnt) {
     }
     // Doors
     C_DOOR_Init(door_cnt);
-    C_DOOR_UnlockAll();
+    C_DOOR_LockAll();
     
     // Start timer
     D_TMR0_Enable(true);
@@ -51,6 +51,7 @@ void main(void) {
     
     __delay_ms(200);
     while(1) {
+        
         // Serial
         if (readReady) {
             readReady = false;

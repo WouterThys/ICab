@@ -4472,7 +4472,7 @@ door_cnt = 1;
 }
 
 C_DOOR_Init(door_cnt);
-C_DOOR_UnlockAll();
+C_DOOR_LockAll();
 
 
 D_TMR0_Enable(1);
@@ -4493,6 +4493,7 @@ D_TMR0_Init();
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
 while(1) {
+
 
 if (readReady) {
 readReady = 0;
