@@ -3263,9 +3263,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 60: doors[d].is_open = 0;
 "60
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
-[; ;DOOR_Controller.c: 61: doors[d].was_open = 0;
+[; ;DOOR_Controller.c: 61: doors[d].was_open = 1;
 "61
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> 0 `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> 1 `i `uc ]
 [; ;DOOR_Controller.c: 62: doors[d].sensor_port = &PORTB;
 "62
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 -> &U _PORTB `*uc ]

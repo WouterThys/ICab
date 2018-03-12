@@ -49,6 +49,7 @@ abstract class InventoryPanelLayout extends JPanel implements GuiInterface {
         // Doors
         doorTableModel = new DoorTableModel(DoorManager.doorMgr().getDoorList());
         doorTable = new ITable<>(doorTableModel);
+        doorTable.setRowHeight(36);
         doorTable.setExactColumnWidth(0, 36);
 
         // Items
@@ -72,6 +73,6 @@ abstract class InventoryPanelLayout extends JPanel implements GuiInterface {
 
     @Override
     public void updateComponents(Object... args) {
-
+        doorTableModel.updateTable();
     }
 }

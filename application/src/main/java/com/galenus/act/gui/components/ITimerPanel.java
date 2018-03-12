@@ -61,7 +61,15 @@ public class ITimerPanel extends JPanel implements GuiInterface {
     @Override
     public void updateComponents(Object... args) {
         if (args.length > 0 && args[0] != null) {
-            timeLbl.setText(args[0].toString());
+            String newTime = args[0].toString();
+            if (newTime != null && !newTime.isEmpty()) {
+                if (newTime.contains("-")) {
+                    timeLbl.setForeground(Color.RED);
+                } else {
+                    timeLbl.setForeground(Color.BLACK);
+                }
+                timeLbl.setText(args[0].toString());
+            }
         }
     }
 }

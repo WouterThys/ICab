@@ -58,7 +58,7 @@ void C_DOOR_Init(uint8_t cnt) {
         doors[d].lock_pin = 7;
         
         doors[d].is_open = false;
-        doors[d].was_open = false;
+        doors[d].was_open = true;
         doors[d].sensor_port = &PORTB;
         doors[d].sensor_pin = d;
     }

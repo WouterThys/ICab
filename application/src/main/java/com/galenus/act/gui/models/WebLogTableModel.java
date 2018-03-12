@@ -10,7 +10,7 @@ import static com.galenus.act.gui.Application.imageResource;
 
 public class WebLogTableModel extends IAbstractTableModel<AsyncWebCall> {
 
-    private static final String[] COLUMN_NAMES = {"Date", "Method", "Ok"};
+    private static final String[] COLUMN_NAMES = {"Date", "Method", "ClosedWhileLocked"};
     private static final Class[] COLUMN_CLASSES = {String.class, String.class, ImageIcon.class};
 
     private static final ImageIcon okImage = imageResource.readImage("Web.Log.Ok");

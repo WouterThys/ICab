@@ -49,6 +49,12 @@ public class SerialManager {
     public void close() {
         if (serialPort != null) {
             try {
+                if (serialPort.isOpen()) {
+                    SerialMessage reset = MessageFactory.createReset();
+                    String data = reset.toString();
+                    serialPort.writeBytes(data.getBytes(), data.length());
+                }
+
                 serialPort.removeDataListener();
                 serialPort.closePort();
             } catch (Exception e) {
@@ -107,28 +113,35 @@ public class SerialManager {
     public void sendReset() {
         SerialMessage reset = MessageFactory.createReset();
         if (addToMessageList(reset)) {
-            write(reset.toString());
+            write(reset);
         }
     }
 
     public void sendInit(int doorCount) {
         SerialMessage init = MessageFactory.createInit(doorCount);
         if (addToMessageList(init)) {
-            write(init.toString());
+            write(init);
+        }
+    }
+
+    public void sendAlarm(int strength) {
+        SerialMessage alarm = MessageFactory.createAlarm(strength);
+        if (addToMessageList(alarm)) {
+            write(alarm);
         }
     }
 
     public void sendLockAll() {
         SerialMessage lock = MessageFactory.createLockAll();
         if (addToMessageList(lock)) {
-            write(lock.toString());
+            write(lock);
         }
     }
 
     public void sendUnlockAll() {
         SerialMessage unlock = MessageFactory.createUnlockAll();
         if (addToMessageList(unlock)) {
-            write(unlock.toString());
+            write(unlock);
         }
     }
 
@@ -144,13 +157,23 @@ public class SerialManager {
         return new ArrayList<>(rxMessageList);
     }
 
-    private void write(String data) {
+    private void write(final SerialMessage message) {
         try {
             if (serialPort != null) {
                 if (serialPort.isOpen()) {
                     SwingUtilities.invokeLater(() -> {
-                        serialPort.writeBytes(data.getBytes(), data.length());
-                        System.out.println("Bytes written: " + data);
+                        try {
+                            String data = message.toString();
+                            serialPort.writeBytes(data.getBytes(), data.length());
+                            System.out.println("Bytes written: " + data);
+
+                            Thread.sleep(80);
+                            if (!message.isAcknowledged()) {
+                                onError("Controller did not respond");
+                            }
+                        } catch (Exception e) {
+                            onError(e);
+                        }
                     });
                 } else {
                     onError("COM port is closed..");
@@ -338,11 +361,11 @@ public class SerialManager {
                 if (success) {
                     serialListener.onInitSuccess(serialPort);
                 } else {
-                    serialListener.onSerialError("Error finding COM port..");
+                    serialListener.onSerialError("OpenWhileLocked finding COM port..");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                serialListener.onSerialError("Error initializing: " + e.getMessage());
+                serialListener.onSerialError("OpenWhileLocked initializing: " + e.getMessage());
             }
         }
     }

@@ -6,6 +6,7 @@
 #include "Drivers/PORT_Driver.h"
 #include "Drivers/UART_Driver.h"
 #include "Drivers/TMR0_Driver.h"
+#include "Drivers/PWM_Driver.h"
 #include "Controllers/DOOR_Controller.h"
 
 #define _XTAL_FREQ 16000000 /* 16 MHz crystal                                 */
@@ -16,13 +17,27 @@
 #define COMMAND_RESET   "R" /* Command to reset PIC                           */
 #define COMMAND_PING    "P" /* Command to ping PIC                            */
 #define COMMAND_ERROR   "E" /* Command to indicate error                      */
+#define COMMAND_ALARM   "A" /* Command to set alarm                           */
 
 #define ERROR_UNKNOWN   "U" /* Error message to send when unknown command     */
+
+#define ALARM_OFF     0
+#define ALARM_SOFT    1
+#define ALARM_HARD    2
+
+#define PWM_OFF     0x00
+#define PWM_SOFT    0x0A
+#define PWM_HARD    0x7F
 
 static READ_Data read;
 static bool tick;
 
+static uint8_t pwm;
+static uint8_t newAlarm;
+static uint8_t oldAlarm;
+
 static void initDoors(uint8_t door_cnt);
+static void setAlarm(uint8_t alarm);
 
 static void initDoors(uint8_t door_cnt) {
     if (door_cnt < 1) {
@@ -34,6 +49,10 @@ static void initDoors(uint8_t door_cnt) {
     
     // Start timer
     D_TMR0_Enable(true);
+}
+
+static void setAlarm(uint8_t alarm) {
+    newAlarm = alarm;
 }
 
 void main(void) {
@@ -49,7 +68,14 @@ void main(void) {
     // Initialize timer
     D_TMR0_Init();
     
+    // Initialize PWM
+    D_PWM_Init();
+    
     __delay_ms(200);
+    
+    newAlarm = 0;
+    oldAlarm = 0;
+    
     while(1) {
         
         // Serial
@@ -67,6 +93,8 @@ void main(void) {
                 Reset();
             } else if (strcmp(read.command, COMMAND_PING) == 0) {
                 // Do nothing, acknowledge message will be send automatically
+            } else if (strcmp(read.command, COMMAND_ALARM) == 0) {
+                setAlarm((uint8_t)(*read.message - 0x30));
             } else {
                 D_UART_Write(COMMAND_ERROR, ERROR_UNKNOWN);
             }
@@ -81,8 +109,19 @@ void main(void) {
             
             // Send states
             C_DOOR_SendStates();
+            
+            // Set PWM for alarm
+            if (newAlarm != oldAlarm || newAlarm == ALARM_SOFT) {
+                switch (newAlarm) {
+                    default:
+                    case 0: pwm = PWM_OFF; break;
+                    case 1: pwm += PWM_SOFT; break;
+                    case 2: pwm = PWM_HARD; break;
+                }
+                D_PWM_SetPwm(pwm);
+                oldAlarm = newAlarm;
+            }
         }
-    
     }
 }
 
@@ -92,20 +131,3 @@ void interrupt HighISR(void) {
         INTCONbits.TMR0IF = 0;
     }
 }
-
-
-
-//        if(readReady) {
-//            readReady = false;
-//            read = D_UART_Read();
-//            if (strcmp(read.command, "led") == 0) {
-//                if (strcmp(read.message, "on") == 0) {
-//                    PORTAbits.RA0 = 1;
-//                    D_UART_Write("Led", "I put it on");
-//                }
-//                if (strcmp(read.message,  "off") == 0) {
-//                    PORTAbits.RA0 = 0;
-//                    D_UART_Write("Led", "Putting led off sir");
-//                }
-//            }
-//        }

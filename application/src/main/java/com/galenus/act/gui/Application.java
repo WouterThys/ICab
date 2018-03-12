@@ -8,6 +8,7 @@ import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.classes.interfaces.WebCallListener;
+import com.galenus.act.classes.managers.DoorManager.DoorState;
 import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.logsdialog.LogsDialog;
 import com.galenus.act.gui.panels.doors.DoorsPanel;
@@ -57,6 +58,9 @@ public class Application extends JFrame implements
     private UserPanel userPanel;
     private DoorsPanel doorsPanel;
 
+    private DoorState previousDoorState = DoorState.ClosedWhileLocked;
+    private boolean alarmSend = false;
+
 
     /*
      *                  VARIABLES
@@ -95,8 +99,45 @@ public class Application extends JFrame implements
         SwingUtilities.invokeLater(() -> {
             InitializationDialog dialog = new InitializationDialog(this, "Initializing", this, this);
             dialog.showDialog();
+            doDoorLogic(null);
         });
+    }
 
+    private void doDoorLogic(User user) {
+        DoorState doorState = doorMgr().getDoorState();
+        doorsPanel.updateState(doorState);
+
+        // Doors were locked but someone opened it
+        if ((previousDoorState == DoorState.ClosedWhileLocked) && (doorState == DoorState.OpenWhileLocked)) {
+            serMgr().sendUnlockAll(); // Unlock all doors
+            serMgr().sendAlarm(2);
+            webMgr().alarmDoorForced();
+        }
+
+        // We were in error but all is OK again
+        if ((previousDoorState == DoorState.OpenWhileLocked) && (doorState == DoorState.ClosedWhileLocked)) {
+            serMgr().sendLockAll(); // Lock again
+            serMgr().sendAlarm(0);
+            webMgr().doorClose();
+        }
+
+        // Ready to log off
+        if (user != null && user.isOverTime()) {
+            if (doorState == DoorState.ClosedWhileUnlocked) {
+                webMgr().logOff(user);
+                serMgr().sendAlarm(0);
+                alarmSend = false;
+            } else {
+                if (!alarmSend) {
+                    serMgr().sendAlarm(1);
+                    webMgr().alarmDoorNotClosed();
+                    alarmSend = true;
+                }
+            }
+        }
+
+
+        previousDoorState = doorState;
     }
 
     /*
@@ -238,9 +279,10 @@ public class Application extends JFrame implements
 
     @Override
     public void onUserShouldLogOff(User user) {
-        if (user != null) {
-            webMgr().logOff(user);
-        }
+        doDoorLogic(user);
+//        if (user != null) {
+//            webMgr().logOff(user);
+//        }
     }
 
     //
@@ -260,7 +302,7 @@ public class Application extends JFrame implements
         JOptionPane.showMessageDialog(
                 Application.this,
                 error,
-                "Error",
+                "OpenWhileLocked",
                 JOptionPane.ERROR_MESSAGE
         );
         if (!Main.DEBUG_MODE) {
@@ -270,17 +312,18 @@ public class Application extends JFrame implements
 
     @Override
     public void onNewMessage(SerialMessage message) {
-        System.out.println("New message from " + message.getSender() + ": " + message.getCommand() + "->" + message.getMessage());
-
         if (message.getCommand().contains("D")) {
             Door door = doorMgr().updateDoor(message);
             if (door != null) {
                 doorsPanel.updateDoor(door);
-
+                inventoryPanel.updateComponents();
             }
+
+            SwingUtilities.invokeLater(() -> {
+                doDoorLogic(usrMgr().getSelectedUser());
+            });
         }
 
-        doorsPanel.updateState(doorMgr().getDoorState());
     }
 
     //
@@ -310,6 +353,7 @@ public class Application extends JFrame implements
                 doorMgr().lockDoors();
                 serMgr().sendLockAll();
                 userPanel.updateComponents(usrMgr().getSelectedUser());
+                doDoorLogic(usrMgr().getSelectedUser());
                 break;
 
             case WebCall_GetUsers:

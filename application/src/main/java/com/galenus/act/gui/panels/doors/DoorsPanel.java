@@ -51,13 +51,14 @@ public class DoorsPanel extends JPanel implements GuiInterface {
 
     public void updateState(DoorManager.DoorState state) {
         switch (state) {
-            case Ok:
+            case ClosedWhileUnlocked:
+            case ClosedWhileLocked:
                 statePanel.setBackground(colorResource.readColor("Green"));
                 break;
-            case Warning:
+            case OpenWhileUnlocked:
                 statePanel.setBackground(colorResource.readColor("Yellow"));
                 break;
-            case Error:
+            case OpenWhileLocked:
                 statePanel.setBackground(colorResource.readColor("Red"));
                 break;
         }

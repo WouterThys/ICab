@@ -72,6 +72,7 @@ public class User extends BaseClass {
     private UserSex sex;
 
     private boolean isLoggedIn = false;
+    private boolean isOverTime = false;
     private Date lastLogIn = DateUtils.minDate();
     private int loggedInTime;
 
@@ -104,11 +105,13 @@ public class User extends BaseClass {
     public void logIn() {
         this.isLoggedIn = true;
         this.loggedInTime = 0;
+        this.isOverTime = false;
         this.lastLogIn = DateUtils.now();
     }
 
     public void logOut() {
         this.isLoggedIn = false;
+        this.isOverTime = false;
         this.loggedInTime = 0;
     }
 
@@ -147,14 +150,17 @@ public class User extends BaseClass {
     public String getLoggedInTimeString(int maxTime) {
         int timeRemaining = maxTime - loggedInTime;
         int minutes = 0;
-        int seconds = timeRemaining;
+        boolean minusSign = timeRemaining < 0;
+        int seconds = Math.abs(timeRemaining);
 
         while (seconds >= 60) {
             minutes++;
             seconds -= 60;
         }
 
-        return String.valueOf(minutes) + ":" + String.format("%02d", seconds);
+        String result = minusSign ? "-" : "";
+
+        return result + String.valueOf(minutes) + ":" + String.format("%02d", seconds);
     }
 
 
@@ -208,6 +214,17 @@ public class User extends BaseClass {
 
     public boolean isLoggedIn() {
         return isLoggedIn;
+    }
+
+    public boolean isOverTime() {
+        if (!isLoggedIn) {
+            isOverTime = false;
+        }
+        return isOverTime;
+    }
+
+    public void setOverTime(boolean overTime) {
+        isOverTime = overTime;
     }
 
     public Date getLastLogIn() {

@@ -201,7 +201,7 @@ public class WebManager {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
-                soapRequest.addProperty("aTimeStamp", "");
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
             }
         }.execute();
     }

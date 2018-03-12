@@ -15,6 +15,8 @@ public class StringValues {
                     return "Unlock";
                 case "E":
                     return "Error";
+                case "A":
+                    return "Alarm";
             }
 
             if (command.contains("D")) {
@@ -30,6 +32,9 @@ public class StringValues {
             switch (message) {
                 case "O": return "Open";
                 case "C": return "Closed";
+                case "0": return "Off";
+                case "1": return "Soft";
+                case "2": return "Hard";
             }
             return message;
         }

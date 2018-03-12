@@ -41,6 +41,7 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
     private AbstractAction lockAa;
     private AbstractAction unlockAa;
     private AbstractAction errorAa;
+    private AbstractAction alarmAa;
 
     private AbstractAction deleteRxAa;
     private AbstractAction deleteTxAa;
@@ -112,6 +113,24 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
 
     }
 
+    private void onPicAlarm() {
+        String input = JOptionPane.showInputDialog(
+                SerialLogsPanel.this,
+                "Alarm stength (0-1-2)"
+        );
+
+        if (input != null && !input.isEmpty()) {
+            try {
+                int strength = Integer.valueOf(input);
+                if (strength == 0 || strength == 1 || strength == 2) {
+                    serMgr().sendAlarm(strength);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void setSerialData(SerialPort port) {
         if (port != null) {
             serialNameLbl.setText(port.getDescriptivePortName());
@@ -132,6 +151,7 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             lockAa.setEnabled(true);
             unlockAa.setEnabled(true);
             errorAa.setEnabled(true);
+            alarmAa.setEnabled(true);
         } else {
             serialNameLbl.setText("");
             serialBaudTf.clearText();
@@ -146,6 +166,7 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             lockAa.setEnabled(false);
             unlockAa.setEnabled(false);
             errorAa.setEnabled(false);
+            alarmAa.setEnabled(false);
         }
     }
 
@@ -251,6 +272,8 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         testToolbar.addSeparator();
         testToolbar.add(lockAa);
         testToolbar.add(unlockAa);
+        testToolbar.addSeparator();
+        testToolbar.add(alarmAa);
 
         JPanel serialDataPanel = new JPanel(new BorderLayout());
         JPanel dataPanels = new JPanel();
@@ -325,13 +348,21 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             }
         };
         unlockAa.putValue(AbstractAction.SHORT_DESCRIPTION, "Unlock");
-        errorAa = new AbstractAction("Error", imageResource.readImage("Serial.Test.Error")) {
+        errorAa = new AbstractAction("OpenWhileLocked", imageResource.readImage("Serial.Test.Error")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onPicError();
             }
         };
-        errorAa.putValue(AbstractAction.SHORT_DESCRIPTION, "Error");
+        errorAa.putValue(AbstractAction.SHORT_DESCRIPTION, "OpenWhileLocked");
+
+        alarmAa = new AbstractAction("SetAlarm", imageResource.readImage("Serial.Test.Alarm")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onPicAlarm();
+            }
+        };
+        alarmAa.putValue(AbstractAction.SHORT_DESCRIPTION, "Set alarm");
 
         deleteRxAa = new AbstractAction("Delete logs") {
             @Override

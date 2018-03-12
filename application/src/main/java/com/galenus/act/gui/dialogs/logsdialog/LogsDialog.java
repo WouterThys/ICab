@@ -45,7 +45,7 @@ public class LogsDialog extends LogsDialogLayout implements SerialListener{
         JOptionPane.showMessageDialog(
                 LogsDialog.this,
                 error,
-                "Error",
+                "OpenWhileLocked",
                 JOptionPane.ERROR_MESSAGE
         );
     }

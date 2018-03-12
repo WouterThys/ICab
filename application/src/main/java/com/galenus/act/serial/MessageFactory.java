@@ -10,10 +10,15 @@ public class MessageFactory {
     private static final String PIC_PING = "P";
     private static final String PIC_LOCK = "L";
     private static final String PIC_UNLOCK = "U";
+    private static final String PIC_ALARM = "A";
     private static final String PIC_ERROR = "E";
 
     public static SerialMessage createInit(int doorCount) {
         return new SerialMessage(SerialMessage.Message, PIC_INIT, String.valueOf(doorCount));
+    }
+
+    public static SerialMessage createAlarm(int alarm) {
+        return new SerialMessage(SerialMessage.Message, PIC_ALARM, String.valueOf(alarm));
     }
 
     public static SerialMessage createReset() {

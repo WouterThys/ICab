@@ -54,6 +54,7 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     }
 
     private void showView(String key) {
+        updateTimer(" ");
         if (!currentView.equals(key)) {
             cardLayout.show(centerPanel, key);
         }
@@ -167,7 +168,7 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
     public void onDigitsEntered(String entered) {
         if (userListener != null) {
             if (userListener.onPasswordEntered(entered)) {
-               showView(VIEW_TIMER);
+                showView(VIEW_TIMER);
             } else {
                 showView(VIEW_KEYPAD);
             }

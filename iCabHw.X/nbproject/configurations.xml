@@ -11,6 +11,8 @@
         <itemPath>Drivers/PORT_Driver.h</itemPath>
         <itemPath>Drivers/UART_Driver.h</itemPath>
         <itemPath>Drivers/TMR0_Driver.h</itemPath>
+        <itemPath>PWM_Driver.h</itemPath>
+        <itemPath>Drivers/PWM_Driver.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -27,6 +29,8 @@
         <itemPath>Drivers/PORT_Driver.c</itemPath>
         <itemPath>Drivers/UART_Driver.c</itemPath>
         <itemPath>Drivers/TMR0_Driver.c</itemPath>
+        <itemPath>PWM_Driver.c</itemPath>
+        <itemPath>Drivers/PWM_Driver.c</itemPath>
       </logicalFolder>
       <itemPath>configuration.c</itemPath>
       <itemPath>main.c</itemPath>
@@ -51,7 +55,7 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.44</languageToolchainVersion>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <compileType>
         <linkerTool>

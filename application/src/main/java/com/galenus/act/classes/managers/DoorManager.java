@@ -9,9 +9,10 @@ import java.util.List;
 public class DoorManager {
 
     public enum DoorState {
-        Ok,
-        Warning,
-        Error
+        ClosedWhileLocked,
+        ClosedWhileUnlocked,
+        OpenWhileUnlocked,
+        OpenWhileLocked
     }
 
     private static final DoorManager Instance = new DoorManager();
@@ -58,15 +59,28 @@ public class DoorManager {
     }
 
     public DoorState getDoorState() {
+        // Check for errors
         for (Door door : getDoorList()) {
             if (door.isOpen() && door.isLocked()) {
-                return DoorState.Error;
+                return DoorState.OpenWhileLocked;
             }
         }
 
-        // TODO: door state overtime
+        // Check if open and unlocked
+        for (Door door : getDoorList()) {
+            if (door.isOpen() && !door.isLocked()) {
+                return DoorState.OpenWhileUnlocked;
+            }
+        }
 
-        return DoorState.Ok;
+        // Check if closed and unlocked
+        for (Door door : getDoorList()) {
+            if (!door.isOpen() && !door.isLocked()) {
+                return DoorState.ClosedWhileUnlocked;
+            }
+        }
+
+        return DoorState.ClosedWhileLocked;
     }
 
     public List<Door> getDoorList() {

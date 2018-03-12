@@ -4458,7 +4458,7 @@ doors[d].lock_port = &PORTB;
 doors[d].lock_pin = 7;
 
 doors[d].is_open = 0;
-doors[d].was_open = 0;
+doors[d].was_open = 1;
 doors[d].sensor_port = &PORTB;
 doors[d].sensor_pin = d;
 }

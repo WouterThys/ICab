@@ -17,7 +17,7 @@ public class Main {
     public static boolean DEBUG_MODE = false;
     public static boolean FULL_SCREEN = false;
     public static int DOOR_COUNT = 5;
-    public static int USER_LOGON_TIME = (10); // Seconds
+    public static int USER_LOGON_TIME = (20); // Seconds
 
     public static void main(String[] args) {
         String startUpPath = new File("").getAbsolutePath() + File.separator;

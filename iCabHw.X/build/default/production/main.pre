@@ -4425,6 +4425,11 @@ void D_TMR0_Init();
 # 17
 void D_TMR0_Enable(bool enable);
 
+# 8 "Drivers/PWM_Driver.h"
+void D_PWM_Init();
+
+void D_PWM_SetPwm(uint8_t pwm);
+
 # 18 "Controllers/DOOR_Controller.h"
 typedef struct {
 uint8_t id;
@@ -4460,11 +4465,16 @@ void C_DOOR_ReadSensors();
 # 67
 void C_DOOR_SendStates();
 
-# 22 "main.c"
+# 32 "main.c"
 static READ_Data read;
 static bool tick;
 
+static uint8_t pwm;
+static uint8_t newAlarm;
+static uint8_t oldAlarm;
+
 static void initDoors(uint8_t door_cnt);
+static void setAlarm(uint8_t alarm);
 
 static void initDoors(uint8_t door_cnt) {
 if (door_cnt < 1) {
@@ -4476,6 +4486,10 @@ C_DOOR_LockAll();
 
 
 D_TMR0_Enable(1);
+}
+
+static void setAlarm(uint8_t alarm) {
+newAlarm = alarm;
 }
 
 void main(void) {
@@ -4491,7 +4505,14 @@ D_UART_Enable(1);
 
 D_TMR0_Init();
 
+
+D_PWM_Init();
+
 _delay((unsigned long)((200)*(16000000/4000.0)));
+
+newAlarm = 0;
+oldAlarm = 0;
+
 while(1) {
 
 
@@ -4509,6 +4530,8 @@ _delay((unsigned long)((20)*(16000000/4000.0)));
 asm(" reset");
 } else if (strcmp(read.command, "P") == 0) {
 
+} else if (strcmp(read.command, "A") == 0) {
+setAlarm((uint8_t)(*read.message - 0x30));
 } else {
 D_UART_Write("E", "U");
 }
@@ -4523,8 +4546,19 @@ C_DOOR_ReadSensors();
 
 
 C_DOOR_SendStates();
-}
 
+
+if (newAlarm != oldAlarm || newAlarm == 1) {
+switch (newAlarm) {
+default:
+case 0: pwm = 0x00; break;
+case 1: pwm += 0x0A; break;
+case 2: pwm = 0x7F; break;
+}
+D_PWM_SetPwm(pwm);
+oldAlarm = newAlarm;
+}
+}
 }
 }
 
@@ -4534,4 +4568,3 @@ tick = 1;
 INTCONbits.TMR0IF = 0;
 }
 }
-

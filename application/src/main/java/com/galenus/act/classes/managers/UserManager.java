@@ -91,9 +91,9 @@ public class UserManager {
         if (selectedUser != null) {
             if (timerListener != null) {
                 selectedUser.setLoggedInTime(selectedUser.getLoggedInTime() + 1);
-                if (selectedUser.getLoggedInTime() <= userLogonTime) {
-                    timerListener.onTimerElapse(selectedUser.getLoggedInTimeString(userLogonTime));
-                } else {
+                timerListener.onTimerElapse(selectedUser.getLoggedInTimeString(userLogonTime));
+                if (selectedUser.getLoggedInTime() > userLogonTime) {
+                    selectedUser.setOverTime(true);
                     if (userListener != null) {
                         userListener.onUserShouldLogOff(selectedUser);
                     }

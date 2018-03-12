@@ -32,7 +32,7 @@ public abstract class ErrorProvider extends InputVerifier {
     }
 
     /**
-     * Define your custom Error in this method and return aan Error object.
+     * Define your custom OpenWhileLocked in this method and return aan OpenWhileLocked object.
      * @param c The JComponent to be validated.
      * @return Error
      * @see Error
