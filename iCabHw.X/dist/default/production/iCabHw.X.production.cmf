@@ -11,6 +11,11 @@
 # All addresses and the length are given in unqualified hexadecimal
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
+$C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+idloc IDLOC 0 200000 200000 8 1
+init CODE 0 D4 D4 4 1
+reset_vec CODE 0 0 0 4 1
+config CONFIG 0 300000 300000 E 1
 $dist/default/production\iCabHw.X.production.obj
 intcodelo CODE 0 18 18 BC 1
 cinit CODE 0 14B2 14B2 5C 1
@@ -58,11 +63,6 @@ idataBANK0 CODE 0 177E 177E 2 1
 dataBANK0 BANK0 1 FC FC 2 1
 dataCOMRAM COMRAM 1 3D 3D 6 1
 bssCOMRAM COMRAM 1 43 43 1 1
-$C:\Users\thys_\AppData\Local\Temp\s32s.obj
-idloc IDLOC 0 200000 200000 8 1
-init CODE 0 D4 D4 4 1
-reset_vec CODE 0 0 0 4 1
-config CONFIG 0 300000 300000 E 1
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
 # is described on a single line as follows:
@@ -527,51 +527,51 @@ A24 text0 CODE >120:C:\Users\thys_\Documents\Geeken\ICab\iCabHw.X\main.c
 A24 text0 CODE >121:C:\Users\thys_\Documents\Geeken\ICab\iCabHw.X\main.c
 A2A text0 CODE >122:C:\Users\thys_\Documents\Geeken\ICab\iCabHw.X\main.c
 A2E text0 CODE >79:C:\Users\thys_\Documents\Geeken\ICab\iCabHw.X\main.c
-14B2 cinit CODE >2569:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B2 cinit CODE >2571:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B2 cinit CODE >2574:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B2 cinit CODE >2648:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B4 cinit CODE >2649:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B6 cinit CODE >2650:C:\Users\thys_\AppData\Local\Temp\s32s.
-14B8 cinit CODE >2651:C:\Users\thys_\AppData\Local\Temp\s32s.
-14BA cinit CODE >2652:C:\Users\thys_\AppData\Local\Temp\s32s.
-14BC cinit CODE >2653:C:\Users\thys_\AppData\Local\Temp\s32s.
-14BE cinit CODE >2654:C:\Users\thys_\AppData\Local\Temp\s32s.
-14C0 cinit CODE >2655:C:\Users\thys_\AppData\Local\Temp\s32s.
-14C4 cinit CODE >2656:C:\Users\thys_\AppData\Local\Temp\s32s.
-14C6 cinit CODE >2657:C:\Users\thys_\AppData\Local\Temp\s32s.
-14CA cinit CODE >2661:C:\Users\thys_\AppData\Local\Temp\s32s.
-14CC cinit CODE >2662:C:\Users\thys_\AppData\Local\Temp\s32s.
-14CE cinit CODE >2663:C:\Users\thys_\AppData\Local\Temp\s32s.
-14D0 cinit CODE >2664:C:\Users\thys_\AppData\Local\Temp\s32s.
-14D2 cinit CODE >2665:C:\Users\thys_\AppData\Local\Temp\s32s.
-14D4 cinit CODE >2666:C:\Users\thys_\AppData\Local\Temp\s32s.
-14D6 cinit CODE >2667:C:\Users\thys_\AppData\Local\Temp\s32s.
-14DA cinit CODE >2668:C:\Users\thys_\AppData\Local\Temp\s32s.
-14DE cinit CODE >2669:C:\Users\thys_\AppData\Local\Temp\s32s.
-14DE cinit CODE >2670:C:\Users\thys_\AppData\Local\Temp\s32s.
-14E0 cinit CODE >2671:C:\Users\thys_\AppData\Local\Temp\s32s.
-14E4 cinit CODE >2672:C:\Users\thys_\AppData\Local\Temp\s32s.
-14E6 cinit CODE >2673:C:\Users\thys_\AppData\Local\Temp\s32s.
-14E8 cinit CODE >2674:C:\Users\thys_\AppData\Local\Temp\s32s.
-14EA cinit CODE >2678:C:\Users\thys_\AppData\Local\Temp\s32s.
-14EE cinit CODE >2679:C:\Users\thys_\AppData\Local\Temp\s32s.
-14F0 cinit CODE >2680:C:\Users\thys_\AppData\Local\Temp\s32s.
-14F0 cinit CODE >2681:C:\Users\thys_\AppData\Local\Temp\s32s.
-14F2 cinit CODE >2682:C:\Users\thys_\AppData\Local\Temp\s32s.
-14F4 cinit CODE >2683:C:\Users\thys_\AppData\Local\Temp\s32s.
-14F6 cinit CODE >2686:C:\Users\thys_\AppData\Local\Temp\s32s.
-14FA cinit CODE >2687:C:\Users\thys_\AppData\Local\Temp\s32s.
-14FC cinit CODE >2688:C:\Users\thys_\AppData\Local\Temp\s32s.
-14FC cinit CODE >2689:C:\Users\thys_\AppData\Local\Temp\s32s.
-14FE cinit CODE >2690:C:\Users\thys_\AppData\Local\Temp\s32s.
-1500 cinit CODE >2691:C:\Users\thys_\AppData\Local\Temp\s32s.
-1502 cinit CODE >2694:C:\Users\thys_\AppData\Local\Temp\s32s.
-1504 cinit CODE >2700:C:\Users\thys_\AppData\Local\Temp\s32s.
-1504 cinit CODE >2702:C:\Users\thys_\AppData\Local\Temp\s32s.
-1506 cinit CODE >2703:C:\Users\thys_\AppData\Local\Temp\s32s.
-1508 cinit CODE >2704:C:\Users\thys_\AppData\Local\Temp\s32s.
-150A cinit CODE >2705:C:\Users\thys_\AppData\Local\Temp\s32s.
+14B2 cinit CODE >2569:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B2 cinit CODE >2571:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B2 cinit CODE >2574:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B2 cinit CODE >2648:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B4 cinit CODE >2649:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B6 cinit CODE >2650:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14B8 cinit CODE >2651:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14BA cinit CODE >2652:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14BC cinit CODE >2653:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14BE cinit CODE >2654:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14C0 cinit CODE >2655:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14C4 cinit CODE >2656:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14C6 cinit CODE >2657:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14CA cinit CODE >2661:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14CC cinit CODE >2662:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14CE cinit CODE >2663:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14D0 cinit CODE >2664:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14D2 cinit CODE >2665:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14D4 cinit CODE >2666:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14D6 cinit CODE >2667:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14DA cinit CODE >2668:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14DE cinit CODE >2669:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14DE cinit CODE >2670:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14E0 cinit CODE >2671:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14E4 cinit CODE >2672:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14E6 cinit CODE >2673:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14E8 cinit CODE >2674:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14EA cinit CODE >2678:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14EE cinit CODE >2679:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14F0 cinit CODE >2680:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14F0 cinit CODE >2681:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14F2 cinit CODE >2682:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14F4 cinit CODE >2683:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14F6 cinit CODE >2686:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14FA cinit CODE >2687:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14FC cinit CODE >2688:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14FC cinit CODE >2689:C:\Users\thys_\AppData\Local\Temp\s6ig.
+14FE cinit CODE >2690:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1500 cinit CODE >2691:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1502 cinit CODE >2694:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1504 cinit CODE >2700:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1504 cinit CODE >2702:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1506 cinit CODE >2703:C:\Users\thys_\AppData\Local\Temp\s6ig.
+1508 cinit CODE >2704:C:\Users\thys_\AppData\Local\Temp\s6ig.
+150A cinit CODE >2705:C:\Users\thys_\AppData\Local\Temp\s6ig.
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -596,20 +596,20 @@ __HidataBANK0 0 0 ABS 0 idataBANK0 dist/default/production\iCabHw.X.production.o
 i1_putch 1766 0 CODE 0 text29 dist/default/production\iCabHw.X.production.obj
 _oldAlarm D5 0 BANK0 1 bssBANK0 dist/default/production\iCabHw.X.production.obj
 __Hibigdata 0 0 CODE 0 ibigdata dist/default/production\iCabHw.X.production.obj
-__mediumconst 0 0 MEDIUMCONST 0 mediumconst C:\Users\thys_\AppData\Local\Temp\s32s.obj
+__mediumconst 0 0 MEDIUMCONST 0 mediumconst C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 __Heeprom_data 0 0 EEDATA 0 eeprom_data dist/default/production\iCabHw.X.production.obj
 __CFG_MCLRE$ON 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 __end_of_commandAndMessage 1452 0 CODE 0 text17 dist/default/production\iCabHw.X.production.obj
 i1___lwdiv@divisor 15 0 COMRAM 1 cstackCOMRAM dist/default/production\iCabHw.X.production.obj
 __end_of_LowISR D4 0 CODE 0 intcodelo dist/default/production\iCabHw.X.production.obj
 __Lsmallconst 800 0 SMALLCONST 0 smallconst dist/default/production\iCabHw.X.production.obj
-___sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s32s.obj
+___sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 _baud 43 0 COMRAM 1 bssCOMRAM dist/default/production\iCabHw.X.production.obj
 _main 83A 0 CODE 0 text0 dist/default/production\iCabHw.X.production.obj
 _read C4 0 BANK0 1 bssBANK0 dist/default/production\iCabHw.X.production.obj
 _tick D8 0 BANK0 1 bssBANK0 dist/default/production\iCabHw.X.production.obj
 btemp 44 0 COMRAM 1 temp dist/default/production\iCabHw.X.production.obj
-start D4 0 CODE 0 init C:\Users\thys_\AppData\Local\Temp\s32s.obj
+start D4 0 CODE 0 init C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 __size_of___aldiv 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 __size_of_main 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 __size_of___lwdiv 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
@@ -622,11 +622,11 @@ printf@f E1 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.ob
 _D_UART_Write F82 0 CODE 0 text18 dist/default/production\iCabHw.X.production.obj
 _T0CONbits FD5 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 __HdataCOMRAM 0 0 ABS 0 dataCOMRAM dist/default/production\iCabHw.X.production.obj
-__accesstop 60 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s32s.obj
-intlevel0 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s32s.obj
-intlevel1 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s32s.obj
-intlevel2 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s32s.obj
-intlevel3 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s32s.obj
+__accesstop 60 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+intlevel0 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+intlevel1 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+intlevel2 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+intlevel3 0 0 CODE 0 text C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 __size_ofi1_writeByte 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 i1___lwdiv@quotient 17 0 COMRAM 1 cstackCOMRAM dist/default/production\iCabHw.X.production.obj
 __LbssCOMRAM 0 0 ABS 0 bssCOMRAM dist/default/production\iCabHw.X.production.obj
@@ -655,8 +655,8 @@ printf@flag E4 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production
 printf@prec EA 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 _ADCON1 FC1 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 _D_PORT_Init 16E6 0 CODE 0 text14 dist/default/production\iCabHw.X.production.obj
-___inthi_sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s32s.obj
-___intlo_sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s32s.obj
+___inthi_sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+___intlo_sp 0 0 STACK 2 stack C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 D_UART_Write@data EE 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 __LdataCOMRAM 0 0 ABS 0 dataCOMRAM dist/default/production\iCabHw.X.production.obj
 _CCPR1L FBE 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
@@ -745,7 +745,7 @@ __Htext9 0 0 ABS 0 text9 dist/default/production\iCabHw.X.production.obj
 ___lwdiv@counter E0 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 __Hbigbss 0 0 BIGRAM 1 bigbss dist/default/production\iCabHw.X.production.obj
 __Hbigram 0 0 ABS 0 bigram dist/default/production\iCabHw.X.production.obj
-__smallconst 800 0 SMALLCONST 0 smallconst C:\Users\thys_\AppData\Local\Temp\s32s.obj
+__smallconst 800 0 SMALLCONST 0 smallconst C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 _D_PWM_Init 16C8 0 CODE 0 text13 dist/default/production\iCabHw.X.production.obj
 __end_of_HighISR 1358 0 CODE 0 intcode_body dist/default/production\iCabHw.X.production.obj
 __Hcomram 0 0 ABS 0 comram dist/default/production\iCabHw.X.production.obj
@@ -921,8 +921,8 @@ _readByte 1770 0 CODE 0 text25 dist/default/production\iCabHw.X.production.obj
 _readData CA 0 BANK0 1 bssBANK0 dist/default/production\iCabHw.X.production.obj
 __end_of_writeByte 1750 0 CODE 0 text21 dist/default/production\iCabHw.X.production.obj
 __size_of_writeByte 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
-stackhi 7FF 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s32s.obj
-stacklo 1A6 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s32s.obj
+stackhi 7FF 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s6ig.obj
+stacklo 1A6 0 ABS 0 - C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 __Lintcode 8 0 CODE 0 intcode dist/default/production\iCabHw.X.production.obj
 __Lintret 0 0 ABS 0 intret dist/default/production\iCabHw.X.production.obj
 __Lirdata 0 0 CODE 0 irdata dist/default/production\iCabHw.X.production.obj
@@ -998,7 +998,7 @@ __Ltext29 0 0 ABS 0 text29 dist/default/production\iCabHw.X.production.obj
 __Ltext30 0 0 ABS 0 text30 dist/default/production\iCabHw.X.production.obj
 __Ltext31 0 0 ABS 0 text31 dist/default/production\iCabHw.X.production.obj
 _C_DOOR_ReadSensors 1358 0 CODE 0 text23 dist/default/production\iCabHw.X.production.obj
-__ramtop 800 0 RAM 0 ramtop C:\Users\thys_\AppData\Local\Temp\s32s.obj
+__ramtop 800 0 RAM 0 ramtop C:\Users\thys_\AppData\Local\Temp\s6ig.obj
 ___aldiv@dividend DA 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 _HighISR 8 0 CODE 0 intcode dist/default/production\iCabHw.X.production.obj
 i1printf@c 26 0 COMRAM 1 cstackCOMRAM dist/default/production\iCabHw.X.production.obj
@@ -1073,7 +1073,7 @@ __end_of_D_UART_Enable 1682 0 CODE 0 text9 dist/default/production\iCabHw.X.prod
 __CFG_CPB$OFF 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
 _putch 1734 0 CODE 0 text20 dist/default/production\iCabHw.X.production.obj
 __CFG_CPD$OFF 0 0 ABS 0 - dist/default/production\iCabHw.X.production.obj
-_D_UART_Init$1672 ED 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
+_D_UART_Init$1671 ED 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 commandAndMessage@door DA 0 BANK0 1 cstackBANK0 dist/default/production\iCabHw.X.production.obj
 __HdataBANK0 0 0 ABS 0 dataBANK0 dist/default/production\iCabHw.X.production.obj
 __end_of_D_UART_Init 12B6 0 CODE 0 text7 dist/default/production\iCabHw.X.production.obj

@@ -93,7 +93,7 @@
 [v _PORTB PORTB `VEuc  1 e 1 @3969 ]
 "2364
 [v _PORTC PORTC `VEuc  1 e 1 @3970 ]
-[s S978 . 1 `uc 1 RC0 1 0 :1:0 
+[s S874 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -103,29 +103,29 @@
 `uc 1 RC7 1 0 :1:7 
 ]
 "2406
-[s S987 . 1 `uc 1 T1OSO 1 0 :1:0 
+[s S883 . 1 `uc 1 T1OSO 1 0 :1:0 
 `uc 1 T1OSI 1 0 :1:1 
 `uc 1 CCP1 1 0 :1:2 
 `uc 1 . 1 0 :3:3 
 `uc 1 TX 1 0 :1:6 
 `uc 1 RX 1 0 :1:7 
 ]
-[s S994 . 1 `uc 1 T13CKI 1 0 :1:0 
+[s S890 . 1 `uc 1 T13CKI 1 0 :1:0 
 `uc 1 . 1 0 :1:1 
 `uc 1 P1A 1 0 :1:2 
 `uc 1 . 1 0 :3:3 
 `uc 1 CK 1 0 :1:6 
 `uc 1 DT 1 0 :1:7 
 ]
-[s S1001 . 1 `uc 1 . 1 0 :1:0 
+[s S897 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 CCP2 1 0 :1:1 
 `uc 1 PA1 1 0 :1:2 
 ]
-[s S1005 . 1 `uc 1 . 1 0 :1:0 
+[s S901 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 PA2 1 0 :1:1 
 ]
-[u S1008 . 1 `S978 1 . 1 0 `S987 1 . 1 0 `S994 1 . 1 0 `S1001 1 . 1 0 `S1005 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES1008  1 e 1 @3970 ]
+[u S904 . 1 `S874 1 . 1 0 `S883 1 . 1 0 `S890 1 . 1 0 `S897 1 . 1 0 `S901 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES904  1 e 1 @3970 ]
 "2835
 [v _TRISA TRISA `VEuc  1 e 1 @3986 ]
 "3033
@@ -275,29 +275,29 @@
 ]
 [u S275 . 1 `S255 1 . 1 0 `S264 1 . 1 0 `S269 1 . 1 0 `S272 1 . 1 0 ]
 [v _BAUDCONbits BAUDCONbits `VES275  1 e 1 @4024 ]
-[s S954 . 1 `uc 1 CCP1M 1 0 :4:0 
+[s S850 . 1 `uc 1 CCP1M 1 0 :4:0 
 `uc 1 DC1B 1 0 :2:4 
 ]
 "5261
-[s S957 . 1 `uc 1 CCP1M0 1 0 :1:0 
+[s S853 . 1 `uc 1 CCP1M0 1 0 :1:0 
 `uc 1 CCP1M1 1 0 :1:1 
 `uc 1 CCP1M2 1 0 :1:2 
 `uc 1 CCP1M3 1 0 :1:3 
 `uc 1 DC1B0 1 0 :1:4 
 `uc 1 DC1B1 1 0 :1:5 
 ]
-[u S964 . 1 `S954 1 . 1 0 `S957 1 . 1 0 ]
-[v _CCP1CONbits CCP1CONbits `VES964  1 e 1 @4029 ]
+[u S860 . 1 `S850 1 . 1 0 `S853 1 . 1 0 ]
+[v _CCP1CONbits CCP1CONbits `VES860  1 e 1 @4029 ]
 "5313
 [v _CCPR1L CCPR1L `VEuc  1 e 1 @4030 ]
 "5398
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
-[s S912 . 1 `uc 1 T2CKPS 1 0 :2:0 
+[s S808 . 1 `uc 1 T2CKPS 1 0 :2:0 
 `uc 1 TMR2ON 1 0 :1:2 
 `uc 1 TOUTPS 1 0 :4:3 
 ]
 "6045
-[s S916 . 1 `uc 1 T2CKPS0 1 0 :1:0 
+[s S812 . 1 `uc 1 T2CKPS0 1 0 :1:0 
 `uc 1 T2CKPS1 1 0 :1:1 
 `uc 1 . 1 0 :1:2 
 `uc 1 T2OUTPS0 1 0 :1:3 
@@ -305,14 +305,14 @@
 `uc 1 T2OUTPS2 1 0 :1:5 
 `uc 1 T2OUTPS3 1 0 :1:6 
 ]
-[s S924 . 1 `uc 1 . 1 0 :3:0 
+[s S820 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 TOUTPS0 1 0 :1:3 
 `uc 1 TOUTPS1 1 0 :1:4 
 `uc 1 TOUTPS2 1 0 :1:5 
 `uc 1 TOUTPS3 1 0 :1:6 
 ]
-[u S930 . 1 `S912 1 . 1 0 `S916 1 . 1 0 `S924 1 . 1 0 ]
-[v _T2CONbits T2CONbits `VES930  1 e 1 @4042 ]
+[u S826 . 1 `S808 1 . 1 0 `S812 1 . 1 0 `S820 1 . 1 0 ]
+[v _T2CONbits T2CONbits `VES826  1 e 1 @4042 ]
 "6115
 [v _PR2 PR2 `VEuc  1 e 1 @4043 ]
 [s S302 . 1 `uc 1 NOT_BOR 1 0 :1:0 

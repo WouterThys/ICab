@@ -3307,7 +3307,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "70
 [e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 337  ]
 {
-[; ;DOOR_Controller.c: 71: *doors[d].lock_port |= 1 << doors[d].lock_pin;
+[; ;DOOR_Controller.c: 71: *doors[d].lock_port |= (uint8_t)(1 << doors[d].lock_pin);
 "71
 [e =| *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
 "72
@@ -3362,7 +3362,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "87
 [e $ ! == -> . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 0 `i -> _id `i 344  ]
 {
-[; ;DOOR_Controller.c: 88: *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
+[; ;DOOR_Controller.c: 88: *doors[d].lock_port &= (uint8_t)(~(1 << doors[d].lock_pin));
 "88
 [e =& *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 2 -> ~ << -> 1 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 `uc ]
 "89
@@ -3412,7 +3412,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 350  ]
 [e :U 347 ]
 {
-[; ;DOOR_Controller.c: 104: doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
+[; ;DOOR_Controller.c: 104: doors[d].is_open = (uint8_t)((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01);
 "104
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i `uc ]
 "105

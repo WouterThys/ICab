@@ -68,7 +68,7 @@ void C_DOOR_Lock(uint8_t id) {
     uint8_t d;
     for (d = 0; d < door_cnt; d++) {
         if (doors[d].id == id) {
-            *doors[d].lock_port |= 1 << doors[d].lock_pin;
+            *doors[d].lock_port |= (uint8_t)(1 << doors[d].lock_pin);
         }
     }
 }
@@ -85,7 +85,7 @@ void C_DOOR_Unlock(uint8_t id) {
     uint8_t d;
     for (d = 0; d < door_cnt; d++) {
         if (doors[d].id == id) {
-            *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
+            *doors[d].lock_port &= (uint8_t)(~(1 << doors[d].lock_pin));
         }
     }
 }
@@ -101,7 +101,7 @@ void C_DOOR_UnlockAll() {
 void C_DOOR_ReadSensors() {
     uint8_t d;
     for (d = 0; d < door_cnt; d++) {
-        doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01;
+        doors[d].is_open = (uint8_t)((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01);
     }
 }
 

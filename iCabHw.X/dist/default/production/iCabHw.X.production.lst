@@ -1,7 +1,7 @@
 
 
 Microchip Technology PIC18 LITE Macro Assembler V1.44 build -154322312 
-                                                                                               Mon Mar 12 21:16:17 2018
+                                                                                               Sat Mar 31 12:41:51 2018
 
 Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140600
      1                           	processor	18F2550
@@ -428,9 +428,9 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    414                           	opt stack 0
    415  0000DA                     D_TMR0_Enable@enable:
    416                           	opt stack 0
-   417  0000DA                     setAlarm@alarm:
+   417  0000DA                     D_PWM_SetPwm@pwm:
    418                           	opt stack 0
-   419  0000DA                     D_PWM_SetPwm@pwm:
+   419  0000DA                     setAlarm@alarm:
    420                           	opt stack 0
    421  0000DA                     ___lwdiv@dividend:
    422                           	opt stack 0
@@ -551,7 +551,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    537                           
    538                           ; 2 bytes @ 0x12
    539  0000EC                     	ds	1
-   540  0000ED                     _D_UART_Init$1672:
+   540  0000ED                     _D_UART_Init$1671:
    541                           	opt stack 0
    542                           
    543                           ; 4 bytes @ 0x13
@@ -815,7 +815,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    801  0008A0  0100               	movlb	0	; () banked
    802  0008A2  51D9               	movf	_readReady& (0+255),w,b
    803  0008A4  B4D8               	btfsc	status,2,c
-   804  0008A6  D098               	goto	l276
+   804  0008A6  D098               	goto	l295
    805                           
    806                           ; BSR set to: 0
    807                           ;main.c: 83: readReady = 0;
@@ -845,15 +845,15 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    831  0008D6  51DA               	movf	?_strcmp& (0+255),w,b
    832  0008D8  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    833  0008DA  A4D8               	btfss	status,2,c
-   834  0008DC  D003               	goto	l265
+   834  0008DC  D003               	goto	l284
    835                           
    836                           ; BSR set to: 0
    837                           ;main.c: 86: C_DOOR_LockAll();
    838  0008DE  EC8C  F00B         	call	_C_DOOR_LockAll	;wreg free
    839                           
    840                           ;main.c: 87: } else if (strcmp(read.command, "U") == 0) {
-   841  0008E2  D07A               	goto	l276
-   842  0008E4                     l265:
+   841  0008E2  D07A               	goto	l295
+   842  0008E4                     l284:
    843  0008E4  C0C6  F0DA         	movff	_read+2,strcmp@s1
    844  0008E8  C0C7  F0DB         	movff	_read+3,strcmp@s1+1
    845  0008EC  0E31               	movlw	low STR_10
@@ -866,15 +866,15 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    852  0008FC  51DA               	movf	?_strcmp& (0+255),w,b
    853  0008FE  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    854  000900  A4D8               	btfss	status,2,c
-   855  000902  D003               	goto	l267
+   855  000902  D003               	goto	l286
    856                           
    857                           ; BSR set to: 0
    858                           ;main.c: 88: C_DOOR_UnlockAll();
    859  000904  EC93  F00B         	call	_C_DOOR_UnlockAll	;wreg free
    860                           
    861                           ;main.c: 89: } else if (strcmp(read.command, "I") == 0) {
-   862  000908  D067               	goto	l276
-   863  00090A                     l267:
+   862  000908  D067               	goto	l295
+   863  00090A                     l286:
    864  00090A  C0C6  F0DA         	movff	_read+2,strcmp@s1
    865  00090E  C0C7  F0DB         	movff	_read+3,strcmp@s1+1
    866  000912  0E29               	movlw	low STR_11
@@ -887,7 +887,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    873  000922  51DA               	movf	?_strcmp& (0+255),w,b
    874  000924  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    875  000926  A4D8               	btfss	status,2,c
-   876  000928  D009               	goto	l269
+   876  000928  D009               	goto	l288
    877                           
    878                           ; BSR set to: 0
    879                           ;main.c: 90: initDoors((uint8_t)(*read.message - 0x30));
@@ -898,8 +898,8 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    884  000936  EC53  F00B         	call	_initDoors
    885                           
    886                           ;main.c: 91: } else if (strcmp(read.command, "R") == 0) {
-   887  00093A  D04E               	goto	l276
-   888  00093C                     l269:
+   887  00093A  D04E               	goto	l295
+   888  00093C                     l288:
    889  00093C  C0C6  F0DA         	movff	_read+2,strcmp@s1
    890  000940  C0C7  F0DB         	movff	_read+3,strcmp@s1+1
    891  000944  0E2F               	movlw	low STR_12
@@ -912,7 +912,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    898  000954  51DA               	movf	?_strcmp& (0+255),w,b
    899  000956  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    900  000958  A4D8               	btfss	status,2,c
-   901  00095A  D00B               	goto	l271
+   901  00095A  D00B               	goto	l290
    902                           
    903                           ; BSR set to: 0
    904                           ;main.c: 92: _delay((unsigned long)((20)*(16000000/4000.0)));
@@ -929,8 +929,8 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    915  00096E  00FF               	reset		;# 
    916                           
    917                           ;main.c: 94: } else if (strcmp(read.command, "P") == 0) {
-   918  000970  D033               	goto	l276
-   919  000972                     l271:
+   918  000970  D033               	goto	l295
+   919  000972                     l290:
    920  000972  C0C6  F0DA         	movff	_read+2,strcmp@s1
    921  000976  C0C7  F0DB         	movff	_read+3,strcmp@s1+1
    922  00097A  0E2D               	movlw	low STR_8
@@ -943,7 +943,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    929  00098A  51DA               	movf	?_strcmp& (0+255),w,b
    930  00098C  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    931  00098E  B4D8               	btfsc	status,2,c
-   932  000990  D023               	goto	l276
+   932  000990  D023               	goto	l295
    933                           
    934                           ; BSR set to: 0
    935                           
@@ -962,7 +962,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    948  0009A8  51DA               	movf	?_strcmp& (0+255),w,b
    949  0009AA  11DB               	iorwf	(?_strcmp+1)& (0+255),w,b
    950  0009AC  A4D8               	btfss	status,2,c
-   951  0009AE  D009               	goto	l275
+   951  0009AE  D009               	goto	l294
    952                           
    953                           ; BSR set to: 0
    954                           ;main.c: 97: setAlarm((uint8_t)(*read.message - 0x30));
@@ -973,8 +973,8 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    959  0009BC  ECAE  F00B         	call	_setAlarm
    960                           
    961                           ;main.c: 98: } else {
-   962  0009C0  D00B               	goto	l276
-   963  0009C2                     l275:
+   962  0009C0  D00B               	goto	l295
+   963  0009C2                     l294:
    964                           
    965                           ;main.c: 99: D_UART_Write("E", "U");
    966  0009C2  0E27               	movlw	low STR_15
@@ -987,7 +987,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    973  0009D0  0E08               	movlw	high STR_10
    974  0009D2  6FEF               	movwf	(D_UART_Write@data+1)& (0+255),b
    975  0009D4  ECC1  F007         	call	_D_UART_Write	;wreg free
-   976  0009D8                     l276:
+   976  0009D8                     l295:
    977                           
    978                           ;main.c: 100: }
    979                           ;main.c: 101: }
@@ -995,7 +995,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
    981  0009D8  0100               	movlb	0	; () banked
    982  0009DA  51D8               	movf	_tick& (0+255),w,b
    983  0009DC  B4D8               	btfsc	status,2,c
-   984  0009DE  D760               	goto	l263
+   984  0009DE  D760               	goto	l282
    985                           
    986                           ; BSR set to: 0
    987                           ;main.c: 105: tick = 0;
@@ -1014,13 +1014,13 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1000  0009EE  51D5               	movf	_oldAlarm& (0+255),w,b
   1001  0009F0  19D6               	xorwf	_newAlarm& (0+255),w,b
   1002  0009F2  A4D8               	btfss	status,2,c
-  1003  0009F4  D00C               	goto	l281
+  1003  0009F4  D00C               	goto	l300
   1004                           
   1005                           ; BSR set to: 0
   1006  0009F6  05D6               	decf	_newAlarm& (0+255),w,b
   1007  0009F8  B4D8               	btfsc	status,2,c
-  1008  0009FA  D009               	goto	l281
-  1009  0009FC  D751               	goto	l263
+  1008  0009FA  D009               	goto	l300
+  1009  0009FC  D751               	goto	l282
   1010  0009FE                     
   1011                           ; BSR set to: 0
   1012                           
@@ -1037,7 +1037,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1023                           ; BSR set to: 0
   1024  000A02  0E0A               	movlw	10
   1025  000A04  27D7               	addwf	_pwm& (0+255),f,b
-  1026  000A06  D00E               	goto	l284
+  1026  000A06  D00E               	goto	l303
   1027  000A08                     
   1028                           ; BSR set to: 0
   1029                           
@@ -1048,8 +1048,8 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1034                           
   1035                           ; BSR set to: 0
   1036                           ;main.c: 120: }
-  1037  000A0C  D00B               	goto	l284
-  1038  000A0E                     l281:
+  1037  000A0C  D00B               	goto	l303
+  1038  000A0E                     l300:
   1039                           
   1040                           ; BSR set to: 0
   1041                           
@@ -1064,15 +1064,15 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1050                           ;	Chosen strategy is simple_byte
   1051  000A10  0A00               	xorlw	0	; case 0
   1052  000A12  B4D8               	btfsc	status,2,c
-  1053  000A14  D7F4               	goto	l282
+  1053  000A14  D7F4               	goto	l301
   1054  000A16  0A01               	xorlw	1	; case 1
   1055  000A18  B4D8               	btfsc	status,2,c
-  1056  000A1A  D7F3               	goto	l285
+  1056  000A1A  D7F3               	goto	l304
   1057  000A1C  0A03               	xorlw	3	; case 2
   1058  000A1E  B4D8               	btfsc	status,2,c
-  1059  000A20  D7F3               	goto	l286
-  1060  000A22  D7ED               	goto	l282
-  1061  000A24                     l284:
+  1059  000A20  D7F3               	goto	l305
+  1060  000A22  D7ED               	goto	l301
+  1061  000A24                     l303:
   1062                           
   1063                           ; BSR set to: 0
   1064                           ;main.c: 121: D_PWM_SetPwm(pwm);
@@ -1083,7 +1083,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1069                           
   1070                           ;main.c: 122: oldAlarm = newAlarm;
   1071  000A2A  C0D6  F0D5         	movff	_newAlarm,_oldAlarm
-  1072  000A2E  D738               	goto	l263
+  1072  000A2E  D738               	goto	l282
   1073  000A30                     __end_of_main:
   1074                           	opt stack 0
   1075                           tblptru	equ	0xFF8
@@ -1170,7 +1170,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1156  0015E0  6FDF               	movwf	strcmp@r& (0+255),b
   1157  0015E2  51DF               	movf	strcmp@r& (0+255),w,b
   1158  0015E4  A4D8               	btfss	status,2,c
-  1159  0015E6  D007               	goto	u1330
+  1159  0015E6  D007               	goto	u1350
   1160                           
   1161                           ; BSR set to: 0
   1162  0015E8  C0DA  FFD9         	movff	strcmp@s1,fsr2l
@@ -1178,7 +1178,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1164  0015F0  50DF               	movf	indf2,w,c
   1165  0015F2  A4D8               	btfss	status,2,c
   1166  0015F4  D7E0               	goto	l890
-  1167  0015F6                     u1330:
+  1167  0015F6                     u1350:
   1168                           
   1169                           ; BSR set to: 0
   1170                           
@@ -1317,13 +1317,13 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1303  0016AA  0100               	movlb	0	; () banked
   1304  0016AC  51DF               	movf	initDoors@door_cnt& (0+255),w,b
   1305  0016AE  A4D8               	btfss	status,2,c
-  1306  0016B0  D002               	goto	l254
+  1306  0016B0  D002               	goto	l273
   1307                           
   1308                           ; BSR set to: 0
   1309                           ;main.c: 44: door_cnt = 1;
   1310  0016B2  0E01               	movlw	1
   1311  0016B4  6FDF               	movwf	initDoors@door_cnt& (0+255),b
-  1312  0016B6                     l254:
+  1312  0016B6                     l273:
   1313                           
   1314                           ; BSR set to: 0
   1315                           ;main.c: 45: }
@@ -1856,16 +1856,16 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   1842  00125E  0E00               	movlw	0
   1843  001260  6FDD               	movwf	(___aldiv@dividend+3)& (0+255),b
   1844  001262  EC9F  F008         	call	___aldiv	;wreg free
-  1845  001266  C0DA  F0ED         	movff	?___aldiv,_D_UART_Init$1672
-  1846  00126A  C0DB  F0EE         	movff	?___aldiv+1,_D_UART_Init$1672+1
-  1847  00126E  C0DC  F0EF         	movff	?___aldiv+2,_D_UART_Init$1672+2
-  1848  001272  C0DD  F0F0         	movff	?___aldiv+3,_D_UART_Init$1672+3
+  1845  001266  C0DA  F0ED         	movff	?___aldiv,_D_UART_Init$1671
+  1846  00126A  C0DB  F0EE         	movff	?___aldiv+1,_D_UART_Init$1671+1
+  1847  00126E  C0DC  F0EF         	movff	?___aldiv+2,_D_UART_Init$1671+2
+  1848  001272  C0DD  F0F0         	movff	?___aldiv+3,_D_UART_Init$1671+3
   1849                           
   1850                           ;UART_Driver.c: 213: SPBRG = (uint8_t)((16000000/baud)/64)-1;
-  1851  001276  C0ED  F0DA         	movff	_D_UART_Init$1672,___aldiv@dividend
-  1852  00127A  C0EE  F0DB         	movff	_D_UART_Init$1672+1,___aldiv@dividend+1
-  1853  00127E  C0EF  F0DC         	movff	_D_UART_Init$1672+2,___aldiv@dividend+2
-  1854  001282  C0F0  F0DD         	movff	_D_UART_Init$1672+3,___aldiv@dividend+3
+  1851  001276  C0ED  F0DA         	movff	_D_UART_Init$1671,___aldiv@dividend
+  1852  00127A  C0EE  F0DB         	movff	_D_UART_Init$1671+1,___aldiv@dividend+1
+  1853  00127E  C0EF  F0DC         	movff	_D_UART_Init$1671+2,___aldiv@dividend+2
+  1854  001282  C0F0  F0DD         	movff	_D_UART_Init$1671+3,___aldiv@dividend+3
   1855  001286  0E40               	movlw	64
   1856  001288  0100               	movlb	0	; () banked
   1857  00128A  6FDE               	movwf	___aldiv@divisor& (0+255),b
@@ -2494,12 +2494,12 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   2480  001634  0100               	movlb	0	; () banked
   2481  001636  51DA               	movf	D_PWM_SetPwm@pwm& (0+255),w,b
   2482  001638  B4D8               	btfsc	status,2,c
-  2483  00163A  D00A               	goto	l311
+  2483  00163A  D00A               	goto	l221
   2484                           
   2485                           ; BSR set to: 0
   2486                           ;PWM_Driver.c: 46: if (T2CONbits.TMR2ON == 0) {
   2487  00163C  B4CA               	btfsc	4042,2,c	;volatile
-  2488  00163E  D005               	goto	l312
+  2488  00163E  D005               	goto	l222
   2489                           
   2490                           ; BSR set to: 0
   2491                           ;PWM_Driver.c: 47: CCP1CONbits.CCP1M = 0b1100;
@@ -2511,7 +2511,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   2497                           ; BSR set to: 0
   2498                           ;PWM_Driver.c: 48: T2CONbits.TMR2ON = 1;
   2499  001648  84CA               	bsf	4042,2,c	;volatile
-  2500  00164A                     l312:
+  2500  00164A                     l222:
   2501                           
   2502                           ; BSR set to: 0
   2503                           ;PWM_Driver.c: 49: }
@@ -2522,7 +2522,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   2508                           
   2509                           ;PWM_Driver.c: 51: } else {
   2510  00164E  0012               	return	
-  2511  001650                     l311:
+  2511  001650                     l221:
   2512                           
   2513                           ; BSR set to: 0
   2514                           ;PWM_Driver.c: 52: CCP1CONbits.CCP1M = 0b0000;
@@ -3997,8 +3997,8 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   3983  00135E  D03B               	goto	l44
   3984  001360                     
   3985                           ; BSR set to: 0
-  3986                           ;DOOR_Controller.c: 104: doors[d].is_open = (*doors[d].sensor_port >> doors[d].sensor_pi
-      +                          n) & 0x01;
+  3986                           ;DOOR_Controller.c: 104: doors[d].is_open = (uint8_t)((*doors[d].sensor_port >> doors[d]
+      +                          .sensor_pin) & 0x01);
   3987                           
   3988                           ; BSR set to: 0
   3989  001360  51DE               	movf	C_DOOR_ReadSensors@d& (0+255),w,b
@@ -5581,7 +5581,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   5566                           
   5567                           ;main.c: 129: if (INTCONbits.TMR0IF) {
   5568  001300  A4F2               	btfss	intcon,2,c	;volatile
-  5569  001302  D004               	goto	i2l294
+  5569  001302  D004               	goto	i2l313
   5570                           
   5571                           ;main.c: 130: tick = 1;
   5572  001304  0E01               	movlw	1
@@ -5591,7 +5591,7 @@ Microchip Technology Omniscient Code Generator v1.44 (Free mode) build 201709140
   5576                           ; BSR set to: 0
   5577                           ;main.c: 131: INTCONbits.TMR0IF = 0;
   5578  00130A  94F2               	bcf	intcon,2,c	;volatile
-  5579  00130C                     i2l294:
+  5579  00130C                     i2l313:
   5580                           
   5581                           ; BSR set to: 0
   5582  00130C  C012  F047         	movff	??_HighISR+17,btemp+3
@@ -6204,23 +6204,23 @@ CODE                 0      0       0       0        0.0%
 
 
 Microchip Technology PIC18 Macro Assembler V1.44 build -154322312 
-Symbol Table                                                                                   Mon Mar 12 21:16:17 2018
+Symbol Table                                                                                   Sat Mar 31 12:41:51 2018
 
                          l13 1434                           l50 1122                           l18 0F66  
                          l51 106A                           l19 0E84                           l44 13D6  
                          l52 1120                           l45 1360                  __CFG_BOR$ON 000000  
                          bsr 000FE0                  __CFG_BORV$3 000000                 _ackCharacter 003D  
                __CFG_CP0$OFF 000000                 __CFG_CP1$OFF 000000                 __CFG_CP2$OFF 000000  
-               __CFG_CP3$OFF 000000                          l203 1714                          l311 1650  
-                        l312 164A                          l400 11A2                          l401 1196  
-                        l404 11D6                          l333 0BEC                          l405 11E4  
-                        l334 0C52                          l326 0BD4                          l406 11FA  
-                        l254 16B6                          l327 0BE4                          l271 0972  
-                        l263 08A0                          l328 0BF4                          l176 1676  
-                        l337 0CE0                          l281 0A0E                          l265 08E4  
-                        l338 0C88                          l282 09FE                          l275 09C2  
-                        l267 090A                          l284 0A24                          l276 09D8  
-                        l285 0A02                          l269 093C                          l286 0A08  
+               __CFG_CP3$OFF 000000                          l203 1714                          l300 0A0E  
+                        l221 1650                          l301 09FE                          l222 164A  
+                        l303 0A24                          l400 11A2                          l304 0A02  
+                        l401 1196                          l305 0A08                          l404 11D6  
+                        l333 0BEC                          l405 11E4                          l334 0C52  
+                        l326 0BD4                          l406 11FA                          l327 0BE4  
+                        l328 0BF4                          l176 1676                          l337 0CE0  
+                        l273 16B6                          l338 0C88                          l290 0972  
+                        l282 08A0                          l284 08E4                          l294 09C2  
+                        l286 090A                          l295 09D8                          l288 093C  
                         l397 115C                          l750 1558                          l398 1174  
                         l745 152E                          l746 1526                          l749 154E  
                         l890 15B6                          l889 15C0                 __CFG_CPB$OFF 000000  
@@ -6235,7 +6235,7 @@ Symbol Table                                                                    
                        STR_7 0837                         STR_8 082D                         STR_9 082B  
                        u1110 11A6                         u1041 0FF8                         u1051 1032  
                        u1301 1626                         u1144 13C8                         u1145 13C4  
-                       u1330 15F6                         u1171 10B8                         u1441 08B6  
+                       u1171 10B8                         u1350 15F6                         u1441 08B6  
                        u1557 0846                         u1567 088A                         u1577 0964  
                        u1587 1056                 ?_C_DOOR_Init 0001                         _baud 0043  
                        _main 083A                         _read 00C4                         _tick 00D8  
@@ -6259,8 +6259,8 @@ Symbol Table                                                                    
                       i1l157 0B74                        i1l149 0AEC                        i1l334 0DA2  
                       i1l326 0D2C                        i1l158 0B8E                        i1l327 0D3C  
                       i1l328 0D4A                        i1l337 0E2E                        i1l338 0DD8  
-                      i1l186 007C                        i1l750 15AA                        i1l745 1580  
-                      i1l746 1578                        i1l749 15A0                        i2l294 130C  
+                      i1l186 007C                        i2l313 130C                        i1l750 15AA  
+                      i1l745 1580                        i1l746 1578                        i1l749 15A0  
                       _RCREG 000FAE         __size_of_acknowledge 0060                        _SPBRG 000FAF  
                       _PORTA 000F80                        _PORTB 000F81                        _PORTC 000F82  
               __CFG_USBDIV$1 000000                        _TRISA 000F92                        _TRISB 000F93  
@@ -6276,7 +6276,7 @@ Symbol Table                                                                    
                       plusw2 000FDB                        status 000FD8                        wtemp6 0045  
                ?_D_PORT_Init 0001           __size_ofi1___lwdiv 0052                _stopCharacter 003F  
            __end_ofi1_printf 0E6A                   i1printf@ap 0020              __initialization 14B2  
-           _D_UART_Init$1672 00ED                 __end_of_main 0A30                       ??_main 00FA  
+           _D_UART_Init$1671 00ED                 __end_of_main 0A30                       ??_main 00FA  
                 i1_writeByte 1750                __activetblptr 000003              __CFG_CCP2MX$OFF 000000  
       commandAndMessage@door 00DA                       _ADCON1 000FC1                       _CCPR1L 000FBE  
         __size_of_D_PWM_Init 001E                       ?_putch 0001                       i1l1529 1752  
