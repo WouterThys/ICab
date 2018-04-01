@@ -3226,7 +3226,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic18.h: 164: extern __nonreentrant void _delay(unsigned long);
 [; ;pic18.h: 166: extern __nonreentrant void _delaywdt(unsigned long);
 [; ;pic18.h: 168: extern __nonreentrant void _delay3(unsigned char);
-[; ;PORT_Driver.h: 23: void D_PORT_Init();
+[; ;PORT_Driver.h: 25: void D_PORT_Init();
 "32 Drivers/PORT_Driver.c
 [v _D_PORT_Init `(v ~T0 @X0 1 ef ]
 {

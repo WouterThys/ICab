@@ -3,6 +3,7 @@ package com.galenus.act.gui.dialogs.logsdialog;
 import com.fazecast.jSerialComm.SerialPort;
 import com.galenus.act.gui.Application;
 import com.galenus.act.classes.interfaces.SerialListener;
+import com.galenus.act.serial.SerialError;
 import com.galenus.act.serial.SerialManager;
 import com.galenus.act.serial.SerialMessage;
 
@@ -41,17 +42,22 @@ public class LogsDialog extends LogsDialogLayout implements SerialListener{
     }
 
     @Override
-    public void onSerialError(String error) {
+    public void onSerialError(SerialError error) {
         JOptionPane.showMessageDialog(
                 LogsDialog.this,
                 error,
-                "OpenWhileLocked",
+                "Serial error",
                 JOptionPane.ERROR_MESSAGE
         );
     }
 
     @Override
-    public void onNewMessage(SerialMessage message) {
+    public void onNewWrite(SerialMessage message) {
+        SwingUtilities.invokeLater(this::updateSerialTableData);
+    }
+
+    @Override
+    public void onNewRead(SerialMessage message) {
         SwingUtilities.invokeLater(this::updateSerialTableData);
     }
 }

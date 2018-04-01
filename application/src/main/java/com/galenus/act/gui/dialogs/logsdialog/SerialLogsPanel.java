@@ -3,7 +3,6 @@ package com.galenus.act.gui.dialogs.logsdialog;
 import com.fazecast.jSerialComm.SerialPort;
 import com.galenus.act.Main;
 import com.galenus.act.classes.interfaces.GuiInterface;
-import com.galenus.act.gui.Application;
 import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.components.ITextField;
@@ -35,6 +34,11 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
     private ITextField serialParityTf;
     private ITextField serialReadTimeoutTf;
     private ITextField serialWriteTimeoutTf;
+    private ITextField serialAverageResponseTimeTf;
+    private ITextField serialWriteCountTf;
+
+    private ITextField pingEnabledTf;
+    private ITextField pingDelayTf;
 
     private AbstractAction initAa;
     private AbstractAction resetAa;
@@ -42,6 +46,7 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
     private AbstractAction unlockAa;
     private AbstractAction errorAa;
     private AbstractAction alarmAa;
+    private AbstractAction pingEnableAa;
 
     private AbstractAction deleteRxAa;
     private AbstractAction deleteTxAa;
@@ -137,6 +142,8 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             serialBaudTf.setText(String.valueOf(port.getBaudRate()));
             serialDataBitsTf.setText(String.valueOf(port.getNumDataBits()));
             serialStopBitsTf.setText(String.valueOf(port.getNumStopBits()));
+            serialAverageResponseTimeTf.setText(String.valueOf(serMgr().getAverageAcknowledgeTime()));
+            serialWriteCountTf.setText(String.valueOf(serMgr().getWriteCount()));
             serialParityTf.setText(String.valueOf(port.getParity()));
             serialReadTimeoutTf.setText(String.valueOf(port.getReadTimeout()));
             serialWriteTimeoutTf.setText(String.valueOf(port.getWriteTimeout()));
@@ -146,6 +153,9 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             } else {
                 serialStateLbl.setIcon(imageResource.readImage("Serial.Port.Nok"));
             }
+            pingEnabledTf.setText(serMgr().getPingEnabled() ? "Enabled" : "Disabled");
+            pingDelayTf.setText(String.valueOf(serMgr().getPingDelay()));
+            pingEnableAa.setEnabled(true);
             initAa.setEnabled(true);
             resetAa.setEnabled(true);
             lockAa.setEnabled(true);
@@ -157,10 +167,14 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             serialBaudTf.clearText();
             serialDataBitsTf.clearText();
             serialStopBitsTf.clearText();
+            serialAverageResponseTimeTf.clearText();
+            serialWriteCountTf.clearText();
             serialReadTimeoutTf.clearText();
             serialWriteTimeoutTf.clearText();
             serialStateLbl.setIcon(imageResource.readImage("Serial.Port.Nok"));
             serialBufferStringLbl.setText("");
+            pingDelayTf.clearText();
+            pingEnableAa.setEnabled(false);
             initAa.setEnabled(false);
             resetAa.setEnabled(false);
             lockAa.setEnabled(false);
@@ -257,12 +271,14 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         gbc.addLine("Baud: ", serialBaudTf);
         gbc.addLine("Data bits: ", serialDataBitsTf);
         gbc.addLine("Stop bits: ", serialStopBitsTf);
+        gbc.addLine("# written: ", serialWriteCountTf);
 
         JPanel serialDataPanel2 = new JPanel(new GridBagLayout());
         gbc = new GuiUtils.GridBagHelper(serialDataPanel2);
         gbc.addLine("Parity: ", serialParityTf);
-        gbc.addLine("Read timeout (ms): ", serialReadTimeoutTf);
-        gbc.addLine("Write timeout (ms): ", serialWriteTimeoutTf);
+        gbc.addLine("Read timeout [ms]: ", serialReadTimeoutTf);
+        gbc.addLine("Write timeout [ms]: ", serialWriteTimeoutTf);
+        gbc.addLine("Avg resp [ms]: ", serialAverageResponseTimeTf);
 
         JToolBar testToolbar = new JToolBar(JToolBar.VERTICAL);
         testToolbar.setFloatable(false);
@@ -290,6 +306,32 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         return serialPanel;
     }
 
+    private JPanel createPingPanel() {
+        JPanel pingPanel = new JPanel(new BorderLayout());
+
+        JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
+        toolBar.setFloatable(false);
+        toolBar.add(pingEnableAa);
+
+        ILabel pingLbl = new ILabel("Ping", ILabel.CENTER);
+        pingLbl.setFont(20, Font.BOLD);
+
+        JPanel headerPnl = new JPanel(new BorderLayout());
+        headerPnl.add(toolBar, BorderLayout.WEST);
+        headerPnl.add(pingLbl, BorderLayout.CENTER);
+
+        JPanel infoPnl = new JPanel();
+        GuiUtils.GridBagHelper gbc = new GuiUtils.GridBagHelper(infoPnl);
+        gbc.addLine("Ping status: ", pingEnabledTf);
+        gbc.addLine("Delay [ms]: ", pingDelayTf);
+
+        pingPanel.add(headerPnl, BorderLayout.NORTH);
+        pingPanel.add(infoPnl, BorderLayout.CENTER);
+        pingPanel.setBorder(GuiUtils.createTitleBorder("Pinging"));
+
+        return pingPanel;
+    }
+
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -302,11 +344,34 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         serialBaudTf = new ITextField(false);
         serialDataBitsTf = new ITextField(false);
         serialStopBitsTf = new ITextField(false);
+        serialAverageResponseTimeTf = new ITextField(false);
+        serialWriteCountTf = new ITextField(false);
         serialParityTf = new ITextField(false);
         serialReadTimeoutTf = new ITextField(false);
         serialWriteTimeoutTf = new ITextField(false);
         serialBufferStringLbl = new ILabel();
         serialBufferStringLbl.setForeground(Color.gray);
+
+        // Ping
+        pingDelayTf = new ITextField(false);
+        pingEnabledTf = new ITextField(false);
+        pingEnableAa = new AbstractAction("Enable/Disable", imageResource.readImage("Serial.Ping.Disable")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (serMgr().getPingEnabled()) {
+                    serMgr().setPingEnabled(false);
+                    pingEnableAa.putValue(Action.SHORT_DESCRIPTION, "Enable");
+                    pingEnableAa.putValue(Action.SMALL_ICON, imageResource.readImage("Serial.Ping.Enable"));
+                    pingEnabledTf.setText("Disabled");
+                } else {
+                    serMgr().setPingEnabled(true);
+                    pingEnableAa.putValue(Action.SHORT_DESCRIPTION, "Disable");
+                    pingEnableAa.putValue(Action.SMALL_ICON, imageResource.readImage("Serial.Ping.Disable"));
+                    pingEnabledTf.setText("Enabled");
+                }
+            }
+        };
+        pingEnableAa.putValue(Action.SHORT_DESCRIPTION, "Disable");
 
         // Tables
         logTxModel = new SerialLogTableModel();
@@ -386,20 +451,30 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
 
     @Override
     public void initializeLayouts() {
+        JPanel panel = new JPanel();
+
         JPanel serialPanel = createSerialPanel();
+        JPanel pingPanel = createPingPanel();
         JPanel txPanel = createTxPanel();
         JPanel rxPanel = createRxPanel();
 
-        // Add
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.add(serialPanel, BorderLayout.CENTER);
+        northPanel.add(pingPanel, BorderLayout.SOUTH);
+
         JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
         tablePanel.add(txPanel);
         tablePanel.add(rxPanel);
         tablePanel.setBorder(GuiUtils.createTitleBorder("Logs"));
 
+        panel.setLayout(new BorderLayout());
+        panel.add(northPanel, BorderLayout.NORTH);
+        panel.add(tablePanel, BorderLayout.CENTER);
+        panel.setPreferredSize(new Dimension(700, 1000));
+
         setLayout(new BorderLayout());
-        add(serialPanel, BorderLayout.NORTH);
-        add(tablePanel, BorderLayout.CENTER);
+        add(new JScrollPane(panel), BorderLayout.CENTER);
     }
 
     @Override

@@ -4520,7 +4520,7 @@ extern char * strichr(const char *, int);
 extern char * strrchr(const char *, int);
 extern char * strrichr(const char *, int);
 
-# 23 "Drivers/PORT_Driver.h"
+# 25 "Drivers/PORT_Driver.h"
 void D_PORT_Init();
 
 # 12 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdbool.h"
@@ -4547,6 +4547,8 @@ READ_Data D_UART_Read();
 
 # 51
 void D_UART_Enable(bool enable);
+
+void D_UART_SendInt(int i);
 
 # 35 "Drivers/UART_Driver.c"
 uint8_t baud;
@@ -4575,26 +4577,9 @@ READ_Data readData;
 
 bool readReady;
 
-# 64
-static void writeByte(uint8_t data);
-static uint8_t readByte(void);
+# 65
 static void fillDataBuffer(uint8_t data);
 static void acknowledge();
-
-static void writeByte(uint8_t data) {
-while(TXSTAbits.TRMT == 0);
-TXREG = data;
-}
-
-static uint8_t readByte() {
-if(RCSTAbits.FERR == 1) {
-
-}
-if(RCSTAbits.OERR == 1) {
-
-}
-return RCREG;
-}
 
 static void fillDataBuffer(uint8_t data){
 switch(readBuffer.state) {
@@ -4691,18 +4676,19 @@ printf("%x",readBuffer.readId);
 printf(stopCharacter);
 }
 
-# 182
+# 166
 void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
-
-TRISCbits.TRISC7 = 0;
-TRISCbits.TRISC6 = 1;
-
 
 deviceName = name;
 readReady = 0;
 
 
 D_UART_Enable(0);
+
+
+RCSTAbits.FERR = 0;
+RCSTAbits.OERR = 0;
+RCREG = 0x00;
 
 
 TXSTAbits.TX9 = 0;
@@ -4718,12 +4704,7 @@ BAUDCONbits.TXCKP = 0;
 BAUDCONbits.BRG16 = 0;
 
 
-RCSTAbits.FERR = 0;
-RCSTAbits.OERR = 0;
-RCREG = 0x00;
-
-
-SPBRG = (uint8_t)((16000000/baud)/64)-1;
+SPBRG = ((16000000UL/baud)/64)-1;
 
 
 if (interrupts) {
@@ -4731,7 +4712,7 @@ RCONbits.IPEN = 1;
 INTCONbits.GIEH = 1;
 INTCONbits.GIEL = 1;
 PIR1bits.RCIF = 0;
-IPR1bits.RCIP = 0;
+IPR1bits.RCIP = 1;
 PIE1bits.RCIE = 1;
 }
 }
@@ -4747,7 +4728,7 @@ printf(":");printf(command);
 printf(":");printf(data);
 
 printf(stopCharacter);
-_delay((unsigned long)((1)*(16000000/4000.0)));
+_delay((unsigned long)((1)*(16000000UL/4000.0)));
 }
 
 READ_Data D_UART_Read(){
@@ -4774,13 +4755,33 @@ RCSTAbits.SPEN = 0;
 }
 
 void putch(char data) {
-writeByte(data);
+uint8_t max = 0;
+
+while(TXSTAbits.TRMT == 0 && max < 200) {
+max++;
+_delay((unsigned long)((5)*(16000000UL/4000000.0)));
+}
+TXREG = data;
+
+
 }
 
-void interrupt low_priority LowISR(void) {
+void interrupt HighISR(void) {
 if (PIR1bits.RC1IF) {
-fillDataBuffer(readByte());
 PIR1bits.RC1IF = 0;
+
+
+if(RCSTAbits.FERR == 1) {
+RCREG = 0x00;
+return;
+}
+
+if(RCSTAbits.OERR == 1) {
+RCSTAbits.CREN = 0;
+RCSTAbits.CREN = 1;
+return;
+}
+fillDataBuffer(RCREG);
 }
 }
 

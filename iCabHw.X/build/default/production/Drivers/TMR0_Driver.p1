@@ -3321,9 +3321,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;TMR0_Driver.c: 48: INTCONbits.TMR0IF = 0;
 "48
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-[; ;TMR0_Driver.c: 49: INTCON2bits.TMR0IP = 1;
+[; ;TMR0_Driver.c: 49: INTCON2bits.TMR0IP = 0;
 "49
-[e = . . _INTCON2bits 1 2 -> -> 1 `i `uc ]
+[e = . . _INTCON2bits 1 2 -> -> 0 `i `uc ]
 [; ;TMR0_Driver.c: 50: INTCONbits.TMR0IE = 1;
 "50
 [e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]

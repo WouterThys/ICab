@@ -4394,7 +4394,7 @@ extern char * strichr(const char *, int);
 extern char * strrchr(const char *, int);
 extern char * strrichr(const char *, int);
 
-# 23 "Drivers/PORT_Driver.h"
+# 25 "Drivers/PORT_Driver.h"
 void D_PORT_Init();
 
 # 14 "Drivers/UART_Driver.h"
@@ -4419,64 +4419,69 @@ READ_Data D_UART_Read();
 # 51
 void D_UART_Enable(bool enable);
 
+void D_UART_SendInt(int i);
+
 # 11 "Drivers/TMR0_Driver.h"
 void D_TMR0_Init();
 
 # 17
 void D_TMR0_Enable(bool enable);
 
+# 11 "Drivers/TMR1_Driver.h"
+void D_TMR1_Init();
+
+# 17
+void D_TMR1_Enable(bool enable);
+
 # 8 "Drivers/PWM_Driver.h"
 void D_PWM_Init();
 
 void D_PWM_SetPwm(uint8_t pwm);
 
-# 18 "Controllers/DOOR_Controller.h"
+# 12 "Controllers/DOOR_Controller.h"
 typedef struct {
 uint8_t id;
 
 bool locked;
-uint8_t* lock_port;
+volatile uint8_t* lock_port;
 uint8_t lock_pin;
 
 bool was_open;
 bool is_open;
-uint8_t* sensor_port;
+volatile uint8_t* sensor_port;
 uint8_t sensor_pin;
-}Door;
+} Door_t;
 
-# 35
+# 29
 void C_DOOR_Init(uint8_t door_cnt);
 
-# 41
-void C_DOOR_Lock(uint8_t id);
-
-# 46
+# 40
 void C_DOOR_LockAll();
 
-# 52
-void C_DOOR_Unlock(uint8_t id);
-
-# 57
+# 51
 void C_DOOR_UnlockAll();
 
-# 62
+# 56
 void C_DOOR_ReadSensors();
 
-# 67
+# 61
 void C_DOOR_SendStates();
 
 # 32 "main.c"
-static READ_Data read;
-static bool tick;
+uint8_t lockDelayCnt;
+uint8_t communicationCnt;
+READ_Data read;
+bool tick;
+bool lock;
 
-static uint8_t pwm;
-static uint8_t newAlarm;
-static uint8_t oldAlarm;
+uint8_t pwm;
+uint8_t newAlarm;
+uint8_t oldAlarm;
 
-static void initDoors(uint8_t door_cnt);
-static void setAlarm(uint8_t alarm);
+void initDoors(uint8_t door_cnt);
+void setAlarm(uint8_t alarm);
 
-static void initDoors(uint8_t door_cnt) {
+void initDoors(uint8_t door_cnt) {
 if (door_cnt < 1) {
 door_cnt = 1;
 }
@@ -4488,7 +4493,7 @@ C_DOOR_LockAll();
 D_TMR0_Enable(1);
 }
 
-static void setAlarm(uint8_t alarm) {
+void setAlarm(uint8_t alarm) {
 newAlarm = alarm;
 }
 
@@ -4504,6 +4509,7 @@ D_UART_Enable(1);
 
 
 D_TMR0_Init();
+D_TMR1_Init();
 
 
 D_PWM_Init();
@@ -4512,28 +4518,68 @@ _delay((unsigned long)((200)*(16000000/4000.0)));
 
 newAlarm = 0;
 oldAlarm = 0;
+lock = 0;
+tick = 0;
+
+_delay((unsigned long)((200)*(16000000/4000.0)));
+if (0) {
+PORTB = 0x00;
+} else {
+PORTB = 0xFF;
+}
 
 while(1) {
+
+if (lock) {
+D_TMR1_Enable(0);
+lockDelayCnt = 0;
+C_DOOR_LockAll();
+lock = 0;
+}
 
 
 if (readReady) {
 readReady = 0;
 read = D_UART_Read();
+PORTBbits.RB5 = !PORTBbits.RB5;
+
+
+communicationCnt = 0;
+if (oldAlarm == 3) {
+newAlarm = 0;
+}
+
+
 if (strcmp(read.command, "L") == 0) {
-C_DOOR_LockAll();
+lockDelayCnt = 0;
+D_TMR1_Enable(1);
+
+
 } else if (strcmp(read.command, "U") == 0) {
+lockDelayCnt = 0;
+D_TMR1_Enable(0);
 C_DOOR_UnlockAll();
+
+
 } else if (strcmp(read.command, "I") == 0) {
 initDoors((uint8_t)(*read.message - 0x30));
+
+
 } else if (strcmp(read.command, "R") == 0) {
 _delay((unsigned long)((20)*(16000000/4000.0)));
 asm(" reset");
+
+
 } else if (strcmp(read.command, "P") == 0) {
+
+
 
 } else if (strcmp(read.command, "A") == 0) {
 setAlarm((uint8_t)(*read.message - 0x30));
+
 } else {
 D_UART_Write("E", "U");
+
 }
 }
 
@@ -4548,12 +4594,33 @@ C_DOOR_ReadSensors();
 C_DOOR_SendStates();
 
 
-if (newAlarm != oldAlarm || newAlarm == 1) {
+if (communicationCnt < 60) {
+communicationCnt++;
+} else {
+if (oldAlarm == 0) {
+newAlarm = 3;
+}
+}
+
+
+if (newAlarm != oldAlarm || newAlarm == 1 || newAlarm == 3) {
 switch (newAlarm) {
 default:
-case 0: pwm = 0x00; break;
-case 1: pwm += 0x0A; break;
-case 2: pwm = 0x7F; break;
+case 0:
+pwm = 0x00;
+break;
+
+case 3:
+case 1:
+if (pwm == 0) {
+pwm = 1;
+}
+pwm = (uint8_t)(pwm * 0x02);
+break;
+
+case 2:
+pwm = 0x7F;
+break;
 }
 D_PWM_SetPwm(pwm);
 oldAlarm = newAlarm;
@@ -4562,9 +4629,24 @@ oldAlarm = newAlarm;
 }
 }
 
-void interrupt HighISR(void) {
+void interrupt low_priority LowISR(void) {
+
 if (INTCONbits.TMR0IF) {
-tick = 1;
 INTCONbits.TMR0IF = 0;
+tick = 1;
+}
+
+
+if (PIR1bits.TMR1IF) {
+TMR1H = 0x5E;
+TMR1L = 0x00;
+
+if (lockDelayCnt < 100-1) {
+lockDelayCnt++;
+} else {
+lock = 1;
+}
+
+PIR1bits.TMR1IF = 0;
 }
 }

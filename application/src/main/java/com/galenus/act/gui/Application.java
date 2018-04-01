@@ -15,6 +15,7 @@ import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.inventory.InventoryPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.gui.panels.user.UserPanel;
+import com.galenus.act.serial.SerialError;
 import com.galenus.act.serial.SerialMessage;
 import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
@@ -60,6 +61,8 @@ public class Application extends JFrame implements
 
     private DoorState previousDoorState = DoorState.ClosedWhileLocked;
     private boolean alarmSend = false;
+
+    private int serialWriteRetry;
 
 
     /*
@@ -202,8 +205,8 @@ public class Application extends JFrame implements
 
         // Menu panel
         menuBar = new JMenuBar();
-        JMenu serialMenu = new JMenu("Serial");
-        JMenuItem serialLogs = new JMenuItem("Serial logs");
+        JMenu serialMenu = new JMenu("Debug");
+        JMenuItem serialLogs = new JMenuItem("Logs");
         serialLogs.addActionListener(e -> {
             LogsDialog dialog = new LogsDialog(this, "Serial logs", serMgr().getSerialPort());
             dialog.showDialog();
@@ -242,6 +245,10 @@ public class Application extends JFrame implements
             setMenuVisible(true);
         }
 
+        if (Main.FULL_SCREEN) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setUndecorated(true);
+        }
         pack();
     }
 
@@ -254,9 +261,15 @@ public class Application extends JFrame implements
         logOnPanel.setUsers(usrMgr().getUserList());
 
         // Other
-
+        try {
+            if (Main.FULL_SCREEN) {
+                setExtendedState(JFrame.MAXIMIZED_BOTH);
+                setUndecorated(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         pack();
-
     }
 
     //
@@ -290,28 +303,85 @@ public class Application extends JFrame implements
     //
     @Override
     public void onInitSuccess(SerialPort serialPort) {
+        serialWriteRetry = 0;
         System.out.println("COM port found: " + serialPort.getDescriptivePortName());
         serMgr().initComPort(serialPort);
         serMgr().sendInit(Main.DOOR_COUNT);
+        serMgr().startPinging(Main.PING_DELAY);
     }
 
     @Override
-    public void onSerialError(String error) {
-        // TODO show dialog and exit(-1) ??
-        System.err.println(error);
+    public void onNewWrite(SerialMessage message) {
+        serialWriteRetry = 0;
+    }
+
+    @Override
+    public void onSerialError(SerialError serialError) {
+        System.err.println(serialError.getMessage());
+        SwingUtilities.invokeLater(() -> {
+            String error = serialError.getMessage();
+            if (serialError.getThrowable() != null) {
+                error += "\n" + serialError.getThrowable();
+            }
+            switch (serialError.getErrorType()) {
+                case OpenError:
+                    showErrorMessage(error, true);
+                    break;
+                case ReadError:
+                    showErrorMessage(error, false);
+                    break;
+                case OtherError:
+                    showErrorMessage(error, false);
+                    break;
+                case WriteError:
+                    if (serialError.getSerialMessage() != null) {
+                        switch (serialWriteRetry) {
+                            case 0: // Retry to send the message
+                                System.err.println("Write error, trying to resend the message");
+                                serMgr().write(serialError.getSerialMessage());
+                                break;
+                            case 1: // Try to reset and initialize again
+                                System.err.println("Write error, trying to initialize again");
+                                int res = JOptionPane.showConfirmDialog(
+                                        Application.this,
+                                        "Failed to communicate with controller, make sure the system setup is" +
+                                                " correct. Retry to initialize?",
+                                        "Serial Error",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                                if (res == JOptionPane.YES_OPTION) {
+                                    serMgr().reInitialize();
+                                }
+                                break;
+                            case 2:
+                                System.err.println("Write error, no communication");
+                                showErrorMessage(error, true);
+                                break;
+                        }
+                        serialWriteRetry++;
+                    } else {
+                        showErrorMessage(error, false);
+                    }
+                    break;
+            }
+        });
+    }
+
+    private void showErrorMessage(String error, boolean exit) {
         JOptionPane.showMessageDialog(
                 Application.this,
                 error,
-                "OpenWhileLocked",
+                "Serial error",
                 JOptionPane.ERROR_MESSAGE
         );
-        if (!Main.DEBUG_MODE) {
+        if (exit && !Main.DEBUG_MODE) {
             Main.shutDown();
         }
     }
 
     @Override
-    public void onNewMessage(SerialMessage message) {
+    public void onNewRead(SerialMessage message) {
         if (message.getCommand().contains("D")) {
             Door door = doorMgr().updateDoor(message);
             if (door != null) {

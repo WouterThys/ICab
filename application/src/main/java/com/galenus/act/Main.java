@@ -18,6 +18,7 @@ public class Main {
     public static boolean FULL_SCREEN = false;
     public static int DOOR_COUNT = 5;
     public static int USER_LOGON_TIME = (20); // Seconds
+    public static int PING_DELAY = 5000; // 5s
 
     public static void main(String[] args) {
         String startUpPath = new File("").getAbsolutePath() + File.separator;
@@ -30,9 +31,6 @@ public class Main {
             app.setTitle("I-CAB");
             app.setLocationByPlatform(true);
             app.setPreferredSize(new Dimension(1500, 800));
-            if (FULL_SCREEN) {
-                app.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
             app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             app.pack();
             app.setVisible(true);

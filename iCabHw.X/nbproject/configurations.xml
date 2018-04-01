@@ -12,7 +12,9 @@
         <itemPath>Drivers/UART_Driver.h</itemPath>
         <itemPath>Drivers/TMR0_Driver.h</itemPath>
         <itemPath>Drivers/PWM_Driver.h</itemPath>
+        <itemPath>Drivers/TMR1_Driver.h</itemPath>
       </logicalFolder>
+      <itemPath>Config.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -29,6 +31,7 @@
         <itemPath>Drivers/UART_Driver.c</itemPath>
         <itemPath>Drivers/TMR0_Driver.c</itemPath>
         <itemPath>Drivers/PWM_Driver.c</itemPath>
+        <itemPath>Drivers/TMR1_Driver.c</itemPath>
       </logicalFolder>
       <itemPath>configuration.c</itemPath>
       <itemPath>main.c</itemPath>

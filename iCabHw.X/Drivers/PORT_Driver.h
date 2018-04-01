@@ -10,11 +10,13 @@
 #define UART_RX_Dir     TRISCbits.TRISC6
     
 // Door ports
-#define DOORS_Port      LATB
-#define DOORS_Dir       TRISB
+#define DOORS_Port      PORTB   /* Doors port                                 */
+#define DOORS_Dir       TRISB   /* Direction of doors prot                    */
+#define DOORS_First     0       /* First pin of the doors port is B0          */
     
-#define SENSORS_Port    PORTB
-#define SENSORS_Dir     TRISB
+#define SENSORS_Port    PORTA   /* Sensort port                               */
+#define SENSORS_Dir     TRISA   /* Direction of sensor port                   */
+#define SENSORS_First   1       /* First pin of the sensor port is A1         */
     
  /**
  * Initializes all the parameters to the default setting, as well as writing the

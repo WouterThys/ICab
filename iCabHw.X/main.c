@@ -3,13 +3,16 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "Config.h"
 #include "Drivers/PORT_Driver.h"
 #include "Drivers/UART_Driver.h"
 #include "Drivers/TMR0_Driver.h"
+#include "Drivers/TMR1_Driver.h"
 #include "Drivers/PWM_Driver.h"
 #include "Controllers/DOOR_Controller.h"
 
 #define _XTAL_FREQ 16000000 /* 16 MHz crystal                                 */
+#define LED1    PORTBbits.RB5
 
 #define COMMAND_LOCK    "L" /* Command to lock doors                          */
 #define COMMAND_UNLOCK  "U" /* Command to unlock doors                        */
@@ -24,22 +27,22 @@
 #define ALARM_OFF     0
 #define ALARM_SOFT    1
 #define ALARM_HARD    2
+#define ALARM_COMM    3
 
-#define PWM_OFF     0x00
-#define PWM_SOFT    0x0A
-#define PWM_HARD    0x7F
+uint8_t lockDelayCnt;
+uint8_t communicationCnt;
+READ_Data read;
+bool tick;
+bool lock;
 
-static READ_Data read;
-static bool tick;
+uint8_t pwm;
+uint8_t newAlarm;
+uint8_t oldAlarm;
 
-static uint8_t pwm;
-static uint8_t newAlarm;
-static uint8_t oldAlarm;
+void initDoors(uint8_t door_cnt);
+void setAlarm(uint8_t alarm);
 
-static void initDoors(uint8_t door_cnt);
-static void setAlarm(uint8_t alarm);
-
-static void initDoors(uint8_t door_cnt) {
+void initDoors(uint8_t door_cnt) {
     if (door_cnt < 1) {
         door_cnt = 1;
     }
@@ -51,7 +54,7 @@ static void initDoors(uint8_t door_cnt) {
     D_TMR0_Enable(true);
 }
 
-static void setAlarm(uint8_t alarm) {
+void setAlarm(uint8_t alarm) {
     newAlarm = alarm;
 }
 
@@ -60,13 +63,14 @@ void main(void) {
     // Initialize ports to defaults
     D_PORT_Init();
     
-    // Initialize the UART module with a baud rate of 9600, with the use 
+    // Initialize the UART module with a baud rate of SERIAL_BAUD, with the use 
     // of interrupts.
-    D_UART_Init("P", 9600, true);
+    D_UART_Init("P", SERIAL_BAUD, true);
     D_UART_Enable(true);
     
-    // Initialize timer
+    // Initialize timers
     D_TMR0_Init();
+    D_TMR1_Init();
     
     // Initialize PWM
     D_PWM_Init();
@@ -75,28 +79,68 @@ void main(void) {
     
     newAlarm = 0;
     oldAlarm = 0;
+    lock = false;
+    tick = false;
+    
+    __delay_ms(200);
+    if (LOCK) {
+        PORTB = 0x00;
+    } else {
+        PORTB = 0xFF;
+    }
     
     while(1) {
+        // Close doors
+        if (lock) {
+            D_TMR1_Enable(false);
+            lockDelayCnt = 0;
+            C_DOOR_LockAll();
+            lock = false;
+        }
         
         // Serial
         if (readReady) {
             readReady = false;
             read = D_UART_Read();
+            LED1 = !LED1;
+            
+            // Communication
+            communicationCnt = 0;
+            if (oldAlarm == ALARM_COMM) {
+                newAlarm = ALARM_OFF;
+            } 
+            
+            // Lock doors: start timer 
             if (strcmp(read.command, COMMAND_LOCK) == 0) {
-                C_DOOR_LockAll();
+                lockDelayCnt = 0;
+                D_TMR1_Enable(true);
+              
+            // Unlock doors    
             } else if (strcmp(read.command, COMMAND_UNLOCK) == 0) {
+                lockDelayCnt = 0;
+                D_TMR1_Enable(false);
                 C_DOOR_UnlockAll();
+                
+            // Initialize    
             } else if (strcmp(read.command, COMMAND_INIT) == 0) {
                 initDoors((uint8_t)(*read.message - 0x30));
+                
+            // Reset    
             } else if (strcmp(read.command, COMMAND_RESET) == 0) {
                 __delay_ms(20);
                 Reset();
+                
+            // Ping    
             } else if (strcmp(read.command, COMMAND_PING) == 0) {
                 // Do nothing, acknowledge message will be send automatically
+                
+            // Alarm    
             } else if (strcmp(read.command, COMMAND_ALARM) == 0) {
                 setAlarm((uint8_t)(*read.message - 0x30));
+                
             } else {
                 D_UART_Write(COMMAND_ERROR, ERROR_UNKNOWN);
+                
             }
         }
         
@@ -110,13 +154,34 @@ void main(void) {
             // Send states
             C_DOOR_SendStates();
             
+            // Communication check
+            if (communicationCnt < ALARM_DELAY) {
+                communicationCnt++;
+            } else {
+                if (oldAlarm == ALARM_OFF) {
+                    newAlarm = ALARM_COMM;
+                }
+            }
+            
             // Set PWM for alarm
-            if (newAlarm != oldAlarm || newAlarm == ALARM_SOFT) {
+            if (newAlarm != oldAlarm || newAlarm == ALARM_SOFT || newAlarm == ALARM_COMM) {
                 switch (newAlarm) {
                     default:
-                    case 0: pwm = PWM_OFF; break;
-                    case 1: pwm += PWM_SOFT; break;
-                    case 2: pwm = PWM_HARD; break;
+                    case ALARM_OFF: 
+                        pwm = PWM_OFF; 
+                        break;
+                        
+                    case ALARM_COMM:
+                    case ALARM_SOFT:  
+                        if (pwm == 0) {
+                            pwm = 1;
+                        }
+                        pwm = (uint8_t)(pwm * PWM_SOFT);
+                        break;
+                        
+                    case ALARM_HARD: 
+                        pwm = PWM_HARD; 
+                        break;
                 }
                 D_PWM_SetPwm(pwm);
                 oldAlarm = newAlarm;
@@ -125,9 +190,24 @@ void main(void) {
     }
 }
 
-void interrupt HighISR(void) {
+void interrupt low_priority LowISR(void) {
+    // Finite state clock
     if (INTCONbits.TMR0IF) {
-        tick = true;
         INTCONbits.TMR0IF = 0;
+        tick = true;
+    }
+    
+    // Door lock delay timer
+    if (PIR1bits.TMR1IF) {
+        TMR1H = 0x5E;
+        TMR1L = 0x00;
+        
+        if (lockDelayCnt < LOCK_DELAY-1) {
+            lockDelayCnt++;
+        } else {
+            lock = true;
+        }
+        
+        PIR1bits.TMR1IF = 0;
     }
 }

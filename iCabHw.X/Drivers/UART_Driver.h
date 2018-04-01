@@ -50,6 +50,8 @@ READ_Data D_UART_Read();
  */
 void D_UART_Enable(bool enable);
 
+void D_UART_SendInt(int i);
+
 #ifdef	__cplusplus
 }
 #endif

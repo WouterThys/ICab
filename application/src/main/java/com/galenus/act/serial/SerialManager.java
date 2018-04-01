@@ -4,12 +4,18 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import com.galenus.act.classes.interfaces.SerialListener;
+import com.galenus.act.gui.models.SerialLogTableModel;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
+import static com.galenus.act.serial.SerialError.ErrorType.*;
 
 public class SerialManager {
+
+    private static final int MAX_BUFFER = 50;
 
     /*
      *                  SINGLETON
@@ -28,12 +34,18 @@ public class SerialManager {
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private List<SerialListener> serialListenerList = new ArrayList<>();
+    private Vector<SerialListener> serialListenerList = new Vector<>();
     private SerialPort serialPort;
-    private List<SerialMessage> txMessageList = new ArrayList<>();
-    private List<SerialMessage> rxMessageList = new ArrayList<>();
-    private List<SerialMessage> ackMessageList = new ArrayList<>();
+    private Vector<SerialMessage> txMessageList = new Vector<>(MAX_BUFFER);
+    private Vector<SerialMessage> rxMessageList = new Vector<>(MAX_BUFFER);
+    private Vector<SerialMessage> ackMessageList = new Vector<>(MAX_BUFFER);
     private String inputString = "";
+
+    private volatile boolean writing = false;
+    private int writeCount = 0;
+    private double averageAcknowledgeTime = 0;
+
+    private PingThread pingThread;
 
     /*
      *                  METHODS
@@ -46,20 +58,43 @@ public class SerialManager {
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
-    public void close() {
+    private void close() {
         if (serialPort != null) {
+            // Stop pinging
             try {
-                if (serialPort.isOpen()) {
+                if (pingThread != null) {
+                    pingThread.stop();
+                }
+            } catch (Exception e) {
+                // Nothing we can do..
+            }
+
+
+                // Reset
+                try {
                     SerialMessage reset = MessageFactory.createReset();
                     String data = reset.toString();
                     serialPort.writeBytes(data.getBytes(), data.length());
+
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    // Nothing we can do..
                 }
 
-                serialPort.removeDataListener();
-                serialPort.closePort();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                // Close port
+                try {
+                    if (serialPort.isOpen()) {
+                        SerialMessage reset = MessageFactory.createReset();
+                        String data = reset.toString();
+                        serialPort.writeBytes(data.getBytes(), data.length());
+                    }
+
+                    serialPort.removeDataListener();
+                    serialPort.closePort();
+                } catch (Exception e) {
+                    // Nothing we can do..
+                }
+
         }
     }
 
@@ -69,6 +104,14 @@ public class SerialManager {
 
     public String getInputBufferString() {
         return inputString;
+    }
+
+    public int getWriteCount() {
+        return writeCount;
+    }
+
+    public double getAverageAcknowledgeTime() {
+        return averageAcknowledgeTime;
     }
 
     public void clearRxMessages() {
@@ -105,8 +148,47 @@ public class SerialManager {
             this.serialPort.setComPortParameters(9600, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
             addDataAvailableEvent(this.serialPort);
             if (!this.serialPort.openPort()) {
-                onError("Failed to open port: " + port.getDescriptivePortName());
+                onError(new SerialError(SerialError.ErrorType.OpenError, "Failed to open port: " + port.getDescriptivePortName()));
             }
+        }
+    }
+
+    public void reInitialize() {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    sendReset();
+                    Thread.sleep(1000);
+                    sendInit(5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    public void startPinging(int delayInMillis) {
+        if (pingThread != null) {
+            pingThread.cancel(true);
+        }
+
+        pingThread = new PingThread(delayInMillis);
+        pingThread.execute();
+    }
+
+    public void setPingEnabled(boolean enabled) {
+        if (pingThread != null && pingThread.keepRunning) {
+            pingThread.setEnabled(enabled);
+        }
+    }
+
+    public boolean getPingEnabled() {
+        return pingThread != null && pingThread.keepRunning && pingThread.enabled;
+    }
+
+    public int getPingDelay() {
+        if (pingThread != null && pingThread.keepRunning) {
+            return pingThread.delay;
+        } else {
+            return 0;
         }
     }
 
@@ -121,6 +203,13 @@ public class SerialManager {
         SerialMessage init = MessageFactory.createInit(doorCount);
         if (addToMessageList(init)) {
             write(init);
+        }
+    }
+
+    public void sendPing() {
+        SerialMessage ping = MessageFactory.createPing();
+        if (addToMessageList(ping)) {
+            write(ping);
         }
     }
 
@@ -157,51 +246,83 @@ public class SerialManager {
         return new ArrayList<>(rxMessageList);
     }
 
-    private void write(final SerialMessage message) {
+    public void write(final SerialMessage message) {
         try {
             if (serialPort != null) {
                 if (serialPort.isOpen()) {
                     SwingUtilities.invokeLater(() -> {
-                        try {
-                            String data = message.toString();
-                            serialPort.writeBytes(data.getBytes(), data.length());
-                            System.out.println("Bytes written: " + data);
-
-                            Thread.sleep(80);
-                            if (!message.isAcknowledged()) {
-                                onError("Controller did not respond");
-                            }
-                        } catch (Exception e) {
-                            onError(e);
-                        }
+                        doWrite(message);
                     });
                 } else {
-                    onError("COM port is closed..");
+                    onError(new SerialError(OpenError,"COM port is closed.."));
                 }
             } else {
-                onError("No COM port available..");
+                onError(new SerialError(OtherError,"No COM port available.."));
             }
         } catch (Exception e) {
-            onError(e);
+            onError(new SerialError(OtherError,e, "Unexpected serial error.."));
+        }
+    }
+
+    private void doWrite(SerialMessage message) {
+        if (writing) {
+            System.out.println("Still writing..");
+        }
+        int waitCount = 0;
+        while (writing && waitCount < 20) {
+            try {
+                Thread.sleep(10);
+                waitCount++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (writing) {
+            onError(new SerialError(WriteError, null, null,"Failed to write.."));
+            writing = false;
+            return;
+        }
+        writing = true;
+        try {
+            String data = message.toString();
+            serialPort.writeBytes(data.getBytes(), data.length());
+            System.out.println("Bytes written: " + data);
+            writeCount++;
+
+            int cnt = 0;
+            boolean acknowledged = false;
+            while(!acknowledged && cnt < 200) {
+                Thread.sleep(2);
+                acknowledged = message.isAcknowledged();
+                cnt++;
+            }
+            if (!acknowledged) {
+                onError(new SerialError(WriteError, message, null,"Controller did not respond after 400ms"));
+            } else {
+                averageAcknowledgeTime = (((writeCount -1) * averageAcknowledgeTime) + cnt*2) / writeCount;
+                onNewWrite(message);
+            }
+        } catch (Exception e) {
+            onError(new SerialError(WriteError, message, e, "Controller did not respond after 400ms"));
+        } finally {
+            writing = false;
         }
     }
 
     private boolean addToMessageList(SerialMessage message) {
         for (SerialMessage m : txMessageList) {
             if (m.getId() == message.getId()) {
-                onError("Buffer overflow: message with same id found..");
                 return false;
             }
         }
         txMessageList.add(message);
+        if (txMessageList.size() >= MAX_BUFFER) {
+            txMessageList.remove(0);
+        }
         return true;
     }
 
-    private void onError(Throwable throwable) {
-        onError(throwable.getMessage());
-    }
-
-    private void onError(String error) {
+    private void onError(SerialError error) {
         for (SerialListener listener : serialListenerList) {
             listener.onSerialError(error);
         }
@@ -213,9 +334,15 @@ public class SerialManager {
         }
     }
 
-    private void onNewMessage(SerialMessage message) {
+    private void onNewWrite(SerialMessage message) {
         for (SerialListener listener : serialListenerList) {
-            listener.onNewMessage(message);
+            listener.onNewWrite(message);
+        }
+    }
+
+    private void onNewRead(SerialMessage message) {
+        for (SerialListener listener : serialListenerList) {
+            listener.onNewRead(message);
         }
     }
 
@@ -249,6 +376,9 @@ public class SerialManager {
                         System.out.println("Acknowledge message: " + message);
 
                         ackMessageList.add(message);
+                        if (ackMessageList.size() >= MAX_BUFFER) {
+                            ackMessageList.remove(0);
+                        }
                         txMessageList.remove(message);
                         return;
                     }
@@ -269,10 +399,13 @@ public class SerialManager {
             if (message != null) {
                 if (message.getType().equals(SerialMessage.Acknowledge)) {
                     tryAcknowledge(message);
-                    onNewMessage(message);
+                    onNewRead(message);
                 } else {
                     rxMessageList.add(message);
-                    onNewMessage(message);
+                    if (rxMessageList.size() >= MAX_BUFFER) {
+                        rxMessageList.remove(0);
+                    }
+                    onNewRead(message);
                 }
                 if (inputString.contains(message.toString())) {
                     retry = 0;
@@ -283,13 +416,11 @@ public class SerialManager {
                 if (retry > 5) {
                     retry = 0;
                     inputString = "";
-                    onError("Invalid buffer exceeded retry count..");
+                    onError(new SerialError(ReadError, "Invalid input.."));
                 }
             }
         } while (message != null);
     }
-
-
 
     public static class FindComPortThread extends SwingWorker<Boolean, Integer> {
 
@@ -361,12 +492,50 @@ public class SerialManager {
                 if (success) {
                     serialListener.onInitSuccess(serialPort);
                 } else {
-                    serialListener.onSerialError("OpenWhileLocked finding COM port..");
+                    serialListener.onSerialError(new SerialError(OpenError, "Failed finding COM port.."));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                serialListener.onSerialError("OpenWhileLocked initializing: " + e.getMessage());
+                serialListener.onSerialError(new SerialError(OpenError, e,"Failed finding COM port.."));
             }
+        }
+    }
+
+    private static class PingThread extends SwingWorker<Void, Void> {
+
+        private boolean keepRunning = true;
+        private boolean enabled = true;
+
+        private int delay;
+
+        public PingThread(int delay) {
+            this.delay = delay;
+            this.keepRunning = true;
+            this.enabled = true;
+        }
+
+        void stop() {
+            keepRunning = false;
+        }
+
+        void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+
+            while (keepRunning) {
+                try {
+                    if (enabled) {
+                        serMgr().sendPing();
+                    }
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
         }
     }
 }

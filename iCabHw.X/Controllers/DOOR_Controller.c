@@ -1,5 +1,6 @@
 #include <xc.h>
 
+#include "../Config.h"
 #include "../Drivers/PORT_Driver.h"
 #include "../Drivers/UART_Driver.h"
 #include "DOOR_Controller.h"
@@ -11,20 +12,23 @@
 /*******************************************************************************
  *          MACRO FUNCTIONS
  ******************************************************************************/
-#define PORT_MASK(d)        ~(1<<doors[d].port_pin) 
+// Set the value (v) on port (p) bit (b) 
+#define SetValue(p, b, v) p ^= (uint8_t)((-v ^ p) & (1 << b))
+// Get bit (b) of port (p)
+#define GetValue(p, b) ((p >> b) & 0x01)
 
 /*******************************************************************************
  *          VARIABLES
  ******************************************************************************/
 static int door_cnt;
-static Door doors[10];
+static Door_t doors[10];
 
 /*******************************************************************************
  *          BASIC FUNCTIONS
  ******************************************************************************/
-static void commandAndMessage(Door door, char* com, char* mes);
+static void commandAndMessage(Door_t door, char* com, char* mes);
 
-static void commandAndMessage(Door door, char* com, char* mes) {
+static void commandAndMessage(Door_t door, char* com, char* mes) {
     // Command
     com[0] = 'D';
     com[1] = (uint8_t)(door.id + 0x30);
@@ -43,10 +47,6 @@ static void commandAndMessage(Door door, char* com, char* mes) {
  *          DRIVER FUNCTIONS
  ******************************************************************************/
 void C_DOOR_Init(uint8_t cnt) {
-    // Ports
-    DOORS_Dir &= 0x3F; // PORT6 -> PORTB7 are port lock pins => outputs
-    SENSORS_Dir |= 0x3F; // PORTB0 -> PORTB4 are sensor inputs => inputs 
-    
     // Doors
     door_cnt = cnt;
     uint8_t d;
@@ -54,54 +54,55 @@ void C_DOOR_Init(uint8_t cnt) {
         doors[d].id = d;
         
         doors[d].locked = true;
-        doors[d].lock_port = &PORTB;
-        doors[d].lock_pin = 7;
+        doors[d].lock_port = &DOORS_Port;
+        doors[d].lock_pin = (uint8_t)(DOORS_First + d);
         
         doors[d].is_open = false;
         doors[d].was_open = true;
-        doors[d].sensor_port = &PORTB;
-        doors[d].sensor_pin = d;
+        doors[d].sensor_port = &SENSORS_Port;
+        doors[d].sensor_pin = (uint8_t) (SENSORS_First + d);
+        
+        SetValue(DOORS_Dir, (DOORS_First + d), 0); // Set direction output
+        SetValue(SENSORS_Dir, (SENSORS_First + d), 1); // Set direction input
     }
 }
 
-void C_DOOR_Lock(uint8_t id) {
-    uint8_t d;
-    for (d = 0; d < door_cnt; d++) {
-        if (doors[d].id == id) {
-            *doors[d].lock_port |= (uint8_t)(1 << doors[d].lock_pin);
-        }
-    }
-}
+//void C_DOOR_Lock(uint8_t id) {
+//    uint8_t d;
+//    for (d = 0; d < door_cnt; d++) {
+//        if (doors[d].id == id) {
+//            SetValue(*doors[d].lock_port, doors[d].lock_pin, LOCK);
+//        }
+//    }
+//}
     
 void C_DOOR_LockAll() {
-//    uint8_t d;
-//    for (d = 0; d < DOOR_COUNT; d++) {
-//        *doors[d].lock_port |= 1 << doors[d].lock_pin;
-//    }
-    *doors[0].lock_port |= 0xC0;
-}
-
-void C_DOOR_Unlock(uint8_t id) {
     uint8_t d;
     for (d = 0; d < door_cnt; d++) {
-        if (doors[d].id == id) {
-            *doors[d].lock_port &= (uint8_t)(~(1 << doors[d].lock_pin));
-        }
+        SetValue(*doors[d].lock_port, doors[d].lock_pin, LOCK);
     }
 }
 
-void C_DOOR_UnlockAll() {
+//void C_DOOR_Unlock(uint8_t id) {
 //    uint8_t d;
-//    for (d = 0; d < DOOR_COUNT; d++) {
-//        *doors[d].lock_port &= ~(1 << doors[d].lock_pin);
+//    for (d = 0; d < door_cnt; d++) {
+//        if (doors[d].id == id) {
+//            SetValue(*doors[d].lock_port, doors[d].lock_pin, UNLOCK);
+//        }
 //    }
-    *doors[0].lock_port &= 0x3F;
+//}
+
+void C_DOOR_UnlockAll() {
+    uint8_t d;
+    for (d = 0; d < door_cnt; d++) {
+        SetValue(*doors[d].lock_port, doors[d].lock_pin, UNLOCK);
+    }
 }
 
 void C_DOOR_ReadSensors() {
     uint8_t d;
     for (d = 0; d < door_cnt; d++) {
-        doors[d].is_open = (uint8_t)((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01);
+        doors[d].is_open = (uint8_t)(GetValue(*doors[d].sensor_port, doors[d].sensor_pin) == OPEN);
     }
 }
 

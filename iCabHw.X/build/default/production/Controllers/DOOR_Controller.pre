@@ -4266,7 +4266,7 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 23 "Controllers/../Drivers/PORT_Driver.h"
+# 25 "Controllers/../Drivers/PORT_Driver.h"
 void D_PORT_Init();
 
 # 12 "C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdbool.h"
@@ -4384,49 +4384,45 @@ READ_Data D_UART_Read();
 # 51
 void D_UART_Enable(bool enable);
 
-# 18 "Controllers/DOOR_Controller.h"
+void D_UART_SendInt(int i);
+
+# 12 "Controllers/DOOR_Controller.h"
 typedef struct {
 uint8_t id;
 
 bool locked;
-uint8_t* lock_port;
+volatile uint8_t* lock_port;
 uint8_t lock_pin;
 
 bool was_open;
 bool is_open;
-uint8_t* sensor_port;
+volatile uint8_t* sensor_port;
 uint8_t sensor_pin;
-}Door;
+} Door_t;
 
-# 35
+# 29
 void C_DOOR_Init(uint8_t door_cnt);
 
-# 41
-void C_DOOR_Lock(uint8_t id);
-
-# 46
+# 40
 void C_DOOR_LockAll();
 
-# 52
-void C_DOOR_Unlock(uint8_t id);
-
-# 57
+# 51
 void C_DOOR_UnlockAll();
 
-# 62
+# 56
 void C_DOOR_ReadSensors();
 
-# 67
+# 61
 void C_DOOR_SendStates();
 
-# 19 "Controllers/DOOR_Controller.c"
+# 23 "Controllers/DOOR_Controller.c"
 static int door_cnt;
-static Door doors[10];
+static Door_t doors[10];
 
-# 25
-static void commandAndMessage(Door door, char* com, char* mes);
+# 29
+static void commandAndMessage(Door_t door, char* com, char* mes);
 
-static void commandAndMessage(Door door, char* com, char* mes) {
+static void commandAndMessage(Door_t door, char* com, char* mes) {
 
 com[0] = 'D';
 com[1] = (uint8_t)(door.id + 0x30);
@@ -4441,12 +4437,8 @@ mes[0] = 'O';
 mes[1] = '\0';
 }
 
-# 45
+# 49
 void C_DOOR_Init(uint8_t cnt) {
-
-TRISB &= 0x3F;
-TRISB |= 0x3F;
-
 
 door_cnt = cnt;
 uint8_t d;
@@ -4455,53 +4447,38 @@ doors[d].id = d;
 
 doors[d].locked = 1;
 doors[d].lock_port = &PORTB;
-doors[d].lock_pin = 7;
+doors[d].lock_pin = (uint8_t)(0 + d);
 
 doors[d].is_open = 0;
 doors[d].was_open = 1;
-doors[d].sensor_port = &PORTB;
-doors[d].sensor_pin = d;
+doors[d].sensor_port = &PORTA;
+doors[d].sensor_pin = (uint8_t) (1 + d);
+
+TRISB ^= (uint8_t)((-0 ^ TRISB) & (1 << (0 + d)));
+TRISA ^= (uint8_t)((-1 ^ TRISA) & (1 << (1 + d)));
 }
 }
 
-void C_DOOR_Lock(uint8_t id) {
-uint8_t d;
-for (d = 0; d < door_cnt; d++) {
-if (doors[d].id == id) {
-*doors[d].lock_port |= (uint8_t)(1 << doors[d].lock_pin);
-}
-}
-}
-
+# 79
 void C_DOOR_LockAll() {
-
-
-
-
-*doors[0].lock_port |= 0xC0;
-}
-
-void C_DOOR_Unlock(uint8_t id) {
 uint8_t d;
 for (d = 0; d < door_cnt; d++) {
-if (doors[d].id == id) {
-*doors[d].lock_port &= (uint8_t)(~(1 << doors[d].lock_pin));
-}
+*doors[d].lock_port ^= (uint8_t)((-0 ^ *doors[d].lock_port) & (1 << doors[d].lock_pin));
 }
 }
 
+# 95
 void C_DOOR_UnlockAll() {
-
-
-
-
-*doors[0].lock_port &= 0x3F;
+uint8_t d;
+for (d = 0; d < door_cnt; d++) {
+*doors[d].lock_port ^= (uint8_t)((-!0 ^ *doors[d].lock_port) & (1 << doors[d].lock_pin));
+}
 }
 
 void C_DOOR_ReadSensors() {
 uint8_t d;
 for (d = 0; d < door_cnt; d++) {
-doors[d].is_open = (uint8_t)((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01);
+doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
 }
 }
 

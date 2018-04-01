@@ -10,7 +10,7 @@
 /*******************************************************************************
  *          DEFINES
  ******************************************************************************/
-#define _XTAL_FREQ 16000000
+#define _XTAL_FREQ 16000000UL
 // &
 #define START_CHAR 0x26 
 // $
@@ -61,25 +61,9 @@ bool readReady;
 /*******************************************************************************
  *          BASIC FUNCTIONS
  ******************************************************************************/
-static void writeByte(uint8_t data);
-static uint8_t readByte(void);
+
 static void fillDataBuffer(uint8_t data);
 static void acknowledge();
-
-static void writeByte(uint8_t data) {
-    while(TXSTAbits.TRMT == 0); // Wait while buffer is still full
-    TXREG = data;
-}
-
-static uint8_t readByte() {
-    if(RCSTAbits.FERR == 1) {
-        // TODO: create error handler
-    }
-    if(RCSTAbits.OERR == 1) {
-        // TODO: create error handler
-    }
-    return RCREG;
-}
 
 static void fillDataBuffer(uint8_t data){
     switch(readBuffer.state) {
@@ -179,11 +163,7 @@ static void acknowledge() {
 /*******************************************************************************
  *          DRIVER FUNCTIONS
  ******************************************************************************/
-void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
-    // Port settings
-    UART_TX_Dir = 0;
-    UART_RX_Dir = 1;
-    
+void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {  
     // Clear/set variables
     deviceName = name;
     readReady = false;
@@ -191,6 +171,11 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     // Disable UART while initializing
     D_UART_Enable(false);
     
+    // Clear
+    RCSTAbits.FERR = 0;
+    RCSTAbits.OERR = 0;
+    RCREG = 0x00;
+        
     // TXSTA register settings
     TXSTAbits.TX9 = 0; // Selects 8-bit transmission
     TXSTAbits.SYNC = 0; // Synchronous mode
@@ -203,14 +188,9 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     BAUDCONbits.RXDTP = 0; // RX data is inverted
     BAUDCONbits.TXCKP = 0; // TX data is inverted
     BAUDCONbits.BRG16 = 0; // 8-bit Baud Rate Generator
-   
-    // Clear
-    RCSTAbits.FERR = 0;
-    RCSTAbits.OERR = 0;
-    RCREG = 0x00;
     
     // Baud
-    SPBRG = (uint8_t)((_XTAL_FREQ/baud)/64)-1; // Baud rate selection
+    SPBRG = ((_XTAL_FREQ/baud)/64)-1; // Baud rate selection
     
     // Interrupts for reading
     if (interrupts) {
@@ -218,7 +198,7 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
         INTCONbits.GIEH = 1; // Enable high interrupt
         INTCONbits.GIEL = 1; // Enable low interrupt
         PIR1bits.RCIF = 0; // Clear flag
-        IPR1bits.RCIP = 0; // Low priority
+        IPR1bits.RCIP = 1; // High priority
         PIE1bits.RCIE = 1; // Enable UART interrupt
     }
 }
@@ -261,13 +241,33 @@ void D_UART_Enable(bool enable) {
 }
 
 void putch(char data) {
-    writeByte(data); // Write the data
+    uint8_t max = 0;
+    // Wait while buffer is still full
+    while(TXSTAbits.TRMT == 0 && max < 200) {
+        max++;
+        __delay_us(5);
+    } 
+    TXREG = data;
+//    while(TXSTAbits.TRMT == 0);
+//    TXREG = data;
 }
 
-void interrupt low_priority LowISR(void) {
+void interrupt HighISR(void) {
     if (PIR1bits.RC1IF) {
-        fillDataBuffer(readByte());
         PIR1bits.RC1IF = 0;
+        
+        // Framing error (can be updated by reading RCREG register and receiving next valid byte)
+        if(RCSTAbits.FERR == 1) {
+            RCREG = 0x00; 
+            return;
+        }
+        // Overrun error (can be cleared by clearing bit CREN)
+        if(RCSTAbits.OERR == 1) {
+            RCSTAbits.CREN = 0;
+            RCSTAbits.CREN = 1;
+            return;
+        }
+        fillDataBuffer(RCREG);
     }
 }
 

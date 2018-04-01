@@ -46,7 +46,7 @@ void D_TMR0_Init() {
     INTCONbits.GIEL = 1;    // Enable low interrupt
     
     INTCONbits.TMR0IF = 0;  // Clear flag
-    INTCON2bits.TMR0IP = 1; // Priority is high
+    INTCON2bits.TMR0IP = 0; // Priority is low
     INTCONbits.TMR0IE = 1;  // Enable 
 }
 
