@@ -5,16 +5,17 @@ import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.models.WebLogTableModel;
 import com.galenus.act.utils.GuiUtils;
-import com.galenus.act.web.AsyncWebCall;
+import com.galenus.act.classes.managers.web.AsyncWebCall;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-import static com.galenus.act.gui.Application.imageResource;
-import static com.galenus.act.web.WebManager.webMgr;
+import static com.galenus.act.Application.imageResource;
+import static com.galenus.act.classes.managers.web.WebManager.webMgr;
 
 class WebLogsPanel extends JPanel implements GuiInterface {
 
@@ -57,7 +58,7 @@ class WebLogsPanel extends JPanel implements GuiInterface {
     }
 
     void updateTableData() {
-        java.util.List<AsyncWebCall> webCalls = new ArrayList<>();
+        List<AsyncWebCall> webCalls = new ArrayList<>();
         webCalls.addAll(webMgr().getWebCallList());
 
         webCalls.sort(new WebLogsPanel.LogMessageSorter());

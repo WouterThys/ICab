@@ -4413,10 +4413,13 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 # 39
 void D_UART_Write(const char* command, const char* data);
 
-# 45
+# 46
+void D_UART_WriteInt(const char* command, int d);
+
+# 52
 READ_Data D_UART_Read();
 
-# 51
+# 58
 void D_UART_Enable(bool enable);
 
 void D_UART_SendInt(int i);
@@ -4467,12 +4470,13 @@ void C_DOOR_ReadSensors();
 # 61
 void C_DOOR_SendStates();
 
-# 31 "main.c"
+# 32 "main.c"
 uint8_t lockDelayCnt;
 uint8_t communicationCnt;
 READ_Data read;
 bool tick;
 bool lock;
+bool running;
 
 uint8_t pwm;
 uint8_t newAlarm;
@@ -4520,6 +4524,7 @@ newAlarm = 0;
 oldAlarm = 0;
 lock = 0;
 tick = 0;
+running = 0;
 
 _delay((unsigned long)((200)*(16000000UL/4000.0)));
 if (0) {
@@ -4563,6 +4568,7 @@ C_DOOR_UnlockAll();
 
 } else if (strcmp(read.command, "I") == 0) {
 initDoors((uint8_t)(*read.message - 0x30));
+running = 1;
 
 
 } else if (strcmp(read.command, "R") == 0) {
@@ -4571,7 +4577,7 @@ asm(" reset");
 
 
 } else if (strcmp(read.command, "P") == 0) {
-
+D_UART_WriteInt("S", running);
 
 
 } else if (strcmp(read.command, "A") == 0) {

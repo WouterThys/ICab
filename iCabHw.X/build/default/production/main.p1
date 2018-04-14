@@ -17,7 +17,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _D_PORT_Init `(v ~T0 @X0 0 ef ]
 "32 Drivers/UART_Driver.h
 [v _D_UART_Init `(v ~T0 @X0 0 ef3`*Cuc`ui`uc ]
-"51
+"58
 [v _D_UART_Enable `(v ~T0 @X0 0 ef1`uc ]
 "11 Drivers/TMR0_Driver.h
 [v _D_TMR0_Init `(v ~T0 @X0 0 ef ]
@@ -31,7 +31,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _D_TMR1_Enable `(v ~T0 @X0 0 ef1`uc ]
 "14 Drivers/UART_Driver.h
 [v _readReady `uc ~T0 @X0 0 e ]
-"45
+"52
 [v _D_UART_Read `(S322 ~T0 @X0 0 ef ]
 "2260 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [s S91 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -51,7 +51,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _strcmp `(i ~T0 @X0 0 ef2`*Cuc`*Cuc ]
 "51 Controllers/DOOR_Controller.h
 [v _C_DOOR_UnlockAll `(v ~T0 @X0 0 ef ]
-"39 Drivers/UART_Driver.h
+"46 Drivers/UART_Driver.h
+[v _D_UART_WriteInt `(v ~T0 @X0 0 ef2`*Cuc`i ]
+"39
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
 "56 Controllers/DOOR_Controller.h
 [v _C_DOOR_ReadSensors `(v ~T0 @X0 0 ef ]
@@ -3258,9 +3260,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.h: 23: }READ_Data;
 [; ;UART_Driver.h: 32: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 [; ;UART_Driver.h: 39: void D_UART_Write(const char* command, const char* data);
-[; ;UART_Driver.h: 45: READ_Data D_UART_Read();
-[; ;UART_Driver.h: 51: void D_UART_Enable(bool enable);
-[; ;UART_Driver.h: 53: void D_UART_SendInt(int i);
+[; ;UART_Driver.h: 46: void D_UART_WriteInt(const char* command, int d);
+[; ;UART_Driver.h: 52: READ_Data D_UART_Read();
+[; ;UART_Driver.h: 58: void D_UART_Enable(bool enable);
+[; ;UART_Driver.h: 60: void D_UART_SendInt(int i);
 [; ;TMR0_Driver.h: 11: void D_TMR0_Init();
 [; ;TMR0_Driver.h: 17: void D_TMR0_Enable(bool enable);
 [; ;TMR1_Driver.h: 11: void D_TMR1_Init();
@@ -3282,270 +3285,282 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.h: 51: void C_DOOR_UnlockAll();
 [; ;DOOR_Controller.h: 56: void C_DOOR_ReadSensors();
 [; ;DOOR_Controller.h: 61: void C_DOOR_SendStates();
-"31 main.c
+"32 main.c
 [v _lockDelayCnt `uc ~T0 @X0 1 e ]
-[; ;main.c: 31: uint8_t lockDelayCnt;
-"32
-[v _communicationCnt `uc ~T0 @X0 1 e ]
-[; ;main.c: 32: uint8_t communicationCnt;
+[; ;main.c: 32: uint8_t lockDelayCnt;
 "33
-[v _read `S322 ~T0 @X0 1 e ]
-[; ;main.c: 33: READ_Data read;
+[v _communicationCnt `uc ~T0 @X0 1 e ]
+[; ;main.c: 33: uint8_t communicationCnt;
 "34
-[v _tick `uc ~T0 @X0 1 e ]
-[; ;main.c: 34: bool tick;
+[v _read `S322 ~T0 @X0 1 e ]
+[; ;main.c: 34: READ_Data read;
 "35
+[v _tick `uc ~T0 @X0 1 e ]
+[; ;main.c: 35: bool tick;
+"36
 [v _lock `uc ~T0 @X0 1 e ]
-[; ;main.c: 35: bool lock;
+[; ;main.c: 36: bool lock;
 "37
-[v _pwm `uc ~T0 @X0 1 e ]
-[; ;main.c: 37: uint8_t pwm;
-"38
-[v _newAlarm `uc ~T0 @X0 1 e ]
-[; ;main.c: 38: uint8_t newAlarm;
+[v _running `uc ~T0 @X0 1 e ]
+[; ;main.c: 37: bool running;
 "39
+[v _pwm `uc ~T0 @X0 1 e ]
+[; ;main.c: 39: uint8_t pwm;
+"40
+[v _newAlarm `uc ~T0 @X0 1 e ]
+[; ;main.c: 40: uint8_t newAlarm;
+"41
 [v _oldAlarm `uc ~T0 @X0 1 e ]
-[; ;main.c: 39: uint8_t oldAlarm;
-[; ;main.c: 41: void initDoors(uint8_t door_cnt);
-[; ;main.c: 42: void setAlarm(uint8_t alarm);
-"44
+[; ;main.c: 41: uint8_t oldAlarm;
+[; ;main.c: 43: void initDoors(uint8_t door_cnt);
+[; ;main.c: 44: void setAlarm(uint8_t alarm);
+"46
 [v _initDoors `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;main.c: 44: void initDoors(uint8_t door_cnt) {
+[; ;main.c: 46: void initDoors(uint8_t door_cnt) {
 [e :U _initDoors ]
 [v _door_cnt `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 45: if (door_cnt < 1) {
-"45
+[; ;main.c: 47: if (door_cnt < 1) {
+"47
 [e $ ! < -> _door_cnt `i -> 1 `i 325  ]
 {
-[; ;main.c: 46: door_cnt = 1;
-"46
+[; ;main.c: 48: door_cnt = 1;
+"48
 [e = _door_cnt -> -> 1 `i `uc ]
-"47
+"49
 }
 [e :U 325 ]
-[; ;main.c: 47: }
-[; ;main.c: 49: C_DOOR_Init(door_cnt);
-"49
+[; ;main.c: 49: }
+[; ;main.c: 51: C_DOOR_Init(door_cnt);
+"51
 [e ( _C_DOOR_Init (1 _door_cnt ]
-[; ;main.c: 50: C_DOOR_LockAll();
-"50
+[; ;main.c: 52: C_DOOR_LockAll();
+"52
 [e ( _C_DOOR_LockAll ..  ]
-[; ;main.c: 53: D_TMR0_Enable(1);
-"53
+[; ;main.c: 55: D_TMR0_Enable(1);
+"55
 [e ( _D_TMR0_Enable (1 -> -> 1 `i `uc ]
-[; ;main.c: 54: }
-"54
+[; ;main.c: 56: }
+"56
 [e :UE 324 ]
 }
-"56
+"58
 [v _setAlarm `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;main.c: 56: void setAlarm(uint8_t alarm) {
+[; ;main.c: 58: void setAlarm(uint8_t alarm) {
 [e :U _setAlarm ]
 [v _alarm `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 57: newAlarm = alarm;
-"57
+[; ;main.c: 59: newAlarm = alarm;
+"59
 [e = _newAlarm _alarm ]
-[; ;main.c: 58: }
-"58
+[; ;main.c: 60: }
+"60
 [e :UE 326 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"60
+"62
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 60: void main(void) {
+[; ;main.c: 62: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 61: _delay((unsigned long)((200)*(16000000UL/4000.0)));
-"61
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;main.c: 63: D_PORT_Init();
+[; ;main.c: 63: _delay((unsigned long)((200)*(16000000UL/4000.0)));
 "63
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
+[; ;main.c: 65: D_PORT_Init();
+"65
 [e ( _D_PORT_Init ..  ]
-[; ;main.c: 67: D_UART_Init("P", 9600, 1);
-"67
+[; ;main.c: 69: D_UART_Init("P", 9600, 1);
+"69
 [e ( _D_UART_Init (3 , , :s 1C -> -> 9600 `i `ui -> -> 1 `i `uc ]
-[; ;main.c: 68: D_UART_Enable(1);
-"68
+[; ;main.c: 70: D_UART_Enable(1);
+"70
 [e ( _D_UART_Enable (1 -> -> 1 `i `uc ]
-[; ;main.c: 71: D_TMR0_Init();
-"71
+[; ;main.c: 73: D_TMR0_Init();
+"73
 [e ( _D_TMR0_Init ..  ]
-[; ;main.c: 72: D_TMR1_Init();
-"72
+[; ;main.c: 74: D_TMR1_Init();
+"74
 [e ( _D_TMR1_Init ..  ]
-[; ;main.c: 75: D_PWM_Init();
-"75
-[e ( _D_PWM_Init ..  ]
-[; ;main.c: 77: _delay((unsigned long)((200)*(16000000UL/4000.0)));
+[; ;main.c: 77: D_PWM_Init();
 "77
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;main.c: 79: newAlarm = 0;
+[e ( _D_PWM_Init ..  ]
+[; ;main.c: 79: _delay((unsigned long)((200)*(16000000UL/4000.0)));
 "79
-[e = _newAlarm -> -> 0 `i `uc ]
-[; ;main.c: 80: oldAlarm = 0;
-"80
-[e = _oldAlarm -> -> 0 `i `uc ]
-[; ;main.c: 81: lock = 0;
-"81
-[e = _lock -> -> 0 `i `uc ]
-[; ;main.c: 82: tick = 0;
-"82
-[e = _tick -> -> 0 `i `uc ]
-[; ;main.c: 84: _delay((unsigned long)((200)*(16000000UL/4000.0)));
-"84
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;main.c: 85: if (0) {
+[; ;main.c: 81: newAlarm = 0;
+"81
+[e = _newAlarm -> -> 0 `i `uc ]
+[; ;main.c: 82: oldAlarm = 0;
+"82
+[e = _oldAlarm -> -> 0 `i `uc ]
+[; ;main.c: 83: lock = 0;
+"83
+[e = _lock -> -> 0 `i `uc ]
+[; ;main.c: 84: tick = 0;
+"84
+[e = _tick -> -> 0 `i `uc ]
+[; ;main.c: 85: running = 0;
 "85
+[e = _running -> -> 0 `i `uc ]
+[; ;main.c: 87: _delay((unsigned long)((200)*(16000000UL/4000.0)));
+"87
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
+[; ;main.c: 88: if (0) {
+"88
 [e $ ! != -> 0 `i -> 0 `i 328  ]
 {
-[; ;main.c: 86: PORTB = 0x00;
-"86
+[; ;main.c: 89: PORTB = 0x00;
+"89
 [e = _PORTB -> -> 0 `i `uc ]
-"87
+"90
 }
-[; ;main.c: 87: } else {
+[; ;main.c: 90: } else {
 [e $U 329  ]
 [e :U 328 ]
 {
-[; ;main.c: 88: PORTB = 0xFF;
-"88
+[; ;main.c: 91: PORTB = 0xFF;
+"91
 [e = _PORTB -> -> 255 `i `uc ]
-"89
+"92
 }
 [e :U 329 ]
-[; ;main.c: 89: }
-[; ;main.c: 91: while(1) {
-"91
+[; ;main.c: 92: }
+[; ;main.c: 94: while(1) {
+"94
 [e :U 331 ]
 {
-[; ;main.c: 93: if (lock) {
-"93
+[; ;main.c: 96: if (lock) {
+"96
 [e $ ! != -> _lock `i -> -> -> 0 `i `uc `i 333  ]
 {
-[; ;main.c: 94: D_TMR1_Enable(0);
-"94
-[e ( _D_TMR1_Enable (1 -> -> 0 `i `uc ]
-[; ;main.c: 95: lockDelayCnt = 0;
-"95
-[e = _lockDelayCnt -> -> 0 `i `uc ]
-[; ;main.c: 96: C_DOOR_LockAll();
-"96
-[e ( _C_DOOR_LockAll ..  ]
-[; ;main.c: 97: lock = 0;
+[; ;main.c: 97: D_TMR1_Enable(0);
 "97
-[e = _lock -> -> 0 `i `uc ]
+[e ( _D_TMR1_Enable (1 -> -> 0 `i `uc ]
+[; ;main.c: 98: lockDelayCnt = 0;
 "98
+[e = _lockDelayCnt -> -> 0 `i `uc ]
+[; ;main.c: 99: C_DOOR_LockAll();
+"99
+[e ( _C_DOOR_LockAll ..  ]
+[; ;main.c: 100: lock = 0;
+"100
+[e = _lock -> -> 0 `i `uc ]
+"101
 }
 [e :U 333 ]
-[; ;main.c: 98: }
-[; ;main.c: 101: if (readReady) {
-"101
+[; ;main.c: 101: }
+[; ;main.c: 104: if (readReady) {
+"104
 [e $ ! != -> _readReady `i -> -> -> 0 `i `uc `i 334  ]
 {
-[; ;main.c: 102: readReady = 0;
-"102
+[; ;main.c: 105: readReady = 0;
+"105
 [e = _readReady -> -> 0 `i `uc ]
-[; ;main.c: 103: read = D_UART_Read();
-"103
+[; ;main.c: 106: read = D_UART_Read();
+"106
 [e = _read ( _D_UART_Read ..  ]
-[; ;main.c: 104: PORTBbits.RB5 = !PORTBbits.RB5;
-"104
-[e = . . _PORTBbits 0 5 -> -> ! != -> . . _PORTBbits 0 5 `i -> -> -> 0 `i `Vuc `i `i `uc ]
-[; ;main.c: 107: communicationCnt = 0;
+[; ;main.c: 107: PORTBbits.RB5 = !PORTBbits.RB5;
 "107
+[e = . . _PORTBbits 0 5 -> -> ! != -> . . _PORTBbits 0 5 `i -> -> -> 0 `i `Vuc `i `i `uc ]
+[; ;main.c: 110: communicationCnt = 0;
+"110
 [e = _communicationCnt -> -> 0 `i `uc ]
-[; ;main.c: 108: if (oldAlarm == 3) {
-"108
+[; ;main.c: 111: if (oldAlarm == 3) {
+"111
 [e $ ! == -> _oldAlarm `i -> 3 `i 335  ]
 {
-[; ;main.c: 109: newAlarm = 0;
-"109
+[; ;main.c: 112: newAlarm = 0;
+"112
 [e = _newAlarm -> -> 0 `i `uc ]
-"110
+"113
 }
 [e :U 335 ]
-[; ;main.c: 110: }
-[; ;main.c: 113: if (strcmp(read.command, "L") == 0) {
-"113
+[; ;main.c: 113: }
+[; ;main.c: 116: if (strcmp(read.command, "L") == 0) {
+"116
 [e $ ! == ( _strcmp (2 , . _read 1 :s 2C -> 0 `i 336  ]
 {
-[; ;main.c: 114: lockDelayCnt = 0;
-"114
+[; ;main.c: 117: lockDelayCnt = 0;
+"117
 [e = _lockDelayCnt -> -> 0 `i `uc ]
-[; ;main.c: 115: D_TMR1_Enable(1);
-"115
-[e ( _D_TMR1_Enable (1 -> -> 1 `i `uc ]
+[; ;main.c: 118: D_TMR1_Enable(1);
 "118
+[e ( _D_TMR1_Enable (1 -> -> 1 `i `uc ]
+"121
 }
-[; ;main.c: 118: } else if (strcmp(read.command, "U") == 0) {
+[; ;main.c: 121: } else if (strcmp(read.command, "U") == 0) {
 [e $U 337  ]
 [e :U 336 ]
 [e $ ! == ( _strcmp (2 , . _read 1 :s 3C -> 0 `i 338  ]
 {
-[; ;main.c: 119: lockDelayCnt = 0;
-"119
+[; ;main.c: 122: lockDelayCnt = 0;
+"122
 [e = _lockDelayCnt -> -> 0 `i `uc ]
-[; ;main.c: 120: D_TMR1_Enable(0);
-"120
+[; ;main.c: 123: D_TMR1_Enable(0);
+"123
 [e ( _D_TMR1_Enable (1 -> -> 0 `i `uc ]
-[; ;main.c: 121: C_DOOR_UnlockAll();
-"121
-[e ( _C_DOOR_UnlockAll ..  ]
+[; ;main.c: 124: C_DOOR_UnlockAll();
 "124
+[e ( _C_DOOR_UnlockAll ..  ]
+"127
 }
-[; ;main.c: 124: } else if (strcmp(read.command, "I") == 0) {
+[; ;main.c: 127: } else if (strcmp(read.command, "I") == 0) {
 [e $U 339  ]
 [e :U 338 ]
 [e $ ! == ( _strcmp (2 , . _read 1 :s 4C -> 0 `i 340  ]
 {
-[; ;main.c: 125: initDoors((uint8_t)(*read.message - 0x30));
-"125
-[e ( _initDoors (1 -> - -> *U . _read 2 `i -> 48 `i `uc ]
+[; ;main.c: 128: initDoors((uint8_t)(*read.message - 0x30));
 "128
+[e ( _initDoors (1 -> - -> *U . _read 2 `i -> 48 `i `uc ]
+[; ;main.c: 129: running = 1;
+"129
+[e = _running -> -> 1 `i `uc ]
+"132
 }
-[; ;main.c: 128: } else if (strcmp(read.command, "R") == 0) {
+[; ;main.c: 132: } else if (strcmp(read.command, "R") == 0) {
 [e $U 341  ]
 [e :U 340 ]
 [e $ ! == ( _strcmp (2 , . _read 1 :s 5C -> 0 `i 342  ]
 {
-[; ;main.c: 129: _delay((unsigned long)((20)*(16000000UL/4000.0)));
-"129
-[e ( __delay (1 -> * -> -> 20 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;main.c: 130: asm(" reset");
-"130
-[; <"  reset ;# ">
+[; ;main.c: 133: _delay((unsigned long)((20)*(16000000UL/4000.0)));
 "133
+[e ( __delay (1 -> * -> -> 20 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
+[; ;main.c: 134: asm(" reset");
+"134
+[; <"  reset ;# ">
+"137
 }
-[; ;main.c: 133: } else if (strcmp(read.command, "P") == 0) {
+[; ;main.c: 137: } else if (strcmp(read.command, "P") == 0) {
 [e $U 343  ]
 [e :U 342 ]
 [e $ ! == ( _strcmp (2 , . _read 1 :s 6C -> 0 `i 344  ]
 {
-"137
+[; ;main.c: 138: D_UART_WriteInt("S", running);
+"138
+[e ( _D_UART_WriteInt (2 , :s 7C -> _running `i ]
+"141
 }
-[; ;main.c: 137: } else if (strcmp(read.command, "A") == 0) {
+[; ;main.c: 141: } else if (strcmp(read.command, "A") == 0) {
 [e $U 345  ]
 [e :U 344 ]
-[e $ ! == ( _strcmp (2 , . _read 1 :s 7C -> 0 `i 346  ]
+[e $ ! == ( _strcmp (2 , . _read 1 :s 8C -> 0 `i 346  ]
 {
-[; ;main.c: 138: setAlarm((uint8_t)(*read.message - 0x30));
-"138
+[; ;main.c: 142: setAlarm((uint8_t)(*read.message - 0x30));
+"142
 [e ( _setAlarm (1 -> - -> *U . _read 2 `i -> 48 `i `uc ]
-"140
+"144
 }
-[; ;main.c: 140: } else {
+[; ;main.c: 144: } else {
 [e $U 347  ]
 [e :U 346 ]
 {
-[; ;main.c: 141: D_UART_Write("E", "U");
-"141
-[e ( _D_UART_Write (2 , :s 8C :s 9C ]
-"143
+[; ;main.c: 145: D_UART_Write("E", "U");
+"145
+[e ( _D_UART_Write (2 , :s 9C :s 10C ]
+"147
 }
 [e :U 347 ]
 [e :U 345 ]
@@ -3553,211 +3568,212 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 341 ]
 [e :U 339 ]
 [e :U 337 ]
-"144
+"148
 }
 [e :U 334 ]
-[; ;main.c: 143: }
-[; ;main.c: 144: }
-[; ;main.c: 147: if (tick) {
-"147
+[; ;main.c: 147: }
+[; ;main.c: 148: }
+[; ;main.c: 151: if (tick) {
+"151
 [e $ ! != -> _tick `i -> -> -> 0 `i `uc `i 348  ]
 {
-[; ;main.c: 148: tick = 0;
-"148
+[; ;main.c: 152: tick = 0;
+"152
 [e = _tick -> -> 0 `i `uc ]
-[; ;main.c: 151: C_DOOR_ReadSensors();
-"151
+[; ;main.c: 155: C_DOOR_ReadSensors();
+"155
 [e ( _C_DOOR_ReadSensors ..  ]
-[; ;main.c: 154: C_DOOR_SendStates();
-"154
+[; ;main.c: 158: C_DOOR_SendStates();
+"158
 [e ( _C_DOOR_SendStates ..  ]
-[; ;main.c: 157: if (communicationCnt < 60) {
-"157
+[; ;main.c: 161: if (communicationCnt < 60) {
+"161
 [e $ ! < -> _communicationCnt `i -> 60 `i 349  ]
 {
-[; ;main.c: 158: communicationCnt++;
-"158
+[; ;main.c: 162: communicationCnt++;
+"162
 [e ++ _communicationCnt -> -> 1 `i `uc ]
-"159
+"163
 }
-[; ;main.c: 159: } else {
+[; ;main.c: 163: } else {
 [e $U 350  ]
 [e :U 349 ]
 {
-[; ;main.c: 160: if (oldAlarm == 0) {
-"160
+[; ;main.c: 164: if (oldAlarm == 0) {
+"164
 [e $ ! == -> _oldAlarm `i -> 0 `i 351  ]
 {
-[; ;main.c: 161: newAlarm = 3;
-"161
+[; ;main.c: 165: newAlarm = 3;
+"165
 [e = _newAlarm -> -> 3 `i `uc ]
-"162
+"166
 }
 [e :U 351 ]
-"163
+"167
 }
 [e :U 350 ]
-[; ;main.c: 162: }
-[; ;main.c: 163: }
-[; ;main.c: 166: if (newAlarm != oldAlarm || newAlarm == 1 || newAlarm == 3) {
-"166
+[; ;main.c: 166: }
+[; ;main.c: 167: }
+[; ;main.c: 170: if (newAlarm != oldAlarm || newAlarm == 1 || newAlarm == 3) {
+"170
 [e $ ! || || != -> _newAlarm `i -> _oldAlarm `i == -> _newAlarm `i -> 1 `i == -> _newAlarm `i -> 3 `i 352  ]
 {
-[; ;main.c: 167: switch (newAlarm) {
-"167
+[; ;main.c: 171: switch (newAlarm) {
+"171
 [e $U 354  ]
 {
-[; ;main.c: 168: default:
-"168
+[; ;main.c: 172: default:
+"172
 [e :U 355 ]
-[; ;main.c: 169: case 0:
-"169
-[e :U 356 ]
-[; ;main.c: 170: pwm = 0x00;
-"170
-[e = _pwm -> -> 0 `i `uc ]
-[; ;main.c: 171: break;
-"171
-[e $U 353  ]
-[; ;main.c: 173: case 3:
+[; ;main.c: 173: case 0:
 "173
-[e :U 357 ]
+[e :U 356 ]
+[; ;main.c: 174: pwm = 0x00;
 "174
-[e :U 358 ]
-[; ;main.c: 174: case 1:
-[; ;main.c: 175: if (pwm == 0) {
+[e = _pwm -> -> 0 `i `uc ]
+[; ;main.c: 175: break;
 "175
+[e $U 353  ]
+[; ;main.c: 177: case 3:
+"177
+[e :U 357 ]
+"178
+[e :U 358 ]
+[; ;main.c: 178: case 1:
+[; ;main.c: 179: if (pwm == 0) {
+"179
 [e $ ! == -> _pwm `i -> 0 `i 359  ]
 {
-[; ;main.c: 176: pwm = 1;
-"176
+[; ;main.c: 180: pwm = 1;
+"180
 [e = _pwm -> -> 1 `i `uc ]
-"177
+"181
 }
 [e :U 359 ]
-[; ;main.c: 177: }
-[; ;main.c: 178: pwm = (uint8_t)(pwm * 0x02);
-"178
-[e = _pwm -> * -> _pwm `i -> 2 `i `uc ]
-[; ;main.c: 179: break;
-"179
-[e $U 353  ]
-[; ;main.c: 181: case 2:
-"181
-[e :U 360 ]
-[; ;main.c: 182: pwm = 0x7F;
+[; ;main.c: 181: }
+[; ;main.c: 182: pwm = (uint8_t)(pwm * 0x02);
 "182
-[e = _pwm -> -> 127 `i `uc ]
+[e = _pwm -> * -> _pwm `i -> 2 `i `uc ]
 [; ;main.c: 183: break;
 "183
 [e $U 353  ]
-"184
-}
-[; ;main.c: 184: }
+[; ;main.c: 185: case 2:
+"185
+[e :U 360 ]
+[; ;main.c: 186: pwm = 0x7F;
+"186
+[e = _pwm -> -> 127 `i `uc ]
+[; ;main.c: 187: break;
+"187
 [e $U 353  ]
-"167
+"188
+}
+[; ;main.c: 188: }
+[e $U 353  ]
+"171
 [e :U 354 ]
 [e [\ _newAlarm , $ -> -> 0 `i `uc 356
  , $ -> -> 3 `i `uc 357
  , $ -> -> 1 `i `uc 358
  , $ -> -> 2 `i `uc 360
  355 ]
-"184
+"188
 [e :U 353 ]
-[; ;main.c: 185: D_PWM_SetPwm(pwm);
-"185
+[; ;main.c: 189: D_PWM_SetPwm(pwm);
+"189
 [e ( _D_PWM_SetPwm (1 _pwm ]
-[; ;main.c: 186: oldAlarm = newAlarm;
-"186
+[; ;main.c: 190: oldAlarm = newAlarm;
+"190
 [e = _oldAlarm _newAlarm ]
-"187
+"191
 }
 [e :U 352 ]
-"188
+"192
 }
 [e :U 348 ]
-"189
+"193
 }
 [e :U 330 ]
-"91
+"94
 [e $U 331  ]
 [e :U 332 ]
-[; ;main.c: 187: }
-[; ;main.c: 188: }
-[; ;main.c: 189: }
-[; ;main.c: 190: }
-"190
+[; ;main.c: 191: }
+[; ;main.c: 192: }
+[; ;main.c: 193: }
+[; ;main.c: 194: }
+"194
 [e :UE 327 ]
 }
 [v $root$_LowISR `(v ~T0 @X0 0 e ]
-[v F3506 `(v ~T0 @X0 1 tf ]
-"192
-[v _LowISR `ILF3506 ~T0 @X0 1 e ]
+[v F3510 `(v ~T0 @X0 1 tf ]
+"196
+[v _LowISR `ILF3510 ~T0 @X0 1 e ]
 {
-[; ;main.c: 192: void interrupt low_priority LowISR(void) {
+[; ;main.c: 196: void interrupt low_priority LowISR(void) {
 [e :U _LowISR ]
 [f ]
-[; ;main.c: 194: if (INTCONbits.TMR0IF) {
-"194
+[; ;main.c: 198: if (INTCONbits.TMR0IF) {
+"198
 [e $ ! != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i 362  ]
 {
-[; ;main.c: 195: INTCONbits.TMR0IF = 0;
-"195
+[; ;main.c: 199: INTCONbits.TMR0IF = 0;
+"199
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-[; ;main.c: 196: tick = 1;
-"196
+[; ;main.c: 200: tick = 1;
+"200
 [e = _tick -> -> 1 `i `uc ]
-"197
+"201
 }
 [e :U 362 ]
-[; ;main.c: 197: }
-[; ;main.c: 200: if (PIR1bits.TMR1IF) {
-"200
+[; ;main.c: 201: }
+[; ;main.c: 204: if (PIR1bits.TMR1IF) {
+"204
 [e $ ! != -> . . _PIR1bits 0 0 `i -> -> -> 0 `i `Vuc `i 363  ]
 {
-[; ;main.c: 201: TMR1H = 0x5E;
-"201
+[; ;main.c: 205: TMR1H = 0x5E;
+"205
 [e = _TMR1H -> -> 94 `i `uc ]
-[; ;main.c: 202: TMR1L = 0x00;
-"202
+[; ;main.c: 206: TMR1L = 0x00;
+"206
 [e = _TMR1L -> -> 0 `i `uc ]
-[; ;main.c: 204: if (lockDelayCnt < 100-1) {
-"204
+[; ;main.c: 208: if (lockDelayCnt < 100-1) {
+"208
 [e $ ! < -> _lockDelayCnt `i - -> 100 `i -> 1 `i 364  ]
 {
-[; ;main.c: 205: lockDelayCnt++;
-"205
+[; ;main.c: 209: lockDelayCnt++;
+"209
 [e ++ _lockDelayCnt -> -> 1 `i `uc ]
-"206
+"210
 }
-[; ;main.c: 206: } else {
+[; ;main.c: 210: } else {
 [e $U 365  ]
 [e :U 364 ]
 {
-[; ;main.c: 207: lock = 1;
-"207
+[; ;main.c: 211: lock = 1;
+"211
 [e = _lock -> -> 1 `i `uc ]
-"208
+"212
 }
 [e :U 365 ]
-[; ;main.c: 208: }
-[; ;main.c: 210: PIR1bits.TMR1IF = 0;
-"210
+[; ;main.c: 212: }
+[; ;main.c: 214: PIR1bits.TMR1IF = 0;
+"214
 [e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-"211
+"215
 }
 [e :U 363 ]
-[; ;main.c: 211: }
-[; ;main.c: 212: }
-"212
+[; ;main.c: 215: }
+[; ;main.c: 216: }
+"216
 [e :UE 361 ]
 }
 [a 3C 85 0 ]
-[a 9C 85 0 ]
+[a 10C 85 0 ]
+[a 7C 83 0 ]
 [a 5C 82 0 ]
 [a 1C 80 0 ]
 [a 6C 80 0 ]
 [a 2C 76 0 ]
 [a 4C 73 0 ]
-[a 8C 69 0 ]
-[a 7C 65 0 ]
+[a 9C 69 0 ]
+[a 8C 65 0 ]

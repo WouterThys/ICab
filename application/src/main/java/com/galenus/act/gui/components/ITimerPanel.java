@@ -5,7 +5,7 @@ import com.galenus.act.classes.interfaces.GuiInterface;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class ITimerPanel extends JPanel implements GuiInterface {
 

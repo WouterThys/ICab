@@ -1,17 +1,21 @@
-package com.galenus.act.serial;
+package com.galenus.act.classes.managers.serial;
 
 public class MessageFactory {
 
     private MessageFactory() {
     }
 
-    private static final String PIC_INIT = "I";
-    private static final String PIC_RESET = "R";
-    private static final String PIC_PING = "P";
-    private static final String PIC_LOCK = "L";
-    private static final String PIC_UNLOCK = "U";
-    private static final String PIC_ALARM = "A";
-    private static final String PIC_ERROR = "E";
+    public static final String PIC_INIT = "I";
+    public static final String PIC_RESET = "R";
+    public static final String PIC_PING = "P";
+    public static final String PIC_LOCK = "L";
+    public static final String PIC_UNLOCK = "U";
+    public static final String PIC_ALARM = "A";
+    public static final String PIC_ERROR = "E";
+    public static final String PIC_STATE = "S";
+
+    public static final String PIC_DOOR = "D";
+    public static final String PIC_RUNNING = "1";
 
     public static SerialMessage createInit(int doorCount) {
         return new SerialMessage(SerialMessage.Message, PIC_INIT, String.valueOf(doorCount));

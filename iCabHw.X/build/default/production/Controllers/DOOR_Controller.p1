@@ -3159,9 +3159,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.h: 23: }READ_Data;
 [; ;UART_Driver.h: 32: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 [; ;UART_Driver.h: 39: void D_UART_Write(const char* command, const char* data);
-[; ;UART_Driver.h: 45: READ_Data D_UART_Read();
-[; ;UART_Driver.h: 51: void D_UART_Enable(bool enable);
-[; ;UART_Driver.h: 53: void D_UART_SendInt(int i);
+[; ;UART_Driver.h: 46: void D_UART_WriteInt(const char* command, int d);
+[; ;UART_Driver.h: 52: READ_Data D_UART_Read();
+[; ;UART_Driver.h: 58: void D_UART_Enable(bool enable);
+[; ;UART_Driver.h: 60: void D_UART_SendInt(int i);
 [; ;DOOR_Controller.h: 12: typedef struct {
 [; ;DOOR_Controller.h: 13: uint8_t id;
 [; ;DOOR_Controller.h: 15: bool locked;

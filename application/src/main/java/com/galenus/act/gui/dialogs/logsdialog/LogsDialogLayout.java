@@ -1,13 +1,13 @@
 package com.galenus.act.gui.dialogs.logsdialog;
 
 import com.fazecast.jSerialComm.SerialPort;
-import com.galenus.act.gui.Application;
+import com.galenus.act.Application;
 import com.galenus.act.gui.components.IDialog;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 abstract class LogsDialogLayout extends IDialog {
 

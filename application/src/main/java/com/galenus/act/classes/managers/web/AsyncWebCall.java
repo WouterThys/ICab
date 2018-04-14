@@ -1,6 +1,6 @@
-package com.galenus.act.web;
+package com.galenus.act.classes.managers.web;
 
-import com.galenus.act.gui.Application;
+import com.galenus.act.Application;
 import com.galenus.act.utils.DateUtils;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.util.Date;
 import java.util.Vector;
 
-import static com.galenus.act.web.WebManager.webMgr;
+import static com.galenus.act.classes.managers.web.WebManager.webMgr;
 
 public abstract class AsyncWebCall extends SwingWorker<AsyncWebResult<Object>, Void> {
 

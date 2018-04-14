@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.galenus.act.classes.managers.DoorManager.doorMgr;
-import static com.galenus.act.gui.Application.colorResource;
+import static com.galenus.act.Application.colorResource;
 
 public class DoorsPanel extends JPanel implements GuiInterface {
 

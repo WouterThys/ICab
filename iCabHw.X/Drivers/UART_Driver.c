@@ -218,6 +218,20 @@ void D_UART_Write(const char* command, const char* data) {
     __delay_ms(1);
 }
 
+void D_UART_WriteInt(const char* command, int d) {
+    printf(startCharacter);
+    
+    printf(messageCharacter);
+    printf(deviceName);
+    // Command
+    printf(":");printf(command);
+    // Message
+    printf(":");printf("%d", d);
+    
+    printf(stopCharacter);
+    __delay_ms(1);
+}
+
 READ_Data D_UART_Read(){
     readData.sender = readBuffer.sender;
     readData.command = readBuffer.command;

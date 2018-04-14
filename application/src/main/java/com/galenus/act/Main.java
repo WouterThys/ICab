@@ -1,7 +1,5 @@
 package com.galenus.act;
 
-import com.galenus.act.gui.Application;
-
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;

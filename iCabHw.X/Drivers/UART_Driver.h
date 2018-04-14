@@ -39,6 +39,13 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 void D_UART_Write(const char* command, const char* data);
 
 /**
+ * Write integer to the TX pin of UART module.
+ * @param command: Command
+ * @param d: Integer to write
+ */
+void D_UART_WriteInt(const char* command, int d);
+
+/**
  * Read data from the RX pin of UART module.
  * @return data: returns the data struct.
  */

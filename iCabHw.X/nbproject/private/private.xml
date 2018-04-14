@@ -5,9 +5,8 @@
         <group>
             <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/main.c</file>
             <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/Drivers/UART_Driver.c</file>
-            <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/Drivers/PORT_Driver.c</file>
+            <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/Drivers/UART_Driver.h</file>
             <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/Controllers/DOOR_Controller.c</file>
-            <file>file:/C:/Users/thys_/Documents/Geeken/ICab/iCabHw.X/Config.h</file>
         </group>
     </open-files>
 </project-private>

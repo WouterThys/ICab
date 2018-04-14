@@ -7,7 +7,7 @@ import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.components.ITextField;
 import com.galenus.act.gui.models.SerialLogTableModel;
-import com.galenus.act.serial.SerialMessage;
+import com.galenus.act.classes.managers.serial.SerialMessage;
 import com.galenus.act.utils.GuiUtils;
 
 import javax.swing.*;
@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.galenus.act.gui.Application.imageResource;
-import static com.galenus.act.serial.SerialManager.serMgr;
+import static com.galenus.act.Application.imageResource;
+import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
 
 class SerialLogsPanel extends JPanel implements GuiInterface {
 

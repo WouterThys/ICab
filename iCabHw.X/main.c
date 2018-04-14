@@ -20,6 +20,7 @@
 #define COMMAND_PING    "P" /* Command to ping PIC                            */
 #define COMMAND_ERROR   "E" /* Command to indicate error                      */
 #define COMMAND_ALARM   "A" /* Command to set alarm                           */
+#define COMMAND_STATE   "S" /* Command to send state of PIC                   */
 
 #define ERROR_UNKNOWN   "U" /* Error message to send when unknown command     */
 
@@ -33,6 +34,7 @@ uint8_t communicationCnt;
 READ_Data read;
 bool tick;
 bool lock;
+bool running;
 
 uint8_t pwm;
 uint8_t newAlarm;
@@ -80,6 +82,7 @@ void main(void) {
     oldAlarm = 0;
     lock = false;
     tick = false;
+    running = false;
     
     __delay_ms(200);
     if (LOCK) {
@@ -123,6 +126,7 @@ void main(void) {
             // Initialize    
             } else if (strcmp(read.command, COMMAND_INIT) == 0) {
                 initDoors((uint8_t)(*read.message - 0x30));
+                running = true;
                 
             // Reset    
             } else if (strcmp(read.command, COMMAND_RESET) == 0) {
@@ -131,7 +135,7 @@ void main(void) {
                 
             // Ping    
             } else if (strcmp(read.command, COMMAND_PING) == 0) {
-                // Do nothing, acknowledge message will be send automatically
+                D_UART_WriteInt(COMMAND_STATE, running);
                 
             // Alarm    
             } else if (strcmp(read.command, COMMAND_ALARM) == 0) {

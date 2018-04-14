@@ -5,7 +5,7 @@ import com.galenus.act.classes.Door;
 import javax.swing.*;
 import java.util.List;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class DoorTableModel extends IAbstractTableModel<Door> {
 

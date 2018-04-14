@@ -1,8 +1,8 @@
-package com.galenus.act.gui;
+package com.galenus.act;
 
 import com.fazecast.jSerialComm.SerialPort;
-import com.galenus.act.Main;
 import com.galenus.act.classes.Door;
+import com.galenus.act.classes.Item;
 import com.galenus.act.classes.User;
 import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.classes.interfaces.SerialListener;
@@ -15,8 +15,8 @@ import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.inventory.InventoryPanel;
 import com.galenus.act.gui.panels.logon.LogOnPanel;
 import com.galenus.act.gui.panels.user.UserPanel;
-import com.galenus.act.serial.SerialError;
-import com.galenus.act.serial.SerialMessage;
+import com.galenus.act.classes.managers.serial.SerialError;
+import com.galenus.act.classes.managers.serial.SerialMessage;
 import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
 import org.ksoap2.serialization.SoapObject;
@@ -30,8 +30,11 @@ import java.util.Vector;
 
 import static com.galenus.act.classes.managers.DoorManager.doorMgr;
 import static com.galenus.act.classes.managers.UserManager.usrMgr;
-import static com.galenus.act.serial.SerialManager.serMgr;
-import static com.galenus.act.web.WebManager.*;
+import static com.galenus.act.classes.managers.serial.MessageFactory.PIC_DOOR;
+import static com.galenus.act.classes.managers.serial.MessageFactory.PIC_RUNNING;
+import static com.galenus.act.classes.managers.serial.MessageFactory.PIC_STATE;
+import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
+import static com.galenus.act.classes.managers.web.WebManager.*;
 
 public class Application extends JFrame implements
         GuiInterface,
@@ -157,6 +160,9 @@ public class Application extends JFrame implements
     private void webRegistered() {
         // Fetch users
         webMgr().getDeviceUsers();
+
+        // Fetch items
+        webMgr().getDeviceItems();
     }
 
     private void webReceivedUsers(Vector response) {
@@ -170,6 +176,22 @@ public class Application extends JFrame implements
                 }
                 // Update components
                 updateComponents();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void webReceivedItems(Vector response) {
+        try {
+            // Create user list
+            if (response.size() == 2) {
+                doorMgr().clearItems();
+                SoapObject items = (SoapObject) response.get(1);
+                for (int i = 0; i < items.getPropertyCount(); i++) {
+                    doorMgr().addItems(new Item((SoapObject) items.getProperty(i)));
+                }
             }
 
         } catch (Exception ex) {
@@ -385,7 +407,8 @@ public class Application extends JFrame implements
 
     @Override
     public void onNewRead(SerialMessage message) {
-        if (message.getCommand().contains("D")) {
+        // Message about door state
+        if (message.getCommand().contains(PIC_DOOR)) {
             Door door = doorMgr().updateDoor(message);
             if (door != null) {
                 doorsPanel.updateDoor(door);
@@ -395,6 +418,12 @@ public class Application extends JFrame implements
             SwingUtilities.invokeLater(() -> {
                 doDoorLogic(usrMgr().getSelectedUser());
             });
+
+            // Message about state
+        } else if (message.getCommand().contains(PIC_STATE)) {
+            if (!message.getMessage().equals(PIC_RUNNING)) {
+                serMgr().sendInit(Main.DOOR_COUNT);
+            }
         }
 
     }
@@ -405,8 +434,13 @@ public class Application extends JFrame implements
     @Override
     public void onFinishedRequest(String methodName, Vector response) {
         switch (methodName) {
+            case WebCall_Ping:
+
+                break;
+
             case WebCall_Register:
                 webRegistered();
+                webMgr().startPinging(3 * Main.PING_DELAY);
                 break;
 
             case WebCall_UnRegister:
@@ -415,6 +449,7 @@ public class Application extends JFrame implements
             case WebCall_LogOn:
                 cardLayout.show(mainPanel, VIEW_INVENTORY);
                 userPanel.updateComponents(usrMgr().getSelectedUser());
+                inventoryPanel.updateComponents();
                 doorMgr().unlockDoors();
                 serMgr().sendUnlockAll();
                 usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
@@ -431,6 +466,10 @@ public class Application extends JFrame implements
 
             case WebCall_GetUsers:
                 webReceivedUsers(response);
+                break;
+
+            case WebCall_GetItems:
+                webReceivedItems(response);
                 break;
         }
         webMgr().setWebSuccess(true);
