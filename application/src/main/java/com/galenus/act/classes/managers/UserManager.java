@@ -39,6 +39,10 @@ public class UserManager {
         }
     }
 
+    public void clearUsers() {
+        userList.clear();
+    }
+
     public void setSelectedUser(User user) {
         if (selectedUser != null) {
             selectedUser.logOut();

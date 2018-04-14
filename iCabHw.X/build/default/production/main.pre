@@ -4467,7 +4467,7 @@ void C_DOOR_ReadSensors();
 # 61
 void C_DOOR_SendStates();
 
-# 32 "main.c"
+# 31 "main.c"
 uint8_t lockDelayCnt;
 uint8_t communicationCnt;
 READ_Data read;
@@ -4498,7 +4498,7 @@ newAlarm = alarm;
 }
 
 void main(void) {
-_delay((unsigned long)((200)*(16000000/4000.0)));
+_delay((unsigned long)((200)*(16000000UL/4000.0)));
 
 D_PORT_Init();
 
@@ -4514,14 +4514,14 @@ D_TMR1_Init();
 
 D_PWM_Init();
 
-_delay((unsigned long)((200)*(16000000/4000.0)));
+_delay((unsigned long)((200)*(16000000UL/4000.0)));
 
 newAlarm = 0;
 oldAlarm = 0;
 lock = 0;
 tick = 0;
 
-_delay((unsigned long)((200)*(16000000/4000.0)));
+_delay((unsigned long)((200)*(16000000UL/4000.0)));
 if (0) {
 PORTB = 0x00;
 } else {
@@ -4566,7 +4566,7 @@ initDoors((uint8_t)(*read.message - 0x30));
 
 
 } else if (strcmp(read.command, "R") == 0) {
-_delay((unsigned long)((20)*(16000000/4000.0)));
+_delay((unsigned long)((20)*(16000000UL/4000.0)));
 asm(" reset");
 
 

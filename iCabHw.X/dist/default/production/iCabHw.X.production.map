@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.44\dat\en_msgs.txt -cs \
   -h+dist/default/production\iCabHw.X.production.sym \
   --cmf=dist/default/production\iCabHw.X.production.cmf -z -Q18F2550 \
-  -oC:\Users\thys_\AppData\Local\Temp\s3j0.2 \
+  -oC:\Users\thys_\AppData\Local\Temp\sbd0.2 \
   -Mdist/default/production/iCabHw.X.production.map -E1 -ver=XC8 \
   -ASTACK=01B6h-07ffh -pstack=STACK -ACODE=00h-07FFFh -ACONST=00h-07FFFh \
   -ASMALLCONST=0800h-08FFhx120 -AMEDIUMCONST=0800h-07FFFh -ACOMRAM=01h-05Fh \
@@ -22,7 +22,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\thys_\AppData\Local\Temp\s3j0.obj \
+  C:\Users\thys_\AppData\Local\Temp\sbd0.obj \
   dist/default/production\iCabHw.X.production.obj 
 
 Object code version is 3.11
@@ -35,7 +35,7 @@ Call graph: (short form)
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\thys_\AppData\Local\Temp\s3j0.obj
+C:\Users\thys_\AppData\Local\Temp\sbd0.obj
                 init                                 EC       EC        4        C       0
                 reset_vec                             0        0        4        0       0
                 idloc                            200000   200000        8   200000       0
@@ -45,36 +45,36 @@ dist/default/production\iCabHw.X.production.obj
                 intcode                               8        8        6        4       0
                 temp                                 4A       4A        1        1       1
                 smallconst                          800      800       3A      400       0
-                text31                             16F2     16F2       52      41D       0
-                text30                             18CC     18CC       22      41D       0
+                text31                             1704     1704       52      41D       0
+                text30                             18DE     18DE       22      41D       0
                 text29                              F10      F10      148      41D       0
-                text28                             163E     163E       60      41D       0
+                text28                             1650     1650       60      41D       0
                 text27                              AD4      AD4      190      41D       0
-                intcode_body                       121E     121E       B6      41D       0
-                text24                             143A     143A       A0      41D       0
-                text23                             169E     169E       54      41D       0
-                text22                             183A     183A       28      41D       0
+                intcode_body                       1230     1230       B6      41D       0
+                text24                             144C     144C       A0      41D       0
+                text23                             16B0     16B0       54      41D       0
+                text22                             184C     184C       28      41D       0
                 text21                              C64      C64      15A      41D       0
-                text20                             1058     1058       E8      41D       0
-                text19                             15DE     15DE       60      41D       0
-                text18                             1140     1140       DE      41D       0
-                text17                             12D4     12D4       B4      41D       0
-                text16                             192C     192C       1E      41D       0
-                text15                             190E     190E       1E      41D       0
-                text14                             17E0     17E0       2E      41D       0
-                text13                             195E     195E       14      41D       0
-                text12                             1886     1886       24      41D       0
-                text11                             194A     194A       14      41D       0
-                text10                             18EE     18EE       20      41D       0
-                text9                              1862     1862       24      41D       0
-                text8                              14DA     14DA       84      41D       0
-                text7                              155E     155E       80      41D       0
-                text6                              180E     180E       2C      41D       0
+                text20                             1148     1148       E8      41D       0
+                text19                             15F0     15F0       60      41D       0
+                text18                             1058     1058       F0      41D       0
+                text17                             12E6     12E6       B4      41D       0
+                text16                             193E     193E       1E      41D       0
+                text15                             1920     1920       1E      41D       0
+                text14                             17F2     17F2       2E      41D       0
+                text13                             1970     1970       14      41D       0
+                text12                             1898     1898       24      41D       0
+                text11                             195C     195C       14      41D       0
+                text10                             1900     1900       20      41D       0
+                text9                              1874     1874       24      41D       0
+                text8                              14EC     14EC       84      41D       0
+                text7                              1570     1570       80      41D       0
+                text6                              1820     1820       2C      41D       0
                 text5                               DBE      DBE      152      41D       0
-                text4                              1388     1388       B2      41D       0
-                text3                              18AA     18AA       22      41D       0
-                text2                              1972     1972        A      41D       0
-                text1                              1792     1792       4E      41D       0
+                text4                              139A     139A       B2      41D       0
+                text3                              18BC     18BC       22      41D       0
+                text2                              1984     1984        A      41D       0
+                text1                              17A4     17A4       4E      41D       0
                 text0                               83A      83A      29A      41D       0
                 cstackCOMRAM                          1        1       27        1       1
                 cstackBANK0                          C4       C4       27       60       1
@@ -83,8 +83,8 @@ dist/default/production\iCabHw.X.production.obj
                 bssBANK0                             60       60       64       60       1
                 dataCOMRAM                           42       42        8        1       1
                 bssCOMRAM                            28       28       1A        1       1
-                cinit                              1744     1744       4E      41D       0
-                idataCOMRAM                        197C     197C        8      41D       0
+                cinit                              1756     1756       4E      41D       0
+                idataCOMRAM                        198E     198E        8      41D       0
 
 TOTAL           Name                               Link     Load   Length     Space
         CLASS   STACK          
@@ -94,39 +94,39 @@ TOTAL           Name                               Link     Load   Length     Sp
                 intcode                               8        8        6         0
                 init                                 EC       EC        4         0
                 reset_vec                             0        0        4         0
-                text31                             16F2     16F2       52         0
-                text30                             18CC     18CC       22         0
+                text31                             1704     1704       52         0
+                text30                             18DE     18DE       22         0
                 text29                              F10      F10      148         0
-                text28                             163E     163E       60         0
+                text28                             1650     1650       60         0
                 text27                              AD4      AD4      190         0
-                intcode_body                       121E     121E       B6         0
-                text24                             143A     143A       A0         0
-                text23                             169E     169E       54         0
-                text22                             183A     183A       28         0
+                intcode_body                       1230     1230       B6         0
+                text24                             144C     144C       A0         0
+                text23                             16B0     16B0       54         0
+                text22                             184C     184C       28         0
                 text21                              C64      C64      15A         0
-                text20                             1058     1058       E8         0
-                text19                             15DE     15DE       60         0
-                text18                             1140     1140       DE         0
-                text17                             12D4     12D4       B4         0
-                text16                             192C     192C       1E         0
-                text15                             190E     190E       1E         0
-                text14                             17E0     17E0       2E         0
-                text13                             195E     195E       14         0
-                text12                             1886     1886       24         0
-                text11                             194A     194A       14         0
-                text10                             18EE     18EE       20         0
-                text9                              1862     1862       24         0
-                text8                              14DA     14DA       84         0
-                text7                              155E     155E       80         0
-                text6                              180E     180E       2C         0
+                text20                             1148     1148       E8         0
+                text19                             15F0     15F0       60         0
+                text18                             1058     1058       F0         0
+                text17                             12E6     12E6       B4         0
+                text16                             193E     193E       1E         0
+                text15                             1920     1920       1E         0
+                text14                             17F2     17F2       2E         0
+                text13                             1970     1970       14         0
+                text12                             1898     1898       24         0
+                text11                             195C     195C       14         0
+                text10                             1900     1900       20         0
+                text9                              1874     1874       24         0
+                text8                              14EC     14EC       84         0
+                text7                              1570     1570       80         0
+                text6                              1820     1820       2C         0
                 text5                               DBE      DBE      152         0
-                text4                              1388     1388       B2         0
-                text3                              18AA     18AA       22         0
-                text2                              1972     1972        A         0
-                text1                              1792     1792       4E         0
+                text4                              139A     139A       B2         0
+                text3                              18BC     18BC       22         0
+                text2                              1984     1984        A         0
+                text1                              17A4     17A4       4E         0
                 text0                               83A      83A      29A         0
-                cinit                              1744     1744       4E         0
-                idataCOMRAM                        197C     197C        8         0
+                cinit                              1756     1756       4E         0
+                idataCOMRAM                        198E     198E        8         0
 
         CLASS   CONST          
 
@@ -190,7 +190,7 @@ SEGMENTS        Name                           Load    Length   Top    Selector 
                 bssBANK0                       000060  00008B  0000EB        60       1  BANK0   
                 bssBANK1                       000100  0000B6  0001B6       100       1  BANK1   
                 smallconst                     000800  00003A  00083A       400       0  SMALLCON
-                text0                          00083A  00114A  001984       41D       0  CODE    
+                text0                          00083A  00115C  001996       41D       0  CODE    
                 idloc                          200000  000008  200008    200000       0  IDLOC   
                 config                         300000  00000E  30000E    300000       0  CONFIG  
 
@@ -212,18 +212,18 @@ UNUSED ADDRESS RANGES
         CODE             000004-000007                4
                          00000E-000017                A
                          0000F0-0007FF              710
-                         001984-007FFF             667C
+                         001996-007FFF             666A
         COMRAM           00004B-00005F               15
         CONST            000004-000007                4
                          00000E-000017                A
                          0000F0-0007FF              710
-                         001984-007FFF             667C
+                         001996-007FFF             666A
         EEDATA           F00000-F000FF              100
-        MEDIUMCONST      001984-007FFF             667C
+        MEDIUMCONST      001996-007FFF             666A
         RAM              0000EB-0000FF               15
                          0001B6-0007FF              100
         SFR              000F60-000FFF               A0
-        SMALLCONST       001984-007FFF              100
+        SMALLCONST       001996-007FFF              100
         STACK            0001B6-0007FF              64A
 
                                   Symbol Table
@@ -257,21 +257,21 @@ _BAUDCONbits                 (abs)        000FB8
 _CCP1CONbits                 (abs)        000FBD
 _CCPR1L                      (abs)        000FBE
 _C_DOOR_Init                 text5        000DBE
-_C_DOOR_LockAll              text4        001388
-_C_DOOR_ReadSensors          text24       00143A
-_C_DOOR_SendStates           text18       001140
-_C_DOOR_UnlockAll            text17       0012D4
-_D_PORT_Init                 text16       00192C
-_D_PWM_Init                  text15       00190E
-_D_PWM_SetPwm                text14       0017E0
-_D_TMR0_Enable               text13       00195E
-_D_TMR0_Init                 text12       001886
-_D_TMR1_Enable               text11       00194A
-_D_TMR1_Init                 text10       0018EE
-_D_UART_Enable               text9        001862
-_D_UART_Init                 text7        00155E
-_D_UART_Read                 text6        00180E
-_D_UART_Write                text20       001058
+_C_DOOR_LockAll              text4        00139A
+_C_DOOR_ReadSensors          text24       00144C
+_C_DOOR_SendStates           text18       001058
+_C_DOOR_UnlockAll            text17       0012E6
+_D_PORT_Init                 text16       00193E
+_D_PWM_Init                  text15       001920
+_D_PWM_SetPwm                text14       0017F2
+_D_TMR0_Enable               text13       001970
+_D_TMR0_Init                 text12       001898
+_D_TMR1_Enable               text11       00195C
+_D_TMR1_Init                 text10       001900
+_D_UART_Enable               text9        001874
+_D_UART_Init                 text7        001570
+_D_UART_Read                 text6        001820
+_D_UART_Write                text20       001148
 _HighISR                     intcode      000008
 _INTCON2bits                 (abs)        000FF1
 _INTCONbits                  (abs)        000FF2
@@ -532,12 +532,12 @@ __S1                         (abs)        0001B6
 __S2                         (abs)        000000
 ___inthi_sp                  stack        000000
 ___intlo_sp                  stack        000000
-___lldiv                     text8        0014DA
+___lldiv                     text8        0014EC
 ___lldiv@counter             cstackBANK0  0000E5
 ___lldiv@dividend            cstackBANK0  0000D9
 ___lldiv@divisor             cstackBANK0  0000DD
 ___lldiv@quotient            cstackBANK0  0000E1
-___lwdiv                     text23       00169E
+___lwdiv                     text23       0016B0
 ___lwdiv@counter             cstackBANK0  0000DD
 ___lwdiv@dividend            cstackBANK0  0000D9
 ___lwdiv@divisor             cstackBANK0  0000DB
@@ -548,84 +548,84 @@ ___sp                        stack        000000
 __accesstop                  (abs)        000060
 __activetblptr               (abs)        000003
 __end_of_C_DOOR_Init         text5        000F10
-__end_of_C_DOOR_LockAll      text4        00143A
-__end_of_C_DOOR_ReadSensors  text24       0014DA
-__end_of_C_DOOR_SendStates   text18       00121E
-__end_of_C_DOOR_UnlockAll    text17       001388
-__end_of_D_PORT_Init         text16       00194A
-__end_of_D_PWM_Init          text15       00192C
-__end_of_D_PWM_SetPwm        text14       00180E
-__end_of_D_TMR0_Enable       text13       001972
-__end_of_D_TMR0_Init         text12       0018AA
-__end_of_D_TMR1_Enable       text11       00195E
-__end_of_D_TMR1_Init         text10       00190E
-__end_of_D_UART_Enable       text9        001886
-__end_of_D_UART_Init         text7        0015DE
-__end_of_D_UART_Read         text6        00183A
-__end_of_D_UART_Write        text20       001140
-__end_of_HighISR             intcode_body 0012D4
+__end_of_C_DOOR_LockAll      text4        00144C
+__end_of_C_DOOR_ReadSensors  text24       0014EC
+__end_of_C_DOOR_SendStates   text18       001148
+__end_of_C_DOOR_UnlockAll    text17       00139A
+__end_of_D_PORT_Init         text16       00195C
+__end_of_D_PWM_Init          text15       00193E
+__end_of_D_PWM_SetPwm        text14       001820
+__end_of_D_TMR0_Enable       text13       001984
+__end_of_D_TMR0_Init         text12       0018BC
+__end_of_D_TMR1_Enable       text11       001970
+__end_of_D_TMR1_Init         text10       001920
+__end_of_D_UART_Enable       text9        001898
+__end_of_D_UART_Init         text7        0015F0
+__end_of_D_UART_Read         text6        00184C
+__end_of_D_UART_Write        text20       001230
+__end_of_HighISR             intcode_body 0012E6
 __end_of_LowISR              intcodelo    0000EC
-__end_of___lldiv             text8        00155E
-__end_of___lwdiv             text23       0016F2
-__end_of__initialization     cinit        001788
-__end_of_acknowledge         text28       00169E
-__end_of_commandAndMessage   text19       00163E
+__end_of___lldiv             text8        001570
+__end_of___lwdiv             text23       001704
+__end_of__initialization     cinit        00179A
+__end_of_acknowledge         text28       0016B0
+__end_of_commandAndMessage   text19       001650
 __end_of_fillDataBuffer      text27       000C64
 __end_of_hexpowers           smallconst   000809
-__end_of_initDoors           text3        0018CC
+__end_of_initDoors           text3        0018DE
 __end_of_main                text0        000AD4
 __end_of_printf              text21       000DBE
-__end_of_putch               text22       001862
-__end_of_setAlarm            text2        00197C
-__end_of_strcmp              text1        0017E0
-__end_ofi2___lwdiv           text31       001744
+__end_of_putch               text22       001874
+__end_of_setAlarm            text2        00198E
+__end_of_strcmp              text1        0017F2
+__end_ofi2___lwdiv           text31       001756
 __end_ofi2_printf            text29       001058
-__end_ofi2_putch             text30       0018EE
-__initialization             cinit        001744
+__end_ofi2_putch             text30       001900
+__initialization             cinit        001756
 __mediumconst                mediumconst  000000
 __pbssBANK0                  bssBANK0     000060
 __pbssBANK1                  bssBANK1     000100
 __pbssCOMRAM                 bssCOMRAM    000028
-__pcinit                     cinit        001744
+__pcinit                     cinit        001756
 __pcstackBANK0               cstackBANK0  0000C4
 __pcstackBANK1               cstackBANK1  0001A6
 __pcstackCOMRAM              cstackCOMRAM 000001
 __pdataCOMRAM                dataCOMRAM   000042
-__pidataCOMRAM               idataCOMRAM  00197C
+__pidataCOMRAM               idataCOMRAM  00198E
 __pintcode                   intcode      000008
-__pintcode_body              intcode_body 00121E
+__pintcode_body              intcode_body 001230
 __pintcodelo                 intcodelo    000018
 __psmallconst                smallconst   000800
 __ptext0                     text0        00083A
-__ptext1                     text1        001792
-__ptext10                    text10       0018EE
-__ptext11                    text11       00194A
-__ptext12                    text12       001886
-__ptext13                    text13       00195E
-__ptext14                    text14       0017E0
-__ptext15                    text15       00190E
-__ptext16                    text16       00192C
-__ptext17                    text17       0012D4
-__ptext18                    text18       001140
-__ptext19                    text19       0015DE
-__ptext2                     text2        001972
-__ptext20                    text20       001058
+__ptext1                     text1        0017A4
+__ptext10                    text10       001900
+__ptext11                    text11       00195C
+__ptext12                    text12       001898
+__ptext13                    text13       001970
+__ptext14                    text14       0017F2
+__ptext15                    text15       001920
+__ptext16                    text16       00193E
+__ptext17                    text17       0012E6
+__ptext18                    text18       001058
+__ptext19                    text19       0015F0
+__ptext2                     text2        001984
+__ptext20                    text20       001148
 __ptext21                    text21       000C64
-__ptext22                    text22       00183A
-__ptext23                    text23       00169E
-__ptext24                    text24       00143A
+__ptext22                    text22       00184C
+__ptext23                    text23       0016B0
+__ptext24                    text24       00144C
 __ptext27                    text27       000AD4
-__ptext28                    text28       00163E
+__ptext28                    text28       001650
 __ptext29                    text29       000F10
-__ptext3                     text3        0018AA
-__ptext30                    text30       0018CC
-__ptext31                    text31       0016F2
-__ptext4                     text4        001388
+__ptext3                     text3        0018BC
+__ptext30                    text30       0018DE
+__ptext31                    text31       001704
+__ptext4                     text4        00139A
 __ptext5                     text5        000DBE
-__ptext6                     text6        00180E
-__ptext7                     text7        00155E
-__ptext8                     text8        0014DA
-__ptext9                     text9        001862
+__ptext6                     text6        001820
+__ptext7                     text7        001570
+__ptext8                     text8        0014EC
+__ptext9                     text9        001874
 __ramtop                     ramtop       000800
 __size_of_C_DOOR_Init        (abs)        000000
 __size_of_C_DOOR_LockAll     (abs)        000000
@@ -661,16 +661,16 @@ __size_ofi2_printf           (abs)        000000
 __size_ofi2_putch            (abs)        000000
 __smallconst                 smallconst   000800
 _ackCharacter                dataCOMRAM   000042
-_acknowledge                 text28       00163E
+_acknowledge                 text28       001650
 _baud                        bssCOMRAM    000041
-_commandAndMessage           text19       0015DE
+_commandAndMessage           text19       0015F0
 _communicationCnt            bssCOMRAM    00003E
 _deviceName                  bssCOMRAM    000034
 _door_cnt                    bssCOMRAM    000037
 _doors                       bssBANK0     000060
 _fillDataBuffer              text27       000AD4
 _hexpowers                   smallconst   000801
-_initDoors                   text3        0018AA
+_initDoors                   text3        0018BC
 _lock                        bssCOMRAM    00003C
 _lockDelayCnt                bssCOMRAM    00003F
 _main                        text0        00083A
@@ -678,30 +678,30 @@ _messageCharacter            dataCOMRAM   000044
 _newAlarm                    bssCOMRAM    00003A
 _oldAlarm                    bssCOMRAM    000039
 _printf                      text21       000C64
-_putch                       text22       00183A
+_putch                       text22       00184C
 _pwm                         bssCOMRAM    00003B
 _read                        bssCOMRAM    000028
 _readBuffer                  bssBANK1     000100
 _readData                    bssCOMRAM    00002E
 _readReady                   bssCOMRAM    000040
-_setAlarm                    text2        001972
+_setAlarm                    text2        001984
 _startCharacter              dataCOMRAM   000048
 _stopCharacter               dataCOMRAM   000046
-_strcmp                      text1        001792
+_strcmp                      text1        0017A4
 _tick                        bssCOMRAM    00003D
 btemp                        temp         00004A
 commandAndMessage@com        cstackBANK0  0000E3
 commandAndMessage@door       cstackBANK0  0000D9
 commandAndMessage@mes        cstackBANK0  0000E5
-end_of_initialization        cinit        001788
+end_of_initialization        cinit        00179A
 fillDataBuffer@data          cstackCOMRAM 000015
-i2___lwdiv                   text31       0016F2
+i2___lwdiv                   text31       001704
 i2___lwdiv@counter           cstackCOMRAM 000005
 i2___lwdiv@dividend          cstackCOMRAM 000001
 i2___lwdiv@divisor           cstackCOMRAM 000003
 i2___lwdiv@quotient          cstackCOMRAM 000006
 i2_printf                    text29       000F10
-i2_putch                     text30       0018CC
+i2_putch                     text30       0018DE
 i2printf@ap                  cstackCOMRAM 00000F
 i2printf@c                   cstackCOMRAM 000014
 i2printf@f                   cstackCOMRAM 000008
@@ -713,7 +713,7 @@ i2putch@data                 cstackCOMRAM 000001
 i2putch@max                  cstackCOMRAM 000002
 initDoors@door_cnt           cstackBANK0  0000E2
 int$flags                    temp         00004A
-int_func                     intcode_body 00121E
+int_func                     intcode_body 001230
 intlevel0                    text         000000
 intlevel1                    text         000000
 intlevel2                    text         000000
@@ -731,7 +731,7 @@ setAlarm@alarm               cstackBANK0  0000D9
 stackhi                      (abs)        0007FF
 stacklo                      (abs)        0001B6
 start                        init         0000EC
-start_initialization         cinit        001744
+start_initialization         cinit        001756
 strcmp@r                     cstackBANK0  0000DE
 strcmp@s1                    cstackBANK0  0000D9
 strcmp@s2                    cstackBANK0  0000DB
@@ -742,7 +742,7 @@ FUNCTION INFORMATION:
 
  *************** function _main *****************
  Defined at:
-		line 61 in file "main.c"
+		line 60 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -821,7 +821,7 @@ Total ram usage:        6 bytes
 
  *************** function _setAlarm *****************
  Defined at:
-		line 57 in file "main.c"
+		line 56 in file "main.c"
  Parameters:    Size  Location     Type
   alarm           1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -851,7 +851,7 @@ Total ram usage:        1 bytes
 
  *************** function _initDoors *****************
  Defined at:
-		line 45 in file "main.c"
+		line 44 in file "main.c"
  Parameters:    Size  Location     Type
   door_cnt        1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -945,7 +945,7 @@ Total ram usage:        5 bytes
 
  *************** function _D_UART_Read *****************
  Defined at:
-		line 220 in file "Drivers/UART_Driver.c"
+		line 221 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -975,7 +975,7 @@ Total ram usage:        6 bytes
 
  *************** function _D_UART_Init *****************
  Defined at:
-		line 166 in file "Drivers/UART_Driver.c"
+		line 167 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   name            2   34[BANK0 ] PTR const unsigned char 
 		 -> STR_8(2), 
@@ -1041,7 +1041,7 @@ Total ram usage:       13 bytes
 
  *************** function _D_UART_Enable *****************
  Defined at:
-		line 227 in file "Drivers/UART_Driver.c"
+		line 228 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   enable          1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -1381,7 +1381,7 @@ Total ram usage:       14 bytes
 
  *************** function _D_UART_Write *****************
  Defined at:
-		line 206 in file "Drivers/UART_Driver.c"
+		line 207 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   command         2    0[BANK1 ] PTR const unsigned char 
 		 -> STR_15(2), C_DOOR_SendStates@com(3), 
@@ -1459,7 +1459,7 @@ Total ram usage:       11 bytes
 
  *************** function _putch *****************
  Defined at:
-		line 243 in file "Drivers/UART_Driver.c"
+		line 244 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   data            1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -1552,7 +1552,7 @@ Total ram usage:        5 bytes
 
  *************** function _LowISR *****************
  Defined at:
-		line 193 in file "main.c"
+		line 192 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1582,7 +1582,7 @@ Total ram usage:       21 bytes
 
  *************** function _HighISR *****************
  Defined at:
-		line 255 in file "Drivers/UART_Driver.c"
+		line 256 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1612,7 +1612,7 @@ Total ram usage:       18 bytes
 
  *************** function _fillDataBuffer *****************
  Defined at:
-		line 68 in file "Drivers/UART_Driver.c"
+		line 69 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   data            1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -1642,7 +1642,7 @@ Total ram usage:        1 bytes
 
  *************** function _acknowledge *****************
  Defined at:
-		line 153 in file "Drivers/UART_Driver.c"
+		line 154 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1716,7 +1716,7 @@ Total ram usage:       13 bytes
 
  *************** function i2_putch *****************
  Defined at:
-		line 243 in file "Drivers/UART_Driver.c"
+		line 244 in file "Drivers/UART_Driver.c"
  Parameters:    Size  Location     Type
   data            1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -1780,45 +1780,45 @@ MODULE INFORMATION
 
 Module		Function		Class		Link	Load	Size
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
-		_strcmp        		CODE           	1792	0000	79
+		_strcmp        		CODE           	17A4	0000	79
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c estimated size: 79
 
 Drivers/PORT_Driver.c
-		_D_PORT_Init   		CODE           	192C	0000	31
+		_D_PORT_Init   		CODE           	193E	0000	31
 
 Drivers/PORT_Driver.c estimated size: 31
 
 Drivers/TMR0_Driver.c
-		_D_TMR0_Init   		CODE           	1886	0000	37
-		_D_TMR0_Enable 		CODE           	195E	0000	21
+		_D_TMR0_Init   		CODE           	1898	0000	37
+		_D_TMR0_Enable 		CODE           	1970	0000	21
 
 Drivers/TMR0_Driver.c estimated size: 58
 
 Controllers/DOOR_Controller.c
-		_C_DOOR_SendStates		CODE           	1140	0000	223
-		_commandAndMessage		CODE           	15DE	0000	97
-		_C_DOOR_ReadSensors		CODE           	143A	0000	161
+		_C_DOOR_SendStates		CODE           	1058	0000	241
+		_commandAndMessage		CODE           	15F0	0000	97
+		_C_DOOR_ReadSensors		CODE           	144C	0000	161
 		_C_DOOR_Init   		CODE           	0DBE	0000	339
-		_C_DOOR_UnlockAll		CODE           	12D4	0000	181
-		_C_DOOR_LockAll		CODE           	1388	0000	179
+		_C_DOOR_UnlockAll		CODE           	12E6	0000	181
+		_C_DOOR_LockAll		CODE           	139A	0000	179
 
-Controllers/DOOR_Controller.c estimated size: 1180
+Controllers/DOOR_Controller.c estimated size: 1198
 
 Drivers/UART_Driver.c
-		_putch         		CODE           	183A	0000	41
-		_D_UART_Read   		CODE           	180E	0000	45
-		_D_UART_Init   		CODE           	155E	0000	129
+		_putch         		CODE           	184C	0000	41
+		_D_UART_Read   		CODE           	1820	0000	45
+		_D_UART_Init   		CODE           	1570	0000	129
 		_fillDataBuffer		CODE           	0AD4	0000	401
-		_D_UART_Write  		CODE           	1058	0000	233
-		_D_UART_Enable 		CODE           	1862	0000	37
-		_acknowledge   		CODE           	163E	0000	97
+		_D_UART_Write  		CODE           	1148	0000	233
+		_D_UART_Enable 		CODE           	1874	0000	37
+		_acknowledge   		CODE           	1650	0000	97
 		_HighISR       		CODE           	0008	0000	189
 
 Drivers/UART_Driver.c estimated size: 1172
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c
-		___lwdiv       		CODE           	169E	0000	85
+		___lwdiv       		CODE           	16B0	0000	85
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c estimated size: 85
 
@@ -1828,36 +1828,36 @@ C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c estimated size: 347
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c
-		___lldiv       		CODE           	14DA	0000	133
+		___lldiv       		CODE           	14EC	0000	133
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c estimated size: 133
 
 Drivers/TMR1_Driver.c
-		_D_TMR1_Init   		CODE           	18EE	0000	33
-		_D_TMR1_Enable 		CODE           	194A	0000	21
+		_D_TMR1_Init   		CODE           	1900	0000	33
+		_D_TMR1_Enable 		CODE           	195C	0000	21
 
 Drivers/TMR1_Driver.c estimated size: 54
 
 shared
 		i2_printf      		CODE           	0F10	0000	329
-		i2_putch       		CODE           	18CC	0000	35
-		i2___lwdiv     		CODE           	16F2	0000	83
-		__initialization		CODE           	1744	0000	69
+		i2_putch       		CODE           	18DE	0000	35
+		i2___lwdiv     		CODE           	1704	0000	83
+		__initialization		CODE           	1756	0000	69
 		_hexpowers     		SMALLCONST     	0801	0000	9
 
 shared estimated size: 525
 
 Drivers/PWM_Driver.c
-		_D_PWM_SetPwm  		CODE           	17E0	0000	47
-		_D_PWM_Init    		CODE           	190E	0000	31
+		_D_PWM_SetPwm  		CODE           	17F2	0000	47
+		_D_PWM_Init    		CODE           	1920	0000	31
 
 Drivers/PWM_Driver.c estimated size: 78
 
 main.c
 		_LowISR        		CODE           	0018	0000	213
 		_main          		CODE           	083A	0000	667
-		_initDoors     		CODE           	18AA	0000	35
-		_setAlarm      		CODE           	1972	0000	11
+		_initDoors     		CODE           	18BC	0000	35
+		_setAlarm      		CODE           	1984	0000	11
 
 main.c estimated size: 926
 

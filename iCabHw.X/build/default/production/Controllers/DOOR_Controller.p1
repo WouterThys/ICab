@@ -12,6 +12,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
 "39 Controllers/../Drivers/UART_Driver.h
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
+[v F3316 `(v ~T0 @X0 1 tf1`ul ]
+"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
+[v __delay `JF3316 ~T0 @X0 0 e ]
+[p i __delay ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -3260,9 +3264,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 60: doors[d].is_open = 0;
 "60
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
-[; ;DOOR_Controller.c: 61: doors[d].was_open = 1;
+[; ;DOOR_Controller.c: 61: doors[d].was_open = !0;
 "61
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> 1 `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> ! != -> 0 `i -> 0 `i `i `uc ]
 [; ;DOOR_Controller.c: 62: doors[d].sensor_port = &PORTA;
 "62
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 &U _PORTA ]
@@ -3371,9 +3375,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 346  ]
 [e :U 343 ]
 {
-[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
+[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 0);
 "105
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 1 `i `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 0 `i `i `uc ]
 "106
 }
 "104
@@ -3420,24 +3424,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 119: D_UART_Write(com, mes);
 "119
 [e ( _D_UART_Write (2 , -> &U _com `*Cuc -> &U _mes `*Cuc ]
-[; ;DOOR_Controller.c: 121: doors[d].was_open = doors[d].is_open;
-"121
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 ]
+[; ;DOOR_Controller.c: 120: _delay((unsigned long)((1)*(16000000UL/4000.0)));
+"120
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
+[; ;DOOR_Controller.c: 122: doors[d].was_open = doors[d].is_open;
 "122
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 ]
+"123
 }
 [e :U 352 ]
-"123
+"124
 }
 "111
 [e ++ _d -> -> 1 `i `uc ]
 [e :U 351 ]
 [e $ < -> _d `i _door_cnt 348  ]
 [e :U 349 ]
-"123
+"124
 }
-[; ;DOOR_Controller.c: 122: }
 [; ;DOOR_Controller.c: 123: }
 [; ;DOOR_Controller.c: 124: }
-"124
+[; ;DOOR_Controller.c: 125: }
+"125
 [e :UE 347 ]
 }

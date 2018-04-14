@@ -4450,7 +4450,7 @@ doors[d].lock_port = &PORTB;
 doors[d].lock_pin = (uint8_t)(0 + d);
 
 doors[d].is_open = 0;
-doors[d].was_open = 1;
+doors[d].was_open = !0;
 doors[d].sensor_port = &PORTA;
 doors[d].sensor_pin = (uint8_t) (1 + d);
 
@@ -4478,7 +4478,7 @@ for (d = 0; d < door_cnt; d++) {
 void C_DOOR_ReadSensors() {
 uint8_t d;
 for (d = 0; d < door_cnt; d++) {
-doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
+doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 0);
 }
 }
 
@@ -4493,6 +4493,7 @@ commandAndMessage(doors[d], com, mes);
 
 
 D_UART_Write(com, mes);
+_delay((unsigned long)((1)*(16000000UL/4000.0)));
 
 doors[d].was_open = doors[d].is_open;
 }

@@ -12,10 +12,15 @@ public class Main {
     private static final String DM = "DEBUG_MODE";
     private static final String FS = "FULL_SCREEN";
     private static final String DC = "DOOR_COUNT";
-    private static final String LLT = "USER_LOGON_TIMER";
+    private static final String ULT = "USER_LOGON_TIMER";
+    private static final String WURL = "WEB_URL";
+    private static final String INM = "NAME";
 
     public static boolean DEBUG_MODE = false;
     public static boolean FULL_SCREEN = false;
+
+    public static String WEB_URL = "http://sp0007test/juliette/oriswsmattteo.asmx";
+    public static String ICAB_NAME = "ICAB";
     public static int DOOR_COUNT = 5;
     public static int USER_LOGON_TIME = (20); // Seconds
     public static int PING_DELAY = 5000; // 5s
@@ -63,6 +68,12 @@ public class Main {
                             break;
                         case DC:
                             DOOR_COUNT = Integer.valueOf(value);
+                            break;
+                        case WURL:
+                            WEB_URL = String.valueOf(value);
+                            break;
+                        case INM:
+                            ICAB_NAME = String.valueOf(value);
                             break;
                     }
                 } catch (Exception e) {

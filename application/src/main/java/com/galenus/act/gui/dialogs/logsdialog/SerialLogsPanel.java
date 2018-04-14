@@ -462,16 +462,22 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         northPanel.add(serialPanel, BorderLayout.CENTER);
         northPanel.add(pingPanel, BorderLayout.SOUTH);
 
-        JPanel tablePanel = new JPanel();
-        tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
-        tablePanel.add(txPanel);
-        tablePanel.add(rxPanel);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Transmitted", txPanel);
+        tabbedPane.addTab("Received", rxPanel);
+
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.add(tabbedPane, BorderLayout.CENTER);
+//        tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+//        tablePanel.add(txPanel);
+//        tablePanel.add(rxPanel);
         tablePanel.setBorder(GuiUtils.createTitleBorder("Logs"));
 
         panel.setLayout(new BorderLayout());
         panel.add(northPanel, BorderLayout.NORTH);
         panel.add(tablePanel, BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension(700, 1000));
+        panel.setPreferredSize(new Dimension(700, 700));
 
         setLayout(new BorderLayout());
         add(new JScrollPane(panel), BorderLayout.CENTER);

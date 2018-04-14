@@ -1,5 +1,6 @@
 package com.galenus.act.gui.dialogs.initializationdialog;
 
+import com.galenus.act.Main;
 import com.galenus.act.gui.Application;
 import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.serial.SerialManager;
@@ -25,7 +26,6 @@ public class InitializationDialog extends InitializationDialogLayout {
     }
 
     private void one_initDoors() {
-        //doorMgr().init(Main.DOOR_COUNT);
         two_initSerial();
     }
 
@@ -52,8 +52,8 @@ public class InitializationDialog extends InitializationDialogLayout {
 
     private void three_initWebService() {
         webMgr().init( application,
-                "ICAB",
-                "http://sp0007acc/juliette/oriswsmattteo.asmx",
+                Main.ICAB_NAME,
+                Main.WEB_URL,
                 "http://tempuri.org/",
                 60000);
         webMgr().registerShutDownHook();

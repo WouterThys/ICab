@@ -11,7 +11,6 @@
 #include "Drivers/PWM_Driver.h"
 #include "Controllers/DOOR_Controller.h"
 
-#define _XTAL_FREQ 16000000 /* 16 MHz crystal                                 */
 #define LED1    PORTBbits.RB5
 
 #define COMMAND_LOCK    "L" /* Command to lock doors                          */

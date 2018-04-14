@@ -3,7 +3,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-
+#define _XTAL_FREQ 16000000UL /* 16 MHz crystal                                 */
 /*******************************************************************************
  *                      ALARM SETTINGS 
  ******************************************************************************/
@@ -55,7 +55,7 @@
 /**
  * OPEN and CLOSED sensor signal polarity
  */
-#define OPEN    1
+#define OPEN    0
 #define CLOSED  !OPEN
 
 /*******************************************************************************

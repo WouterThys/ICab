@@ -4,13 +4,14 @@
 #include <xc.h>
 #include <string.h>
 
+#include "../Config.h"
 #include "PORT_Driver.h"
 #include "UART_Driver.h"
 
 /*******************************************************************************
  *          DEFINES
  ******************************************************************************/
-#define _XTAL_FREQ 16000000UL
+//#define _XTAL_FREQ 16000000UL
 // &
 #define START_CHAR 0x26 
 // $

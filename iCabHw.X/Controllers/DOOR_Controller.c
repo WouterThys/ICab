@@ -57,8 +57,8 @@ void C_DOOR_Init(uint8_t cnt) {
         doors[d].lock_port = &DOORS_Port;
         doors[d].lock_pin = (uint8_t)(DOORS_First + d);
         
-        doors[d].is_open = false;
-        doors[d].was_open = true;
+        doors[d].is_open = OPEN;
+        doors[d].was_open = CLOSED;
         doors[d].sensor_port = &SENSORS_Port;
         doors[d].sensor_pin = (uint8_t) (SENSORS_First + d);
         
@@ -117,6 +117,7 @@ void C_DOOR_SendStates() {
 
             // Message
             D_UART_Write(com, mes);
+            __delay_ms(1);
             
             doors[d].was_open = doors[d].is_open;
         }

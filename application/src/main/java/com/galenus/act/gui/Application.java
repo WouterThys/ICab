@@ -162,12 +162,15 @@ public class Application extends JFrame implements
     private void webReceivedUsers(Vector response) {
         try {
             // Create user list
-            SoapObject users = (SoapObject) response.get(1);
-            for (int i = 0; i < users.getPropertyCount(); i++) {
-                usrMgr().addUser(new User((SoapObject) users.getProperty(i)));
+            if (response.size() == 2) {
+                usrMgr().clearUsers();
+                SoapObject users = (SoapObject) response.get(1);
+                for (int i = 0; i < users.getPropertyCount(); i++) {
+                    usrMgr().addUser(new User((SoapObject) users.getProperty(i)));
+                }
+                // Update components
+                updateComponents();
             }
-            // Update components
-            updateComponents();
 
         } catch (Exception ex) {
             ex.printStackTrace();
