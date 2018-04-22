@@ -24,6 +24,7 @@ abstract class LogsDialogLayout extends IDialog {
     LogsDialogLayout(Application application, String title) {
         super(application, title);
         setResizable(true);
+        setModal(false);
     }
 
 

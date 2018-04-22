@@ -170,6 +170,7 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
             if (userListener.onPasswordEntered(entered)) {
                 showView(VIEW_TIMER);
             } else {
+                keyPad.setBackgroundColor(Color.RED);
                 showView(VIEW_KEYPAD);
             }
         }

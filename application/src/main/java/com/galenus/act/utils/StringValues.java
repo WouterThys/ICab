@@ -11,6 +11,8 @@ public class StringValues {
             switch (command) {
                 case PIC_INIT:
                     return "Initialize";
+                case PIC_PING:
+                    return "Ping";
                 case PIC_RESET:
                     return "Reset";
                 case PIC_LOCK:

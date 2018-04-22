@@ -106,6 +106,9 @@ void main(void) {
             read = D_UART_Read();
             LED1 = !LED1;
             
+            // Acknowledge
+            D_UART_Acknowledge(read.ackId);
+            
             // Communication
             communicationCnt = 0;
             if (oldAlarm == ALARM_COMM) {

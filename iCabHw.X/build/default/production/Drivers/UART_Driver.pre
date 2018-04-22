@@ -4534,24 +4534,26 @@ typedef struct {
 const char* sender;
 const char* command;
 const char* message;
+uint8_t ackId;
 }READ_Data;
 
-# 32
+# 33
 void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 
-# 39
+# 40
 void D_UART_Write(const char* command, const char* data);
 
-# 46
+# 47
 void D_UART_WriteInt(const char* command, int d);
 
-# 52
+# 53
 READ_Data D_UART_Read();
 
-# 58
+# 59
 void D_UART_Enable(bool enable);
 
-void D_UART_SendInt(int i);
+# 65
+void D_UART_Acknowledge(uint8_t i);
 
 # 36 "Drivers/UART_Driver.c"
 uint8_t baud;
@@ -4582,7 +4584,6 @@ bool readReady;
 
 # 66
 static void fillDataBuffer(uint8_t data);
-static void acknowledge();
 
 static void fillDataBuffer(uint8_t data){
 switch(readBuffer.state) {
@@ -4654,7 +4655,7 @@ break;
 
 case 0x05:
 if (data == 0x24) {
-acknowledge();
+
 readBuffer.state = 0x00;
 readReady = 1;
 } else {
@@ -4669,17 +4670,7 @@ break;
 }
 }
 
-static void acknowledge() {
-printf(startCharacter);
-
-printf(ackCharacter);
-
-printf("%x",readBuffer.readId);
-
-printf(stopCharacter);
-}
-
-# 167
+# 166
 void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
 
 deviceName = name;
@@ -4702,8 +4693,8 @@ TXSTAbits.BRGH = 0;
 RCSTAbits.RX9 = 0;
 
 
-BAUDCONbits.RXDTP = 0;
-BAUDCONbits.TXCKP = 0;
+BAUDCONbits.RXDTP = 1;
+BAUDCONbits.TXCKP = 1;
 BAUDCONbits.BRG16 = 0;
 
 
@@ -4752,6 +4743,7 @@ READ_Data D_UART_Read(){
 readData.sender = readBuffer.sender;
 readData.command = readBuffer.command;
 readData.message = readBuffer.message;
+readData.ackId = readBuffer.readId;
 return readData;
 }
 
@@ -4800,5 +4792,15 @@ return;
 }
 fillDataBuffer(RCREG);
 }
+}
+
+void D_UART_Acknowledge(uint8_t i) {
+printf(startCharacter);
+
+printf(ackCharacter);
+
+printf("%x", i);
+
+printf(stopCharacter);
 }
 

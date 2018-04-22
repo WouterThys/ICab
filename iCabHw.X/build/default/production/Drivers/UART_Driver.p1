@@ -3,13 +3,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [s S328 `uc -> 10 `i `uc 1 `uc -> 50 `i `uc 1 `uc -> 50 `i `uc 1 `uc -> 50 `i `uc 1 `uc 1 `uc 1 ]
 [n S328 . type typeCnt sender senderCnt command commandCnt message messageCnt readId state ]
 "19 Drivers/UART_Driver.h
-[s S327 `*Cuc 1 `*Cuc 1 `*Cuc 1 ]
-[n S327 . sender command message ]
-"67 Drivers/UART_Driver.c
-[v _acknowledge `(v ~T0 @X0 0 sf ]
-"195 C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"58 Drivers/UART_Driver.h
+[s S327 `*Cuc 1 `*Cuc 1 `*Cuc 1 `uc 1 ]
+[n S327 . sender command message ackId ]
+"59
 [v _D_UART_Enable `(v ~T0 @X0 0 ef1`uc ]
 "3992 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
 [s S161 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -148,6 +144,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S139 . . . ]
 "3489
 [v _PIE1bits `VS139 ~T0 @X0 0 e@3997 ]
+"195 C:\Program Files (x86)\Microchip\xc8\v1.44\include\stdio.h
+[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
 [v F3525 `(v ~T0 @X0 1 tf1`ul ]
 "164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
 [v __delay `JF3525 ~T0 @X0 0 e ]
@@ -3411,13 +3409,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.h: 20: const char* sender;
 [; ;UART_Driver.h: 21: const char* command;
 [; ;UART_Driver.h: 22: const char* message;
-[; ;UART_Driver.h: 23: }READ_Data;
-[; ;UART_Driver.h: 32: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
-[; ;UART_Driver.h: 39: void D_UART_Write(const char* command, const char* data);
-[; ;UART_Driver.h: 46: void D_UART_WriteInt(const char* command, int d);
-[; ;UART_Driver.h: 52: READ_Data D_UART_Read();
-[; ;UART_Driver.h: 58: void D_UART_Enable(bool enable);
-[; ;UART_Driver.h: 60: void D_UART_SendInt(int i);
+[; ;UART_Driver.h: 23: uint8_t ackId;
+[; ;UART_Driver.h: 24: }READ_Data;
+[; ;UART_Driver.h: 33: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
+[; ;UART_Driver.h: 40: void D_UART_Write(const char* command, const char* data);
+[; ;UART_Driver.h: 47: void D_UART_WriteInt(const char* command, int d);
+[; ;UART_Driver.h: 53: READ_Data D_UART_Read();
+[; ;UART_Driver.h: 59: void D_UART_Enable(bool enable);
+[; ;UART_Driver.h: 65: void D_UART_Acknowledge(uint8_t i);
 "36 Drivers/UART_Driver.c
 [v _baud `uc ~T0 @X0 1 e ]
 [; ;UART_Driver.c: 36: uint8_t baud;
@@ -3473,280 +3472,276 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _readReady `uc ~T0 @X0 1 e ]
 [; ;UART_Driver.c: 60: bool readReady;
 [; ;UART_Driver.c: 66: static void fillDataBuffer(uint8_t data);
-[; ;UART_Driver.c: 67: static void acknowledge();
-"69
+"68
 [v _fillDataBuffer `(v ~T0 @X0 1 sf1`uc ]
 {
-[; ;UART_Driver.c: 69: static void fillDataBuffer(uint8_t data){
+[; ;UART_Driver.c: 68: static void fillDataBuffer(uint8_t data){
 [e :U _fillDataBuffer ]
 [v _data `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;UART_Driver.c: 70: switch(readBuffer.state) {
-"70
+[; ;UART_Driver.c: 69: switch(readBuffer.state) {
+"69
 [e $U 331  ]
 {
-[; ;UART_Driver.c: 71: case 0x00:
-"71
+[; ;UART_Driver.c: 70: case 0x00:
+"70
 [e :U 332 ]
-[; ;UART_Driver.c: 72: if(data == 0x26) {
-"72
+[; ;UART_Driver.c: 71: if(data == 0x26) {
+"71
 [e $ ! == -> _data `i -> 38 `i 333  ]
 {
-[; ;UART_Driver.c: 73: readBuffer.typeCnt = 0;
-"73
+[; ;UART_Driver.c: 72: readBuffer.typeCnt = 0;
+"72
 [e = . _readBuffer 1 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 74: readBuffer.senderCnt = 0;
-"74
+[; ;UART_Driver.c: 73: readBuffer.senderCnt = 0;
+"73
 [e = . _readBuffer 3 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 75: readBuffer.commandCnt = 0;
-"75
+[; ;UART_Driver.c: 74: readBuffer.commandCnt = 0;
+"74
 [e = . _readBuffer 5 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 76: readBuffer.messageCnt = 0;
-"76
+[; ;UART_Driver.c: 75: readBuffer.messageCnt = 0;
+"75
 [e = . _readBuffer 7 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 77: readReady = 0;
-"77
+[; ;UART_Driver.c: 76: readReady = 0;
+"76
 [e = _readReady -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 78: readBuffer.state = 0x01;
-"78
+[; ;UART_Driver.c: 77: readBuffer.state = 0x01;
+"77
 [e = . _readBuffer 9 -> -> 1 `i `uc ]
-"79
+"78
 }
-[; ;UART_Driver.c: 79: } else {
+[; ;UART_Driver.c: 78: } else {
 [e $U 334  ]
 [e :U 333 ]
 {
-[; ;UART_Driver.c: 80: readBuffer.state = 0x00;
-"80
+[; ;UART_Driver.c: 79: readBuffer.state = 0x00;
+"79
 [e = . _readBuffer 9 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 81: return;
-"81
+[; ;UART_Driver.c: 80: return;
+"80
 [e $UE 329  ]
-"82
+"81
 }
 [e :U 334 ]
-[; ;UART_Driver.c: 82: }
-[; ;UART_Driver.c: 83: break;
-"83
+[; ;UART_Driver.c: 81: }
+[; ;UART_Driver.c: 82: break;
+"82
 [e $U 330  ]
-[; ;UART_Driver.c: 85: case 0x01:
-"85
+[; ;UART_Driver.c: 84: case 0x01:
+"84
 [e :U 335 ]
-[; ;UART_Driver.c: 86: if (data == 0x3A) {
-"86
+[; ;UART_Driver.c: 85: if (data == 0x3A) {
+"85
 [e $ ! == -> _data `i -> 58 `i 336  ]
 {
-[; ;UART_Driver.c: 87: readBuffer.state = 0x02;
-"87
+[; ;UART_Driver.c: 86: readBuffer.state = 0x02;
+"86
 [e = . _readBuffer 9 -> -> 2 `i `uc ]
-[; ;UART_Driver.c: 88: readBuffer.type[readBuffer.typeCnt] = '\0';
-"88
+[; ;UART_Driver.c: 87: readBuffer.type[readBuffer.typeCnt] = '\0';
+"87
 [e = *U + &U . _readBuffer 0 * -> . _readBuffer 1 `ux -> -> # *U &U . _readBuffer 0 `ui `ux -> -> 0 `ui `uc ]
-"89
+"88
 }
-[; ;UART_Driver.c: 89: } else {
+[; ;UART_Driver.c: 88: } else {
 [e $U 337  ]
 [e :U 336 ]
 {
-[; ;UART_Driver.c: 90: readBuffer.type[readBuffer.typeCnt] = data;
-"90
+[; ;UART_Driver.c: 89: readBuffer.type[readBuffer.typeCnt] = data;
+"89
 [e = *U + &U . _readBuffer 0 * -> . _readBuffer 1 `ux -> -> # *U &U . _readBuffer 0 `ui `ux _data ]
-[; ;UART_Driver.c: 91: readBuffer.typeCnt++;
-"91
+[; ;UART_Driver.c: 90: readBuffer.typeCnt++;
+"90
 [e ++ . _readBuffer 1 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 92: if(readBuffer.typeCnt > 10) {
-"92
+[; ;UART_Driver.c: 91: if(readBuffer.typeCnt > 10) {
+"91
 [e $ ! > -> . _readBuffer 1 `i -> 10 `i 338  ]
 {
-[; ;UART_Driver.c: 93: readBuffer.typeCnt = 0;
-"93
+[; ;UART_Driver.c: 92: readBuffer.typeCnt = 0;
+"92
 [e = . _readBuffer 1 -> -> 0 `i `uc ]
-"94
+"93
 }
 [e :U 338 ]
-"95
+"94
 }
 [e :U 337 ]
+[; ;UART_Driver.c: 93: }
 [; ;UART_Driver.c: 94: }
-[; ;UART_Driver.c: 95: }
-[; ;UART_Driver.c: 96: break;
-"96
+[; ;UART_Driver.c: 95: break;
+"95
 [e $U 330  ]
-[; ;UART_Driver.c: 98: case 0x02:
-"98
+[; ;UART_Driver.c: 97: case 0x02:
+"97
 [e :U 339 ]
-[; ;UART_Driver.c: 99: if (data == 0x3A) {
-"99
+[; ;UART_Driver.c: 98: if (data == 0x3A) {
+"98
 [e $ ! == -> _data `i -> 58 `i 340  ]
 {
-[; ;UART_Driver.c: 100: readBuffer.state = 0x03;
-"100
+[; ;UART_Driver.c: 99: readBuffer.state = 0x03;
+"99
 [e = . _readBuffer 9 -> -> 3 `i `uc ]
-[; ;UART_Driver.c: 101: readBuffer.sender[readBuffer.senderCnt] = '\0';
-"101
+[; ;UART_Driver.c: 100: readBuffer.sender[readBuffer.senderCnt] = '\0';
+"100
 [e = *U + &U . _readBuffer 2 * -> . _readBuffer 3 `ux -> -> # *U &U . _readBuffer 2 `ui `ux -> -> 0 `ui `uc ]
-"102
+"101
 }
-[; ;UART_Driver.c: 102: } else {
+[; ;UART_Driver.c: 101: } else {
 [e $U 341  ]
 [e :U 340 ]
 {
-[; ;UART_Driver.c: 103: readBuffer.sender[readBuffer.senderCnt] = data;
-"103
+[; ;UART_Driver.c: 102: readBuffer.sender[readBuffer.senderCnt] = data;
+"102
 [e = *U + &U . _readBuffer 2 * -> . _readBuffer 3 `ux -> -> # *U &U . _readBuffer 2 `ui `ux _data ]
-[; ;UART_Driver.c: 104: readBuffer.senderCnt++;
-"104
+[; ;UART_Driver.c: 103: readBuffer.senderCnt++;
+"103
 [e ++ . _readBuffer 3 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 105: if(readBuffer.senderCnt > 50) {
-"105
+[; ;UART_Driver.c: 104: if(readBuffer.senderCnt > 50) {
+"104
 [e $ ! > -> . _readBuffer 3 `i -> 50 `i 342  ]
 {
-[; ;UART_Driver.c: 106: readBuffer.senderCnt = 0;
-"106
+[; ;UART_Driver.c: 105: readBuffer.senderCnt = 0;
+"105
 [e = . _readBuffer 3 -> -> 0 `i `uc ]
-"107
+"106
 }
 [e :U 342 ]
-"108
+"107
 }
 [e :U 341 ]
+[; ;UART_Driver.c: 106: }
 [; ;UART_Driver.c: 107: }
-[; ;UART_Driver.c: 108: }
-[; ;UART_Driver.c: 109: break;
-"109
+[; ;UART_Driver.c: 108: break;
+"108
 [e $U 330  ]
-[; ;UART_Driver.c: 111: case 0x03:
-"111
+[; ;UART_Driver.c: 110: case 0x03:
+"110
 [e :U 343 ]
-[; ;UART_Driver.c: 112: if (data == 0x3A) {
-"112
+[; ;UART_Driver.c: 111: if (data == 0x3A) {
+"111
 [e $ ! == -> _data `i -> 58 `i 344  ]
 {
-[; ;UART_Driver.c: 113: readBuffer.state = 0x04;
-"113
+[; ;UART_Driver.c: 112: readBuffer.state = 0x04;
+"112
 [e = . _readBuffer 9 -> -> 4 `i `uc ]
-[; ;UART_Driver.c: 114: readBuffer.command[readBuffer.commandCnt] = '\0';
-"114
+[; ;UART_Driver.c: 113: readBuffer.command[readBuffer.commandCnt] = '\0';
+"113
 [e = *U + &U . _readBuffer 4 * -> . _readBuffer 5 `ux -> -> # *U &U . _readBuffer 4 `ui `ux -> -> 0 `ui `uc ]
-"115
+"114
 }
-[; ;UART_Driver.c: 115: } else {
+[; ;UART_Driver.c: 114: } else {
 [e $U 345  ]
 [e :U 344 ]
 {
-[; ;UART_Driver.c: 116: readBuffer.command[readBuffer.commandCnt] = data;
-"116
+[; ;UART_Driver.c: 115: readBuffer.command[readBuffer.commandCnt] = data;
+"115
 [e = *U + &U . _readBuffer 4 * -> . _readBuffer 5 `ux -> -> # *U &U . _readBuffer 4 `ui `ux _data ]
-[; ;UART_Driver.c: 117: readBuffer.commandCnt++;
-"117
+[; ;UART_Driver.c: 116: readBuffer.commandCnt++;
+"116
 [e ++ . _readBuffer 5 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 118: if(readBuffer.commandCnt > 50) {
-"118
+[; ;UART_Driver.c: 117: if(readBuffer.commandCnt > 50) {
+"117
 [e $ ! > -> . _readBuffer 5 `i -> 50 `i 346  ]
 {
-[; ;UART_Driver.c: 119: readBuffer.commandCnt = 0;
-"119
+[; ;UART_Driver.c: 118: readBuffer.commandCnt = 0;
+"118
 [e = . _readBuffer 5 -> -> 0 `i `uc ]
-"120
+"119
 }
 [e :U 346 ]
-"121
+"120
 }
 [e :U 345 ]
+[; ;UART_Driver.c: 119: }
 [; ;UART_Driver.c: 120: }
-[; ;UART_Driver.c: 121: }
-[; ;UART_Driver.c: 122: break;
-"122
+[; ;UART_Driver.c: 121: break;
+"121
 [e $U 330  ]
-[; ;UART_Driver.c: 124: case 0x04:
-"124
+[; ;UART_Driver.c: 123: case 0x04:
+"123
 [e :U 347 ]
-[; ;UART_Driver.c: 125: if (data == 0x3A) {
-"125
+[; ;UART_Driver.c: 124: if (data == 0x3A) {
+"124
 [e $ ! == -> _data `i -> 58 `i 348  ]
 {
-[; ;UART_Driver.c: 126: readBuffer.state = 0x05;
-"126
+[; ;UART_Driver.c: 125: readBuffer.state = 0x05;
+"125
 [e = . _readBuffer 9 -> -> 5 `i `uc ]
-[; ;UART_Driver.c: 127: readBuffer.message[readBuffer.messageCnt] = '\0';
-"127
+[; ;UART_Driver.c: 126: readBuffer.message[readBuffer.messageCnt] = '\0';
+"126
 [e = *U + &U . _readBuffer 6 * -> . _readBuffer 7 `ux -> -> # *U &U . _readBuffer 6 `ui `ux -> -> 0 `ui `uc ]
-"128
+"127
 }
-[; ;UART_Driver.c: 128: } else {
+[; ;UART_Driver.c: 127: } else {
 [e $U 349  ]
 [e :U 348 ]
 {
-[; ;UART_Driver.c: 129: readBuffer.message[readBuffer.messageCnt] = data;
-"129
+[; ;UART_Driver.c: 128: readBuffer.message[readBuffer.messageCnt] = data;
+"128
 [e = *U + &U . _readBuffer 6 * -> . _readBuffer 7 `ux -> -> # *U &U . _readBuffer 6 `ui `ux _data ]
-[; ;UART_Driver.c: 130: readBuffer.messageCnt++;
-"130
+[; ;UART_Driver.c: 129: readBuffer.messageCnt++;
+"129
 [e ++ . _readBuffer 7 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 131: if(readBuffer.messageCnt > 50) {
-"131
+[; ;UART_Driver.c: 130: if(readBuffer.messageCnt > 50) {
+"130
 [e $ ! > -> . _readBuffer 7 `i -> 50 `i 350  ]
 {
-[; ;UART_Driver.c: 132: readBuffer.messageCnt = 0;
-"132
+[; ;UART_Driver.c: 131: readBuffer.messageCnt = 0;
+"131
 [e = . _readBuffer 7 -> -> 0 `i `uc ]
-"133
+"132
 }
 [e :U 350 ]
-"134
+"133
 }
 [e :U 349 ]
+[; ;UART_Driver.c: 132: }
 [; ;UART_Driver.c: 133: }
-[; ;UART_Driver.c: 134: }
-[; ;UART_Driver.c: 135: break;
-"135
+[; ;UART_Driver.c: 134: break;
+"134
 [e $U 330  ]
-[; ;UART_Driver.c: 137: case 0x05:
-"137
+[; ;UART_Driver.c: 136: case 0x05:
+"136
 [e :U 351 ]
-[; ;UART_Driver.c: 138: if (data == 0x24) {
-"138
+[; ;UART_Driver.c: 137: if (data == 0x24) {
+"137
 [e $ ! == -> _data `i -> 36 `i 352  ]
 {
-[; ;UART_Driver.c: 139: acknowledge();
+[; ;UART_Driver.c: 139: readBuffer.state = 0x00;
 "139
-[e ( _acknowledge ..  ]
-[; ;UART_Driver.c: 140: readBuffer.state = 0x00;
-"140
 [e = . _readBuffer 9 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 141: readReady = 1;
-"141
+[; ;UART_Driver.c: 140: readReady = 1;
+"140
 [e = _readReady -> -> 1 `i `uc ]
-"142
+"141
 }
-[; ;UART_Driver.c: 142: } else {
+[; ;UART_Driver.c: 141: } else {
 [e $U 353  ]
 [e :U 352 ]
 {
-[; ;UART_Driver.c: 144: readBuffer.readId = (uint8_t)(data - 0x30);
-"144
+[; ;UART_Driver.c: 143: readBuffer.readId = (uint8_t)(data - 0x30);
+"143
 [e = . _readBuffer 8 -> - -> _data `i -> 48 `i `uc ]
-"145
+"144
 }
 [e :U 353 ]
-[; ;UART_Driver.c: 145: }
-[; ;UART_Driver.c: 146: break;
-"146
+[; ;UART_Driver.c: 144: }
+[; ;UART_Driver.c: 145: break;
+"145
 [e $U 330  ]
-[; ;UART_Driver.c: 148: default:
-"148
+[; ;UART_Driver.c: 147: default:
+"147
 [e :U 354 ]
-[; ;UART_Driver.c: 149: readBuffer.state = 0x00;
-"149
+[; ;UART_Driver.c: 148: readBuffer.state = 0x00;
+"148
 [e = . _readBuffer 9 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 150: break;
+[; ;UART_Driver.c: 149: break;
+"149
+[e $U 330  ]
 "150
-[e $U 330  ]
-"151
 }
-[; ;UART_Driver.c: 151: }
+[; ;UART_Driver.c: 150: }
 [e $U 330  ]
-"70
+"69
 [e :U 331 ]
 [e [\ . _readBuffer 9 , $ -> -> 0 `i `uc 332
  , $ -> -> 1 `i `uc 335
@@ -3755,207 +3750,188 @@ Version 3.2 HI-TECH Software Intermediate Code
  , $ -> -> 4 `i `uc 347
  , $ -> -> 5 `i `uc 351
  354 ]
-"151
+"150
 [e :U 330 ]
-[; ;UART_Driver.c: 152: }
-"152
+[; ;UART_Driver.c: 151: }
+"151
 [e :UE 329 ]
 }
-"154
-[v _acknowledge `(v ~T0 @X0 1 sf ]
-{
-[; ;UART_Driver.c: 154: static void acknowledge() {
-[e :U _acknowledge ]
-[f ]
-[; ;UART_Driver.c: 155: printf(startCharacter);
-"155
-[e ( _printf _startCharacter ]
-[; ;UART_Driver.c: 157: printf(ackCharacter);
-"157
-[e ( _printf _ackCharacter ]
-[; ;UART_Driver.c: 159: printf("%x",readBuffer.readId);
-"159
-[e ( _printf , (. :s 5C -> . _readBuffer 8 `i ]
-[; ;UART_Driver.c: 161: printf(stopCharacter);
-"161
-[e ( _printf _stopCharacter ]
-[; ;UART_Driver.c: 162: }
-"162
-[e :UE 355 ]
-}
-"167
+"166
 [v _D_UART_Init `(v ~T0 @X0 1 ef3`*Cuc`ui`uc ]
 {
-[; ;UART_Driver.c: 167: void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
+[; ;UART_Driver.c: 166: void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
 [e :U _D_UART_Init ]
 [v _name `*Cuc ~T0 @X0 1 r1 ]
 [v _baud `ui ~T0 @X0 1 r2 ]
 [v _interrupts `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;UART_Driver.c: 169: deviceName = name;
-"169
+[; ;UART_Driver.c: 168: deviceName = name;
+"168
 [e = _deviceName _name ]
-[; ;UART_Driver.c: 170: readReady = 0;
-"170
+[; ;UART_Driver.c: 169: readReady = 0;
+"169
 [e = _readReady -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 173: D_UART_Enable(0);
-"173
+[; ;UART_Driver.c: 172: D_UART_Enable(0);
+"172
 [e ( _D_UART_Enable (1 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 176: RCSTAbits.FERR = 0;
-"176
+[; ;UART_Driver.c: 175: RCSTAbits.FERR = 0;
+"175
 [e = . . _RCSTAbits 0 2 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 177: RCSTAbits.OERR = 0;
-"177
+[; ;UART_Driver.c: 176: RCSTAbits.OERR = 0;
+"176
 [e = . . _RCSTAbits 0 1 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 178: RCREG = 0x00;
-"178
+[; ;UART_Driver.c: 177: RCREG = 0x00;
+"177
 [e = _RCREG -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 181: TXSTAbits.TX9 = 0;
-"181
+[; ;UART_Driver.c: 180: TXSTAbits.TX9 = 0;
+"180
 [e = . . _TXSTAbits 0 6 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 182: TXSTAbits.SYNC = 0;
-"182
+[; ;UART_Driver.c: 181: TXSTAbits.SYNC = 0;
+"181
 [e = . . _TXSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 183: TXSTAbits.BRGH = 0;
-"183
+[; ;UART_Driver.c: 182: TXSTAbits.BRGH = 0;
+"182
 [e = . . _TXSTAbits 0 2 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 186: RCSTAbits.RX9 = 0;
-"186
+[; ;UART_Driver.c: 185: RCSTAbits.RX9 = 0;
+"185
 [e = . . _RCSTAbits 0 6 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 189: BAUDCONbits.RXDTP = 0;
+[; ;UART_Driver.c: 188: BAUDCONbits.RXDTP = 1;
+"188
+[e = . . _BAUDCONbits 0 5 -> -> 1 `i `uc ]
+[; ;UART_Driver.c: 189: BAUDCONbits.TXCKP = 1;
 "189
-[e = . . _BAUDCONbits 0 5 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 190: BAUDCONbits.TXCKP = 0;
+[e = . . _BAUDCONbits 0 4 -> -> 1 `i `uc ]
+[; ;UART_Driver.c: 190: BAUDCONbits.BRG16 = 0;
 "190
-[e = . . _BAUDCONbits 0 4 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 191: BAUDCONbits.BRG16 = 0;
-"191
 [e = . . _BAUDCONbits 0 3 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 194: SPBRG = ((16000000UL/baud)/64)-1;
-"194
+[; ;UART_Driver.c: 193: SPBRG = ((16000000UL/baud)/64)-1;
+"193
 [e = _SPBRG -> - / / -> 16000000 `ul -> _baud `ul -> -> -> 64 `i `l `ul -> -> -> 1 `i `l `ul `uc ]
-[; ;UART_Driver.c: 197: if (interrupts) {
-"197
-[e $ ! != -> _interrupts `i -> -> -> 0 `i `uc `i 357  ]
+[; ;UART_Driver.c: 196: if (interrupts) {
+"196
+[e $ ! != -> _interrupts `i -> -> -> 0 `i `uc `i 356  ]
 {
-[; ;UART_Driver.c: 198: RCONbits.IPEN = 1;
-"198
+[; ;UART_Driver.c: 197: RCONbits.IPEN = 1;
+"197
 [e = . . _RCONbits 5 7 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 199: INTCONbits.GIEH = 1;
-"199
+[; ;UART_Driver.c: 198: INTCONbits.GIEH = 1;
+"198
 [e = . . _INTCONbits 2 2 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 200: INTCONbits.GIEL = 1;
-"200
+[; ;UART_Driver.c: 199: INTCONbits.GIEL = 1;
+"199
 [e = . . _INTCONbits 2 1 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 201: PIR1bits.RCIF = 0;
-"201
+[; ;UART_Driver.c: 200: PIR1bits.RCIF = 0;
+"200
 [e = . . _PIR1bits 0 5 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 202: IPR1bits.RCIP = 1;
-"202
+[; ;UART_Driver.c: 201: IPR1bits.RCIP = 1;
+"201
 [e = . . _IPR1bits 0 5 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 203: PIE1bits.RCIE = 1;
-"203
+[; ;UART_Driver.c: 202: PIE1bits.RCIE = 1;
+"202
 [e = . . _PIE1bits 0 5 -> -> 1 `i `uc ]
-"204
+"203
 }
-[e :U 357 ]
+[e :U 356 ]
+[; ;UART_Driver.c: 203: }
 [; ;UART_Driver.c: 204: }
-[; ;UART_Driver.c: 205: }
-"205
-[e :UE 356 ]
+"204
+[e :UE 355 ]
 }
-"207
+"206
 [v _D_UART_Write `(v ~T0 @X0 1 ef2`*Cuc`*Cuc ]
 {
-[; ;UART_Driver.c: 207: void D_UART_Write(const char* command, const char* data) {
+[; ;UART_Driver.c: 206: void D_UART_Write(const char* command, const char* data) {
 [e :U _D_UART_Write ]
 [v _command `*Cuc ~T0 @X0 1 r1 ]
 [v _data `*Cuc ~T0 @X0 1 r2 ]
 [f ]
-[; ;UART_Driver.c: 208: printf(startCharacter);
-"208
+[; ;UART_Driver.c: 207: printf(startCharacter);
+"207
 [e ( _printf _startCharacter ]
-[; ;UART_Driver.c: 210: printf(messageCharacter);
-"210
+[; ;UART_Driver.c: 209: printf(messageCharacter);
+"209
 [e ( _printf _messageCharacter ]
-[; ;UART_Driver.c: 211: printf(deviceName);
-"211
+[; ;UART_Driver.c: 210: printf(deviceName);
+"210
 [e ( _printf _deviceName ]
-[; ;UART_Driver.c: 213: printf(":");printf(command);
-"213
-[e ( _printf :s 6C ]
+[; ;UART_Driver.c: 212: printf(":");printf(command);
+"212
+[e ( _printf :s 5C ]
 [e ( _printf _command ]
-[; ;UART_Driver.c: 215: printf(":");printf(data);
-"215
-[e ( _printf :s 7C ]
+[; ;UART_Driver.c: 214: printf(":");printf(data);
+"214
+[e ( _printf :s 6C ]
 [e ( _printf _data ]
-[; ;UART_Driver.c: 217: printf(stopCharacter);
-"217
+[; ;UART_Driver.c: 216: printf(stopCharacter);
+"216
 [e ( _printf _stopCharacter ]
-[; ;UART_Driver.c: 218: _delay((unsigned long)((1)*(16000000UL/4000.0)));
-"218
+[; ;UART_Driver.c: 217: _delay((unsigned long)((1)*(16000000UL/4000.0)));
+"217
 [e ( __delay (1 -> * -> -> 1 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;UART_Driver.c: 219: }
-"219
-[e :UE 358 ]
+[; ;UART_Driver.c: 218: }
+"218
+[e :UE 357 ]
 }
-"221
+"220
 [v _D_UART_WriteInt `(v ~T0 @X0 1 ef2`*Cuc`i ]
 {
-[; ;UART_Driver.c: 221: void D_UART_WriteInt(const char* command, int d) {
+[; ;UART_Driver.c: 220: void D_UART_WriteInt(const char* command, int d) {
 [e :U _D_UART_WriteInt ]
 [v _command `*Cuc ~T0 @X0 1 r1 ]
 [v _d `i ~T0 @X0 1 r2 ]
 [f ]
-[; ;UART_Driver.c: 222: printf(startCharacter);
-"222
+[; ;UART_Driver.c: 221: printf(startCharacter);
+"221
 [e ( _printf _startCharacter ]
-[; ;UART_Driver.c: 224: printf(messageCharacter);
-"224
+[; ;UART_Driver.c: 223: printf(messageCharacter);
+"223
 [e ( _printf _messageCharacter ]
-[; ;UART_Driver.c: 225: printf(deviceName);
-"225
+[; ;UART_Driver.c: 224: printf(deviceName);
+"224
 [e ( _printf _deviceName ]
-[; ;UART_Driver.c: 227: printf(":");printf(command);
-"227
-[e ( _printf :s 8C ]
+[; ;UART_Driver.c: 226: printf(":");printf(command);
+"226
+[e ( _printf :s 7C ]
 [e ( _printf _command ]
-[; ;UART_Driver.c: 229: printf(":");printf("%d", d);
-"229
-[e ( _printf :s 9C ]
-[e ( _printf , (. :s 10C _d ]
-[; ;UART_Driver.c: 231: printf(stopCharacter);
-"231
+[; ;UART_Driver.c: 228: printf(":");printf("%d", d);
+"228
+[e ( _printf :s 8C ]
+[e ( _printf , (. :s 9C _d ]
+[; ;UART_Driver.c: 230: printf(stopCharacter);
+"230
 [e ( _printf _stopCharacter ]
-[; ;UART_Driver.c: 232: _delay((unsigned long)((1)*(16000000UL/4000.0)));
-"232
+[; ;UART_Driver.c: 231: _delay((unsigned long)((1)*(16000000UL/4000.0)));
+"231
 [e ( __delay (1 -> * -> -> 1 `i `d / -> -> 16000000 `ul `d .4000.0 `ul ]
-[; ;UART_Driver.c: 233: }
-"233
-[e :UE 359 ]
+[; ;UART_Driver.c: 232: }
+"232
+[e :UE 358 ]
 }
-"235
+"234
 [v _D_UART_Read `(S327 ~T0 @X0 1 ef ]
 {
-[; ;UART_Driver.c: 235: READ_Data D_UART_Read(){
+[; ;UART_Driver.c: 234: READ_Data D_UART_Read(){
 [e :U _D_UART_Read ]
 [f ]
-[; ;UART_Driver.c: 236: readData.sender = readBuffer.sender;
-"236
+[; ;UART_Driver.c: 235: readData.sender = readBuffer.sender;
+"235
 [e = . _readData 0 -> &U . _readBuffer 2 `*Cuc ]
-[; ;UART_Driver.c: 237: readData.command = readBuffer.command;
-"237
+[; ;UART_Driver.c: 236: readData.command = readBuffer.command;
+"236
 [e = . _readData 1 -> &U . _readBuffer 4 `*Cuc ]
-[; ;UART_Driver.c: 238: readData.message = readBuffer.message;
-"238
+[; ;UART_Driver.c: 237: readData.message = readBuffer.message;
+"237
 [e = . _readData 2 -> &U . _readBuffer 6 `*Cuc ]
+[; ;UART_Driver.c: 238: readData.ackId = readBuffer.readId;
+"238
+[e = . _readData 3 . _readBuffer 8 ]
 [; ;UART_Driver.c: 239: return readData;
 "239
 [e ) _readData ]
-[e $UE 360  ]
+[e $UE 359  ]
 [; ;UART_Driver.c: 240: }
 "240
-[e :UE 360 ]
+[e :UE 359 ]
 }
 "242
 [v _D_UART_Enable `(v ~T0 @X0 1 ef1`uc ]
@@ -3966,7 +3942,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;UART_Driver.c: 243: if(enable) {
 "243
-[e $ ! != -> _enable `i -> -> -> 0 `i `uc `i 362  ]
+[e $ ! != -> _enable `i -> -> -> 0 `i `uc `i 361  ]
 {
 [; ;UART_Driver.c: 244: TRISCbits.TRISC7 = 0;
 "244
@@ -3986,8 +3962,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "249
 }
 [; ;UART_Driver.c: 249: } else {
-[e $U 363  ]
-[e :U 362 ]
+[e $U 362  ]
+[e :U 361 ]
 {
 [; ;UART_Driver.c: 250: TRISCbits.TRISC7 = 0;
 "250
@@ -4006,11 +3982,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = . . _RCSTAbits 0 7 -> -> 0 `i `uc ]
 "255
 }
-[e :U 363 ]
+[e :U 362 ]
 [; ;UART_Driver.c: 255: }
 [; ;UART_Driver.c: 256: }
 "256
-[e :UE 361 ]
+[e :UE 360 ]
 }
 "258
 [v _putch `(v ~T0 @X0 1 ef1`uc ]
@@ -4025,8 +4001,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _max -> -> 0 `i `uc ]
 [; ;UART_Driver.c: 261: while(TXSTAbits.TRMT == 0 && max < 200) {
 "261
-[e $U 365  ]
-[e :U 366 ]
+[e $U 364  ]
+[e :U 365 ]
 {
 [; ;UART_Driver.c: 262: max++;
 "262
@@ -4036,17 +4012,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `ul `d .4000000.0 `ul ]
 "264
 }
-[e :U 365 ]
+[e :U 364 ]
 "261
-[e $ && == -> . . _TXSTAbits 0 1 `i -> 0 `i < -> _max `i -> 200 `i 366  ]
-[e :U 367 ]
+[e $ && == -> . . _TXSTAbits 0 1 `i -> 0 `i < -> _max `i -> 200 `i 365  ]
+[e :U 366 ]
 [; ;UART_Driver.c: 264: }
 [; ;UART_Driver.c: 265: TXREG = data;
 "265
 [e = _TXREG _data ]
 [; ;UART_Driver.c: 268: }
 "268
-[e :UE 364 ]
+[e :UE 363 ]
 }
 [v $root$_HighISR `(v ~T0 @X0 0 e ]
 [v F3679 `(v ~T0 @X0 1 tf ]
@@ -4058,28 +4034,28 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 [; ;UART_Driver.c: 271: if (PIR1bits.RC1IF) {
 "271
-[e $ ! != -> . . _PIR1bits 1 2 `i -> -> -> 0 `i `Vuc `i 369  ]
+[e $ ! != -> . . _PIR1bits 1 2 `i -> -> -> 0 `i `Vuc `i 368  ]
 {
 [; ;UART_Driver.c: 272: PIR1bits.RC1IF = 0;
 "272
 [e = . . _PIR1bits 1 2 -> -> 0 `i `uc ]
 [; ;UART_Driver.c: 275: if(RCSTAbits.FERR == 1) {
 "275
-[e $ ! == -> . . _RCSTAbits 0 2 `i -> 1 `i 370  ]
+[e $ ! == -> . . _RCSTAbits 0 2 `i -> 1 `i 369  ]
 {
 [; ;UART_Driver.c: 276: RCREG = 0x00;
 "276
 [e = _RCREG -> -> 0 `i `uc ]
 [; ;UART_Driver.c: 277: return;
 "277
-[e $UE 368  ]
+[e $UE 367  ]
 "278
 }
-[e :U 370 ]
+[e :U 369 ]
 [; ;UART_Driver.c: 278: }
 [; ;UART_Driver.c: 280: if(RCSTAbits.OERR == 1) {
 "280
-[e $ ! == -> . . _RCSTAbits 0 1 `i -> 1 `i 371  ]
+[e $ ! == -> . . _RCSTAbits 0 1 `i -> 1 `i 370  ]
 {
 [; ;UART_Driver.c: 281: RCSTAbits.CREN = 0;
 "281
@@ -4089,30 +4065,53 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
 [; ;UART_Driver.c: 283: return;
 "283
-[e $UE 368  ]
+[e $UE 367  ]
 "284
 }
-[e :U 371 ]
+[e :U 370 ]
 [; ;UART_Driver.c: 284: }
 [; ;UART_Driver.c: 285: fillDataBuffer(RCREG);
 "285
 [e ( _fillDataBuffer (1 _RCREG ]
 "286
 }
-[e :U 369 ]
+[e :U 368 ]
 [; ;UART_Driver.c: 286: }
 [; ;UART_Driver.c: 287: }
 "287
-[e :UE 368 ]
+[e :UE 367 ]
+}
+"289
+[v _D_UART_Acknowledge `(v ~T0 @X0 1 ef1`uc ]
+{
+[; ;UART_Driver.c: 289: void D_UART_Acknowledge(uint8_t i) {
+[e :U _D_UART_Acknowledge ]
+[v _i `uc ~T0 @X0 1 r1 ]
+[f ]
+[; ;UART_Driver.c: 290: printf(startCharacter);
+"290
+[e ( _printf _startCharacter ]
+[; ;UART_Driver.c: 292: printf(ackCharacter);
+"292
+[e ( _printf _ackCharacter ]
+[; ;UART_Driver.c: 294: printf("%x", i);
+"294
+[e ( _printf , (. :s 10C -> _i `i ]
+[; ;UART_Driver.c: 296: printf(stopCharacter);
+"296
+[e ( _printf _stopCharacter ]
+[; ;UART_Driver.c: 297: }
+"297
+[e :UE 371 ]
 }
 [p f _printf 13632128 ]
-[a 5C 37 120 0 ]
-[a 10C 37 100 0 ]
+[a 10C 37 120 0 ]
+[a 9C 37 100 0 ]
 [a 3C 91 77 93 0 ]
 [a 4C 91 65 93 0 ]
+[a 5C 58 0 ]
 [a 6C 58 0 ]
 [a 7C 58 0 ]
 [a 8C 58 0 ]
-[a 9C 58 0 ]
 [a 1C 38 0 ]
 [a 2C 36 0 ]

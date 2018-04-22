@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ImageResource extends ResourceManager {
+public class ImageResource extends BasicResource {
 
     public ImageResource(String propertiesUrl, String fileName) {
         super(propertiesUrl, fileName);
@@ -14,7 +14,7 @@ public class ImageResource extends ResourceManager {
     public ImageIcon readImage(String key) {
         InputStream is = null;
         try {
-            is = this.getClass().getClassLoader().getResourceAsStream("icons/" + readString(key));
+            is = this.getClass().getClassLoader().getResourceAsStream("icons/" + readProperty(key));
             return new ImageIcon(ImageIO.read(is));
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISB `Vuc ~T0 @X0 0 e@3987 ]
 "2835
 [v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
-"39 Controllers/../Drivers/UART_Driver.h
+"40 Controllers/../Drivers/UART_Driver.h
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
 [v F3316 `(v ~T0 @X0 1 tf1`ul ]
 "164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
@@ -3156,13 +3156,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.h: 20: const char* sender;
 [; ;UART_Driver.h: 21: const char* command;
 [; ;UART_Driver.h: 22: const char* message;
-[; ;UART_Driver.h: 23: }READ_Data;
-[; ;UART_Driver.h: 32: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
-[; ;UART_Driver.h: 39: void D_UART_Write(const char* command, const char* data);
-[; ;UART_Driver.h: 46: void D_UART_WriteInt(const char* command, int d);
-[; ;UART_Driver.h: 52: READ_Data D_UART_Read();
-[; ;UART_Driver.h: 58: void D_UART_Enable(bool enable);
-[; ;UART_Driver.h: 60: void D_UART_SendInt(int i);
+[; ;UART_Driver.h: 23: uint8_t ackId;
+[; ;UART_Driver.h: 24: }READ_Data;
+[; ;UART_Driver.h: 33: void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
+[; ;UART_Driver.h: 40: void D_UART_Write(const char* command, const char* data);
+[; ;UART_Driver.h: 47: void D_UART_WriteInt(const char* command, int d);
+[; ;UART_Driver.h: 53: READ_Data D_UART_Read();
+[; ;UART_Driver.h: 59: void D_UART_Enable(bool enable);
+[; ;UART_Driver.h: 65: void D_UART_Acknowledge(uint8_t i);
 [; ;DOOR_Controller.h: 12: typedef struct {
 [; ;DOOR_Controller.h: 13: uint8_t id;
 [; ;DOOR_Controller.h: 15: bool locked;
@@ -3262,12 +3263,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 58: doors[d].lock_pin = (uint8_t)(0 + d);
 "58
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 -> + -> 0 `i -> _d `i `uc ]
-[; ;DOOR_Controller.c: 60: doors[d].is_open = 0;
+[; ;DOOR_Controller.c: 60: doors[d].is_open = 1;
 "60
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
-[; ;DOOR_Controller.c: 61: doors[d].was_open = !0;
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 1 `i `uc ]
+[; ;DOOR_Controller.c: 61: doors[d].was_open = !1;
 "61
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> ! != -> 0 `i -> 0 `i `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> ! != -> 1 `i -> 0 `i `i `uc ]
 [; ;DOOR_Controller.c: 62: doors[d].sensor_port = &PORTA;
 "62
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 &U _PORTA ]
@@ -3376,9 +3377,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 346  ]
 [e :U 343 ]
 {
-[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 0);
+[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
 "105
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 0 `i `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 1 `i `i `uc ]
 "106
 }
 "104

@@ -5,10 +5,8 @@ import com.galenus.act.classes.interfaces.TimerListener;
 import com.galenus.act.classes.interfaces.UserListener;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class UserManager {
 
@@ -33,14 +31,48 @@ public class UserManager {
         this.userListener = userListener;
     }
 
-    public void addUser(User user) {
-        if (!userList.contains(user)) {
-            userList.add(user);
+//    public void addUser(User user) {
+//        if (!userList.contains(user)) {
+//            userList.add(user);
+//        }
+//    }
+
+    public void updateUser(User user) {
+        if (user != null) {
+            int ndx = userList.indexOf(user);
+            if (ndx >= 0) {
+                userList.get(ndx).copyFrom(user);
+            } else {
+                userList.add(user);
+            }
         }
+    }
+
+    public void updateUsers(List<User> newUserList) {
+        if (newUserList != null) {
+            List<User> tempUsers = new ArrayList<>(userList);
+
+            for (User user : newUserList) {
+                updateUser(user);
+                tempUsers.remove(user);
+            }
+
+            // What remains in tempUsers can be removed
+            userList.removeAll(tempUsers);
+            sortUsers();
+        }
+    }
+
+    public int getUserCount() {
+        return userList.size();
     }
 
     public void clearUsers() {
         userList.clear();
+    }
+
+    public void sortUsers() {
+        userList.sort(Comparator.comparing(User::getFirstName));
     }
 
     public void setSelectedUser(User user) {

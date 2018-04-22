@@ -5,6 +5,7 @@ import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.gui.components.IUserTile;
 
 import java.awt.event.MouseEvent;
+import java.util.Comparator;
 import java.util.List;
 
 public class LogOnPanel extends LogOnPanelLayout {

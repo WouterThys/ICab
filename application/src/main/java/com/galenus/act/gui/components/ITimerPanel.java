@@ -45,7 +45,7 @@ public class ITimerPanel extends JPanel implements GuiInterface {
         timerIconLbl.setVerticalAlignment(SwingConstants.CENTER);
 
         timeLbl = new ILabel("02:00", ILabel.CENTER);
-        timeLbl.setFont(60, Font.BOLD);
+        timeLbl.setFont(100, Font.BOLD);
     }
 
     @Override

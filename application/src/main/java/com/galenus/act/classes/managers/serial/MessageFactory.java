@@ -56,12 +56,13 @@ public class MessageFactory {
     public static SerialMessage deserialize(String inputString) {
         SerialMessage message = null;
         if (inputString != null && !inputString.isEmpty()) {
+            String valid = "";
             try {
                 int start = inputString.indexOf(SerialMessage.StartChar);
                 int stop = inputString.indexOf(SerialMessage.StopChar);
                 if (start >= 0 && stop > start) {
                     // Cut off valid part
-                    String valid = inputString.substring(start + 1, stop);
+                    valid = inputString.substring(start + 1, stop);
 
                     // Acknowledge (ex: &[A]2$)
                     if (valid.startsWith(SerialMessage.Acknowledge)) {
@@ -86,6 +87,7 @@ public class MessageFactory {
                     }
                 }
             } catch (Exception e) {
+                System.err.println("Failed to deserialize message: " + inputString + ", valid: " + valid + "\n" + e);
                 e.printStackTrace();
             }
         }

@@ -101,6 +101,20 @@ public class User extends BaseClass {
         }
     }
 
+    @Override
+    public void copyFrom(BaseClass baseClass) {
+        if (baseClass != null && baseClass instanceof User) {
+            User from = (User) baseClass;
+            firstName = from.getFirstName();
+            lastName = from.getLastName();
+            encodedPassword = from.getEncodedPassword();
+            encodedPin = from.getEncodedPin();
+            avatar = from.getAvatar();
+            language = from.getLanguage();
+            sex = from.getSex();
+        }
+    }
+
     public void logIn() {
         this.isLoggedIn = true;
         this.loggedInTime = 0;

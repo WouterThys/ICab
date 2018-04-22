@@ -7,7 +7,6 @@ import com.galenus.act.gui.components.ITableLabel;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-
 import java.awt.*;
 import java.util.List;
 
@@ -57,9 +56,19 @@ public class ItemTableModel extends IAbstractTableModel<Item> {
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
             if (value instanceof Item) {
+
+                if (first && row == 0) {
+                    TableColumn tableColumn = table.getColumnModel().getColumn(column);
+                    tableColumn.setMaxWidth(32);
+                    tableColumn.setMinWidth(32);
+                    first = false;
+                }
+
                 Item item = (Item) value;
 
                 String amount = String.valueOf(item.getAmount());
+
+                stateLabel.updateWithTableComponent(component, row, isSelected);
                 stateLabel.setText(amount);
 
                 if (item.getAmount() > 0) {

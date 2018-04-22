@@ -6,6 +6,7 @@ import com.galenus.act.gui.components.IUserTile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 abstract class LogOnPanelLayout extends JPanel implements
@@ -25,6 +26,7 @@ abstract class LogOnPanelLayout extends JPanel implements
     private int rows = -1;
     private int cols = -1;
 
+
     /*
     *                  CONSTRUCTOR
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -40,7 +42,7 @@ abstract class LogOnPanelLayout extends JPanel implements
     private IUserTile createTile(User user) {
         IUserTile tileView = new IUserTile(user);
         tileView.addOnTileClickListener(this);
-        return  tileView;
+        return tileView;
     }
 
     void drawTiles(List<User> userList) {
@@ -49,10 +51,18 @@ abstract class LogOnPanelLayout extends JPanel implements
             gridPanel.add(createTile(user));
         }
         if (userList.size() > 0) {
-            updateComponents(userList.get(0));
+            updateComponents();
         }
     }
 
+//    private boolean findUser(User user) {
+//        for (IUserTile userTile : userTiles) {
+//            if (userTile.getUser().equals(user)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /*
      *                  LISTENERS

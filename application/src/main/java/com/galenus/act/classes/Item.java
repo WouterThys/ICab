@@ -26,6 +26,16 @@ public class Item extends BaseClass {
         return (obj instanceof Item) && super.equals(obj);
     }
 
+    @Override
+    public void copyFrom(BaseClass baseClass) {
+        if (baseClass != null && baseClass instanceof Item) {
+            Item from = (Item) baseClass;
+            amount = from.getAmount();
+            description = from.getDescription();
+            location = from.getLocation();
+        }
+    }
+
     public int getAmount() {
         return amount;
     }

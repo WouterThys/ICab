@@ -4370,24 +4370,26 @@ typedef struct {
 const char* sender;
 const char* command;
 const char* message;
+uint8_t ackId;
 }READ_Data;
 
-# 32
+# 33
 void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 
-# 39
+# 40
 void D_UART_Write(const char* command, const char* data);
 
-# 46
+# 47
 void D_UART_WriteInt(const char* command, int d);
 
-# 52
+# 53
 READ_Data D_UART_Read();
 
-# 58
+# 59
 void D_UART_Enable(bool enable);
 
-void D_UART_SendInt(int i);
+# 65
+void D_UART_Acknowledge(uint8_t i);
 
 # 12 "Controllers/DOOR_Controller.h"
 typedef struct {
@@ -4452,8 +4454,8 @@ doors[d].locked = 1;
 doors[d].lock_port = &PORTB;
 doors[d].lock_pin = (uint8_t)(0 + d);
 
-doors[d].is_open = 0;
-doors[d].was_open = !0;
+doors[d].is_open = 1;
+doors[d].was_open = !1;
 doors[d].sensor_port = &PORTA;
 doors[d].sensor_pin = (uint8_t) (1 + d);
 
@@ -4481,7 +4483,7 @@ for (d = 0; d < door_cnt; d++) {
 void C_DOOR_ReadSensors() {
 uint8_t d;
 for (d = 0; d < door_cnt; d++) {
-doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 0);
+doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
 }
 }
 

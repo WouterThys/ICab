@@ -3,7 +3,6 @@ package com.galenus.act.gui.panels.inventory;
 import com.galenus.act.classes.Door;
 import com.galenus.act.classes.Item;
 import com.galenus.act.classes.interfaces.GuiInterface;
-import com.galenus.act.classes.managers.DoorManager;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.models.DoorTableModel;
 import com.galenus.act.gui.models.ItemTableModel;
@@ -65,8 +64,7 @@ abstract class InventoryPanelLayout extends JPanel implements GuiInterface, List
         itemTableModel = new ItemTableModel(new ArrayList<>());
         itemTable = new ITable<>(itemTableModel);
         itemTable.setDefaultRenderer(Object.class, new ItemTableModel.ItemTableRenderer());
-        itemTable.setExactColumnWidth(0, 36);
-        itemTable.setEnabled(false);
+        //itemTable.setEnabled(false);
         //itemTable.getSelectionModel().addListSelectionListener(this);
     }
 

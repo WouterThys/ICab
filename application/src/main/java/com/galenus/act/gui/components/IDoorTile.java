@@ -15,6 +15,10 @@ public class IDoorTile extends JPanel implements GuiInterface, MouseListener {
     private static final ImageIcon openIcon = imageResource.readImage("Doors.Open");
     private static final ImageIcon closedIcon = imageResource.readImage("Doors.Closed");
 
+    public interface DoorClickedListener {
+        void onDoorClicked(MouseEvent e, Door door);
+    }
+
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -24,6 +28,7 @@ public class IDoorTile extends JPanel implements GuiInterface, MouseListener {
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private Door door;
+    private DoorClickedListener doorClickedListener;
 
     private boolean isSelected = false;
     private Color background;
@@ -57,6 +62,10 @@ public class IDoorTile extends JPanel implements GuiInterface, MouseListener {
         } else {
             this.setBackground(background);
         }
+    }
+
+    public void setClickListener(DoorClickedListener listener) {
+        this.doorClickedListener = listener;
     }
 
     /*
@@ -95,7 +104,9 @@ public class IDoorTile extends JPanel implements GuiInterface, MouseListener {
     //
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if (doorClickedListener != null) {
+            doorClickedListener.onDoorClicked(e, door);
+        }
     }
 
     @Override

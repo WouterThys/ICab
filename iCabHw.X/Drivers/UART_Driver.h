@@ -20,6 +20,7 @@ typedef struct {
     const char* sender;
     const char* command;
     const char* message;
+    uint8_t ackId;
 }READ_Data;
     
 /**
@@ -57,7 +58,11 @@ READ_Data D_UART_Read();
  */
 void D_UART_Enable(bool enable);
 
-void D_UART_SendInt(int i);
+/**
+ * Acknowledge message with ID i
+ * @param i
+ */
+void D_UART_Acknowledge(uint8_t i);
 
 #ifdef	__cplusplus
 }

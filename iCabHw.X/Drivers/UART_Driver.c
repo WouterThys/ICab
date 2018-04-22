@@ -64,7 +64,6 @@ bool readReady;
  ******************************************************************************/
 
 static void fillDataBuffer(uint8_t data);
-static void acknowledge();
 
 static void fillDataBuffer(uint8_t data){
     switch(readBuffer.state) {
@@ -136,7 +135,7 @@ static void fillDataBuffer(uint8_t data){
             
         case READ_STATE_END:
             if (data == STOP_CHAR) {
-                acknowledge();
+                //acknowledge();
                 readBuffer.state = READ_STATE_START;
                 readReady = true;
             } else {
@@ -151,15 +150,15 @@ static void fillDataBuffer(uint8_t data){
     }
 }
 
-static void acknowledge() {
-    printf(startCharacter);
-    
-    printf(ackCharacter);
-    // id
-    printf("%x",readBuffer.readId);
-    
-    printf(stopCharacter);
-}
+//static void acknowledge() {
+//    printf(startCharacter);
+//    
+//    printf(ackCharacter);
+//    // id
+//    printf("%x",readBuffer.readId);
+//    
+//    printf(stopCharacter);
+//}
 
 /*******************************************************************************
  *          DRIVER FUNCTIONS
@@ -186,8 +185,8 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     RCSTAbits.RX9 = 0; // Selects 8-bit reception
 
     // BAUDCON register settings
-    BAUDCONbits.RXDTP = 0; // RX data is inverted
-    BAUDCONbits.TXCKP = 0; // TX data is inverted
+    BAUDCONbits.RXDTP = 1; // RX data is inverted
+    BAUDCONbits.TXCKP = 1; // TX data is inverted
     BAUDCONbits.BRG16 = 0; // 8-bit Baud Rate Generator
     
     // Baud
@@ -236,6 +235,7 @@ READ_Data D_UART_Read(){
     readData.sender = readBuffer.sender;
     readData.command = readBuffer.command;
     readData.message = readBuffer.message;
+    readData.ackId = readBuffer.readId;
     return readData;
 }
 
@@ -284,5 +284,15 @@ void interrupt HighISR(void) {
         }
         fillDataBuffer(RCREG);
     }
+}
+
+void D_UART_Acknowledge(uint8_t i) {
+    printf(startCharacter);
+    
+    printf(ackCharacter);
+    // id
+    printf("%x", i);
+    
+    printf(stopCharacter);
 }
 

@@ -1,13 +1,13 @@
 package com.galenus.act.gui.dialogs.initializationdialog;
 
-import com.galenus.act.Main;
 import com.galenus.act.Application;
 import com.galenus.act.classes.interfaces.SerialListener;
-import com.galenus.act.classes.managers.serial.SerialManager;
 import com.galenus.act.classes.interfaces.WebCallListener;
+import com.galenus.act.classes.managers.serial.SerialManager;
 
 import javax.swing.*;
 
+import static com.galenus.act.Application.settings;
 import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
 import static com.galenus.act.classes.managers.web.WebManager.webMgr;
 
@@ -52,8 +52,8 @@ public class InitializationDialog extends InitializationDialogLayout {
 
     private void three_initWebService() {
         webMgr().init( application,
-                Main.ICAB_NAME,
-                Main.WEB_URL,
+                settings.getName(),
+                settings.getWebUrl(),
                 "http://tempuri.org/",
                 60000);
         webMgr().registerShutDownHook();
