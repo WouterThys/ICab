@@ -25,7 +25,7 @@ public class LogOnPanel extends LogOnPanelLayout {
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public LogOnPanel(UserListener userListener) {
-        super(5, 50);
+        super(6, 50);
 
         this.userListener = userListener;
 

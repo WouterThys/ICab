@@ -29,11 +29,11 @@ public class IKeyPad extends JPanel {
         super(new BorderLayout());
 
         JPanel display = new JPanel();
-        pinField.setFont(new Font("Dialog", Font.PLAIN, 60));
+        pinField.setFont(new Font("Dialog", Font.PLAIN, 80));
         pinField.setFocusable(false);
         pinField.setOpaque(true);
         pinField.setBackground(Color.WHITE);
-        pinField.setPreferredSize(new Dimension(200, 80));
+        pinField.setPreferredSize(new Dimension(220, 100));
 
         display.add(pinField);
         this.add(display, BorderLayout.NORTH);
@@ -139,7 +139,7 @@ public class IKeyPad extends JPanel {
             super(String.valueOf(number));
             this.setFocusable(false);
             Font f = this.getFont();
-            this.setFont(new Font(f.getName(), Font.BOLD, 30));
+            this.setFont(new Font(f.getName(), Font.BOLD, 40));
             this.setAction(new AbstractAction(this.getText()) {
 
                 @Override

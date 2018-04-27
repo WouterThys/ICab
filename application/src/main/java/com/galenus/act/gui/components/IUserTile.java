@@ -76,6 +76,9 @@ public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,
         iconBtn = new JButton();
         iconBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         iconBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+        iconBtn.setPreferredSize(new Dimension(120,120));
+        iconBtn.setMaximumSize(new Dimension(120,120));
+        iconBtn.setMinimumSize(new Dimension(120,120));
         //iconBtn.addActionListener(this);
         iconBtn.addMouseListener(this);
 
@@ -86,6 +89,8 @@ public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
+        Font f = nameTp.getFont();
+        nameTp.setFont(new Font(f.getName(), Font.BOLD, 20));
         nameTp.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameTp.setAlignmentY(Component.CENTER_ALIGNMENT);
         nameTp.setFocusable(false);
@@ -103,7 +108,7 @@ public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,
         add(iconBtn);
         add(nameTp);
 
-        setPreferredSize(new Dimension(128, 128));
+        setPreferredSize(new Dimension(100, 120));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
     }
 
