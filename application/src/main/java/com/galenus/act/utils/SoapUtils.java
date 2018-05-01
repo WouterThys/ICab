@@ -2,6 +2,12 @@ package com.galenus.act.utils;
 
 import org.ksoap2.serialization.SoapObject;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.Base64;
 import java.util.Date;
 
 public class SoapUtils {
@@ -26,6 +32,40 @@ public class SoapUtils {
             }
         }
         return "";
+    }
+
+    public static ImageIcon convertToImageIcon(SoapObject object, String name) {
+        if (object != null && object.hasProperty(name)) {
+            String value = object.getProperty(name).toString();
+            if (value.contains("anyType")) {
+                return null;
+            }
+
+            byte[] decodedString = null;
+            try {
+                decodedString = Base64.getDecoder().decode(value.getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if (decodedString != null) {
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new ByteArrayInputStream(decodedString));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (img != null) {
+                    return new ImageIcon(img);
+                }
+            }
+        } else {
+            if (object != null) {
+                System.err.println("Unknown object name: '"+name+"' in "+object.getPropertySafely("ObjectName").toString());
+            } else {
+                System.err.println("Null object passed in convertToString(...)");
+            }
+        }
+        return null;
     }
 
     public static long convertToLong(SoapObject object, String name) {

@@ -19,16 +19,7 @@ public class User extends BaseClass {
         French,
         English;
 
-        public static int enumToInt(UserLanguage userLanguage) {
-            switch (userLanguage) {
-                case Dutch: return 0;
-                case French: return 1;
-                case English: return 2;
-                default: return -1;
-            }
-        }
-
-        public static UserLanguage intToEnum(int userLanguage) {
+        public static UserLanguage fromInt(int userLanguage) {
             switch (userLanguage) {
                 case 0: return Dutch;
                 case 1: return French;
@@ -43,16 +34,7 @@ public class User extends BaseClass {
         Female,
         Male;
 
-        public static int enumToInt(UserSex userSex) {
-            switch (userSex) {
-                case Machine: return 0;
-                case Female: return 1;
-                case Male: return 2;
-                default: return -1;
-            }
-        }
-
-        public static UserSex intToEnum(int userSex) {
+        public static UserSex fromInt(int userSex) {
             switch (userSex) {
                 case 0: return Machine;
                 case 1: return Female;
@@ -75,12 +57,6 @@ public class User extends BaseClass {
     private Date lastLogIn = DateUtils.minDate();
     private int loggedInTime;
 
-    public User() {
-        language = UserLanguage.French;
-        sex = UserSex.Female;
-        avatar = null;
-    }
-
     public User(SoapObject soapObject) {
         onSoapInit(soapObject);
     }
@@ -93,8 +69,9 @@ public class User extends BaseClass {
             lastName = SoapUtils.convertToString(soapObject, "LastName");
             encodedPassword = SoapUtils.convertToString(soapObject, "EncodedPassword");
             encodedPin = SoapUtils.convertToString(soapObject, "EncodedPIN");
-            sex = UserSex.intToEnum(SoapUtils.convertToInt(soapObject, "UserSex"));
-            language = UserLanguage.intToEnum(SoapUtils.convertToInt(soapObject, "Lan"));
+            sex = UserSex.fromInt(SoapUtils.convertToInt(soapObject, "UserSex"));
+            language = UserLanguage.fromInt(SoapUtils.convertToInt(soapObject, "Lan"));
+            avatar = SoapUtils.convertToImageIcon(soapObject, "Avatar");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,48 +158,24 @@ public class User extends BaseClass {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEncodedPassword() {
         return encodedPassword;
     }
 
-    public void setEncodedPassword(String encodedPassword) {
-        this.encodedPassword = encodedPassword;
-    }
-
     public String getEncodedPin() {
         return encodedPin;
-    }
-
-    public void setEncodedPin(String encodedPin) {
-        this.encodedPin = encodedPin;
     }
 
     public UserLanguage getLanguage() {
         return language;
     }
 
-    public void setLanguage(UserLanguage language) {
-        this.language = language;
-    }
-
     public UserSex getSex() {
         return sex;
-    }
-
-    public void setSex(UserSex sex) {
-        this.sex = sex;
     }
 
     public boolean isLoggedIn() {
