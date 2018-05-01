@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.44\dat\en_msgs.txt -cs \
   -h+dist/default/production\iCabHw.X.production.sym \
   --cmf=dist/default/production\iCabHw.X.production.cmf -z -Q18F2550 \
-  -oC:\Users\thys_\AppData\Local\Temp\s7k8.2 \
+  -oC:\Users\thys_\AppData\Local\Temp\saes.2 \
   -Mdist/default/production/iCabHw.X.production.map -E1 -ver=XC8 \
   -ASTACK=01A6h-07ffh -pstack=STACK -ACODE=00h-07FFFh -ACONST=00h-07FFFh \
   -ASMALLCONST=0800h-08FFhx120 -AMEDIUMCONST=0800h-07FFFh -ACOMRAM=01h-05Fh \
@@ -22,7 +22,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\thys_\AppData\Local\Temp\s7k8.obj \
+  C:\Users\thys_\AppData\Local\Temp\saes.obj \
   dist/default/production\iCabHw.X.production.obj 
 
 Object code version is 3.11
@@ -35,7 +35,7 @@ Call graph: (short form)
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\thys_\AppData\Local\Temp\s7k8.obj
+C:\Users\thys_\AppData\Local\Temp\saes.obj
                 init                                 EC       EC        4        C       0
                 reset_vec                             0        0        4        0       0
                 idloc                            200000   200000        8   200000       0
