@@ -15,7 +15,7 @@ import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.logsdialog.LogsDialog;
 import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.inventory.InventoryPanel;
-import com.galenus.act.gui.panels.logon.LogOnPanel;
+import com.galenus.act.gui.panels.logon.UserGrid;
 import com.galenus.act.gui.panels.user.UserPanel;
 import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
@@ -57,7 +57,7 @@ public class Application extends JFrame implements
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    private LogOnPanel logOnPanel;
+    private UserGrid logOnPanel;
     private InventoryPanel inventoryPanel;
 
     private UserPanel userPanel;
@@ -67,6 +67,12 @@ public class Application extends JFrame implements
     private boolean alarmSend = false;
 
     private int serialWriteRetry;
+
+    private boolean showingOpenError = false;
+    private boolean showingOtherError = false;
+    private boolean showingReadError = false;
+    private boolean showingWriteError = false;
+    private boolean showingResetError = false;
 
 
     /*
@@ -221,7 +227,7 @@ public class Application extends JFrame implements
     }
 
     public void showDebugDialog() {
-        LogsDialog dialog = new LogsDialog(this, "Serial logs", serMgr().getSerialPort());
+        LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
         dialog.showDialog();
     }
 
@@ -234,7 +240,7 @@ public class Application extends JFrame implements
     @Override
     public void initializeComponents() {
         // Panels
-        logOnPanel = new LogOnPanel(this);
+        logOnPanel = new UserGrid(this);
         inventoryPanel = new InventoryPanel();
         userPanel = new UserPanel(this);
         doorsPanel = new DoorsPanel(this);
@@ -329,13 +335,25 @@ public class Application extends JFrame implements
             }
             switch (serialError.getErrorType()) {
                 case OpenError:
-                    showErrorMessage(error, true);
+                    if (!showingOpenError) {
+                        showingOpenError = true;
+                        showErrorMessage(error, true);
+                        showingOpenError = false;
+                    }
                     break;
                 case ReadError:
-                    showErrorMessage(error, false);
+                    if (!showingReadError) {
+                        showingReadError = true;
+                        showErrorMessage(error, false);
+                        showingReadError = false;
+                    }
                     break;
                 case OtherError:
-                    showErrorMessage(error, false);
+                    if (!showingOtherError) {
+                        showingOtherError = true;
+                        showErrorMessage(error, false);
+                        showingOtherError = false;
+                    }
                     break;
                 case WriteError:
                     if (serialError.getSerialMessage() != null) {
@@ -346,26 +364,38 @@ public class Application extends JFrame implements
                                 break;
                             case 1: // Try to reset and initialize again
                                 System.err.println("Write error, trying to initialize again");
-                                int res = JOptionPane.showConfirmDialog(
-                                        Application.this,
-                                        "Failed to communicate with controller, make sure the system setup is" +
-                                                " correct. Retry to initialize?",
-                                        "Serial Error",
-                                        JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.ERROR_MESSAGE
-                                );
-                                if (res == JOptionPane.YES_OPTION) {
-                                    serMgr().reInitialize();
+                                if (!showingResetError) {
+                                    showingResetError = true;
+                                    int res = JOptionPane.showConfirmDialog(
+                                            Application.this,
+                                            "Failed to communicate with controller, make sure the system setup is" +
+                                                    " correct. Retry to initialize?",
+                                            "Serial Error",
+                                            JOptionPane.YES_NO_OPTION,
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                    if (res == JOptionPane.YES_OPTION) {
+                                        serMgr().reInitialize();
+                                    }
+                                    showingResetError = false;
                                 }
                                 break;
                             case 2:
                                 System.err.println("Write error, no communication");
-                                showErrorMessage(error, true);
+                                if (!showingWriteError) {
+                                    showingWriteError = true;
+                                    showErrorMessage(error, true);
+                                    showingWriteError = false;
+                                }
                                 break;
                         }
                         serialWriteRetry++;
                     } else {
-                        showErrorMessage(error, false);
+                        if (!showingWriteError) {
+                            showingWriteError = true;
+                            showErrorMessage(error, false);
+                            showingWriteError = false;
+                        }
                     }
                     break;
             }

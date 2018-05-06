@@ -6,10 +6,10 @@ import com.galenus.act.gui.components.IUserTile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-abstract class LogOnPanelLayout extends JPanel implements
+abstract class UserGridLayout extends JPanel implements
         GuiInterface,
         IUserTile.OnTileClickListener {
 
@@ -19,6 +19,7 @@ abstract class LogOnPanelLayout extends JPanel implements
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private JPanel gridPanel;
+    private JPanel tabPanel;
 
     /*
      *                  VARIABLES
@@ -30,7 +31,7 @@ abstract class LogOnPanelLayout extends JPanel implements
     /*
     *                  CONSTRUCTOR
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    LogOnPanelLayout(int rows, int cols) {
+    UserGridLayout(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
     }
@@ -45,6 +46,47 @@ abstract class LogOnPanelLayout extends JPanel implements
         return tileView;
     }
 
+    void drawTabbedTiles(List<User> userList) {
+        tabPanel.removeAll();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, 28 ) );
+        JScrollPane scrollPane = new JScrollPane(gridPanel);
+
+        userList.sort(Comparator.comparing(User::getFirstName));
+
+        // "All" tab
+        drawTiles(userList);
+        tabbedPane.addTab(" All ", scrollPane);
+
+        char firstChar = ' ';
+        JPanel contentPnl = new JPanel();
+        for (User user : userList) {
+            char fc;
+
+            if (user.getFirstName().isEmpty()) {
+                fc = ' ';
+            } else {
+                fc = user.getFirstName().charAt(0);
+            }
+
+            // Add tabs
+            if (firstChar != fc) {
+                contentPnl = new JPanel();
+                String t = "  " + String.valueOf(fc).toUpperCase() + "  ";
+                tabbedPane.addTab(t, contentPnl);
+                firstChar = fc;
+            }
+
+            // Add tiles
+            IUserTile tile = createTile(user);
+            tile.setPreferredSize(new Dimension(120,200));
+            contentPnl.add(tile);
+        }
+
+        tabPanel.add(tabbedPane);
+    }
+
     void drawTiles(List<User> userList) {
         gridPanel.removeAll();
         for (User user : userList) {
@@ -55,32 +97,27 @@ abstract class LogOnPanelLayout extends JPanel implements
         }
     }
 
-//    private boolean findUser(User user) {
-//        for (IUserTile userTile : userTiles) {
-//            if (userTile.getUser().equals(user)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @Override
     public void initializeComponents() {
         gridPanel = new JPanel(new GridLayout(rows,cols));
+        tabPanel = new JPanel(new BorderLayout());
+        tabPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(1,1,1,1),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Color.gray, 1),
+                        BorderFactory.createEmptyBorder(10,0,10,0)
+                )
+        ));
     }
 
     @Override
     public void initializeLayouts() {
         setLayout(new BorderLayout());
 
-        // Grid
-        JScrollPane scrollPane = new JScrollPane(gridPanel);
-
-        // Add
-        add(scrollPane, BorderLayout.CENTER);
+        add(tabPanel, BorderLayout.CENTER);
     }
 
     @Override

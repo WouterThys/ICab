@@ -16,8 +16,8 @@ import java.util.Vector;
 public class LogsDialog extends LogsDialogLayout implements SerialListener, WebCallListener {
 
 
-    public LogsDialog(Application application, String title, SerialPort serialPort) {
-        super(application, title);
+    public LogsDialog(Application application, SerialPort serialPort) {
+        super(application, "Logs");
 
         initializeComponents();
         initializeLayouts();

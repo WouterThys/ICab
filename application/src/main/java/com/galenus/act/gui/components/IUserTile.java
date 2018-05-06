@@ -8,8 +8,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -38,6 +36,7 @@ public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public IUserTile(User user) {
+        super();
         this.user = user;
 
         this.addMouseListener(this);
@@ -110,6 +109,7 @@ public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,
 
         setPreferredSize(new Dimension(100, 120));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
     }
 
     @Override

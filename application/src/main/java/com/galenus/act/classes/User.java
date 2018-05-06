@@ -155,18 +155,33 @@ public class User extends BaseClass {
 
 
     public String getFirstName() {
+        if (firstName == null) {
+            firstName = "";
+        }
+        if (!firstName.isEmpty()) {
+            firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+        }
         return firstName;
     }
 
     public String getLastName() {
+        if (lastName == null) {
+            lastName = "";
+        }
         return lastName;
     }
 
     public String getEncodedPassword() {
+        if (encodedPassword == null) {
+            encodedPassword = "";
+        }
         return encodedPassword;
     }
 
     public String getEncodedPin() {
+        if (encodedPin == null) {
+            encodedPin = "";
+        }
         return encodedPin;
     }
 

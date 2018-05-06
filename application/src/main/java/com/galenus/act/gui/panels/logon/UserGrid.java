@@ -5,10 +5,9 @@ import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.gui.components.IUserTile;
 
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
 import java.util.List;
 
-public class LogOnPanel extends LogOnPanelLayout {
+public class UserGrid extends UserGridLayout {
 
     /*
      *                  COMPONENTS
@@ -24,8 +23,8 @@ public class LogOnPanel extends LogOnPanelLayout {
     /*
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    public LogOnPanel(UserListener userListener) {
-        super(6, 50);
+    public UserGrid(UserListener userListener) {
+        super(5, 100);
 
         this.userListener = userListener;
 
@@ -37,7 +36,8 @@ public class LogOnPanel extends LogOnPanelLayout {
      *                  METHODS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public void setUsers(List<User> userList) {
-        drawTiles(userList);
+        //drawTiles(userList);
+        drawTabbedTiles(userList);
     }
 
     /*
