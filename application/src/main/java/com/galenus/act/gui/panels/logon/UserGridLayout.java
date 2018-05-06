@@ -50,7 +50,7 @@ abstract class UserGridLayout extends JPanel implements
         tabPanel.removeAll();
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, 28 ) );
+        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, 26 ) );
         JScrollPane scrollPane = new JScrollPane(gridPanel);
 
         userList.sort(Comparator.comparing(User::getFirstName));

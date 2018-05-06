@@ -55,7 +55,7 @@
 /**
  * OPEN and CLOSED sensor signal polarity
  */
-#define OPEN    1
+#define OPEN    0
 #define CLOSED  !OPEN
 
 /*******************************************************************************

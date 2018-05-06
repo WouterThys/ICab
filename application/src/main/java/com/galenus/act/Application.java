@@ -227,8 +227,46 @@ public class Application extends JFrame implements
     }
 
     public void showDebugDialog() {
-        LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
-        dialog.showDialog();
+        String password = getPassword();
+        if (password.equals("1234")) {
+            LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
+            dialog.showDialog();
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Wrong password..",
+                    ":(",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private String getPassword() {
+        char[] password = null;
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter a password:");
+        JPasswordField pass = new JPasswordField(10);
+        panel.add(label);
+        panel.add(pass);
+        String[] options = new String[]{"OK", "Cancel"};
+        int option = JOptionPane.showOptionDialog(
+                null,
+                panel, "Password",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[1]);
+        if(option == 0) {
+            password = pass.getPassword();
+            System.out.println("Your password is: " + new String(password));
+        }
+
+        if (password == null) {
+            return "";
+        } else {
+            return new String(password);
+        }
     }
 
     /*
