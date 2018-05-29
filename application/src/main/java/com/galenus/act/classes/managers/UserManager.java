@@ -21,6 +21,7 @@ public class UserManager {
     private Timer timer;
     private int userLogonTime;
     private UserListener userListener;
+    private TimerListener timerListener;
 
     public List<User> getUserList() {
         return userList;
@@ -104,9 +105,14 @@ public class UserManager {
         }
     }
 
+    public boolean isTimerRunning() {
+        return timer != null;
+    }
+
     public void startTimer(final TimerListener timerListener) {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        this.timerListener = timerListener;
+        this.timer = new Timer();
+        this.timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 SwingUtilities.invokeLater(() -> {
@@ -121,6 +127,15 @@ public class UserManager {
             timer.cancel();
         }
         timer = null;
+    }
+
+    public void restartTimer() {
+        startTimer(timerListener);
+    }
+
+    public void stopUser() {
+        selectedUser.setLoggedInTime(userLogonTime);
+        timerElapsed(timerListener);
     }
 
     private void timerElapsed(TimerListener timerListener) {

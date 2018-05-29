@@ -51,6 +51,7 @@ public class User extends BaseClass {
     private ImageIcon avatar;
     private UserLanguage language;
     private UserSex sex;
+    private boolean canStopTimer;
 
     private boolean isLoggedIn = false;
     private boolean isOverTime = false;
@@ -72,6 +73,7 @@ public class User extends BaseClass {
             sex = UserSex.fromInt(SoapUtils.convertToInt(soapObject, "UserSex"));
             language = UserLanguage.fromInt(SoapUtils.convertToInt(soapObject, "Lan"));
             avatar = SoapUtils.convertToImageIcon(soapObject, "Avatar");
+            canStopTimer = true;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,6 +91,7 @@ public class User extends BaseClass {
             avatar = from.getAvatar();
             language = from.getLanguage();
             sex = from.getSex();
+            canStopTimer = from.isCanStopTimer();
         }
     }
 
@@ -186,10 +189,16 @@ public class User extends BaseClass {
     }
 
     public UserLanguage getLanguage() {
+        if (language == null) {
+            language = UserLanguage.French;
+        }
         return language;
     }
 
     public UserSex getSex() {
+        if (sex == null) {
+            sex = UserSex.Female;
+        }
         return sex;
     }
 
@@ -230,5 +239,9 @@ public class User extends BaseClass {
 
     public void setLoggedInTime(int loggedInTime) {
         this.loggedInTime = loggedInTime;
+    }
+
+    public boolean isCanStopTimer() {
+        return canStopTimer;
     }
 }

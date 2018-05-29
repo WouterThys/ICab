@@ -30,6 +30,8 @@ public class WebManager {
     public static final String WebCall_DoorClose = "SignalDoorClose";
     public static final String WebCall_AlarmDoorNotClosed = "SignalAlarmDoorNotClosed";
     public static final String WebCall_AlarmDoorForced = "SignalAlarmDoorForced";
+    public static final String WebCall_StopTimer = "SignalStopTimer";
+    public static final String WebCall_StartTimer = "SignalStartTimer";
 
     private Application application;
     private List<WebCallListener> webCallListenerList = new ArrayList<>();
@@ -228,6 +230,28 @@ public class WebManager {
             @Override
             void onAddProperties(SoapObject soapRequest) {
                 soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void stoppedTimer(User user) {
+        new AsyncWebCall(application, WebCall_StopTimer) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void startedTimer(User user) {
+        new AsyncWebCall(application, WebCall_StartTimer) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
                 soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
             }
         }.execute();

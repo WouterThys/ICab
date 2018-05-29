@@ -229,8 +229,10 @@ public class Application extends JFrame implements
     public void showDebugDialog() {
         String password = getPassword();
         if (password.equals("1234")) {
-            LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
-            dialog.showDialog();
+            SwingUtilities.invokeLater(() -> {
+                LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
+                dialog.showDialog();
+            });
         } else {
             JOptionPane.showMessageDialog(
                     this,
@@ -238,6 +240,7 @@ public class Application extends JFrame implements
                     ":(",
                     JOptionPane.ERROR_MESSAGE
             );
+            getPassword();
         }
     }
 
@@ -248,7 +251,7 @@ public class Application extends JFrame implements
         JPasswordField pass = new JPasswordField(10);
         panel.add(label);
         panel.add(pass);
-        String[] options = new String[]{"OK", "Cancel"};
+        String[] options = new String[]{"Cancel", "Ok"};
         int option = JOptionPane.showOptionDialog(
                 null,
                 panel, "Password",
@@ -257,9 +260,8 @@ public class Application extends JFrame implements
                 null,
                 options,
                 options[1]);
-        if(option == 0) {
+        if(option == 1) {
             password = pass.getPassword();
-            System.out.println("Your password is: " + new String(password));
         }
 
         if (password == null) {
@@ -500,6 +502,7 @@ public class Application extends JFrame implements
                 doorMgr().unlockDoors();
                 serMgr().sendUnlockAll();
                 usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
+                userPanel.updateTimerView();
                 break;
 
             case WebCall_LogOff:

@@ -53,6 +53,10 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
         timerPanel.updateComponents(newTime);
     }
 
+    public void updateTimerView() {
+        timerPanel.updateEnabledComponents();
+    }
+
     private void showView(String key) {
         updateTimer(" ");
         if (!currentView.equals(key)) {
@@ -150,10 +154,10 @@ public class UserPanel extends JPanel implements GuiInterface, IKeyPad.KeyPadLis
         JPanel userPanel = createUserPanel();
 
         // Center
-        JPanel t = new JPanel();
+        JPanel t = new JPanel(new BorderLayout());
         JPanel k = new JPanel();
 
-        t.add(timerPanel);
+        t.add(timerPanel, BorderLayout.CENTER);
         k.add(keyPad);
 
         centerPanel.add(VIEW_KEYPAD, k);
