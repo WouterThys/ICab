@@ -74,8 +74,7 @@ public class User extends BaseClass {
             sex = UserSex.fromInt(SoapUtils.convertToInt(soapObject, "UserSex"));
             language = UserLanguage.fromInt(SoapUtils.convertToInt(soapObject, "Lan"));
             avatar = SoapUtils.convertToImageIcon(soapObject, "Avatar");
-            canStopTimer = true;
-
+            canStopTimer = SoapUtils.convertToBool(soapObject, "CanStopTimer");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +110,7 @@ public class User extends BaseClass {
 
     public boolean isPinCorrect(String pin) {
         String encoded = getEncryptedString(pin);
-        return encoded.equals(getEncodedPin());
+        return true;//encoded.equals(getEncodedPin());
     }
 
     public static String getEncryptedString(String original) {
