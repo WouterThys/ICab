@@ -2,6 +2,7 @@ package com.galenus.act.classes;
 
 import com.galenus.act.utils.DateUtils;
 import com.galenus.act.utils.SoapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
@@ -122,6 +123,10 @@ public class User extends BaseClass {
 
             encrypted = new BigInteger(1,md5.digest()).toString(16);
             StringBuilder str = new StringBuilder(encrypted);
+
+            if (encrypted.length() < 32) {
+                encrypted = StringUtils.leftPad(encrypted, 32, '0');
+            }
 
             int i = 2;
             int length = encrypted.length();
