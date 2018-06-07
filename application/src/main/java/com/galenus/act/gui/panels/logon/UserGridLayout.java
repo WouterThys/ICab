@@ -9,6 +9,8 @@ import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.galenus.act.Application.settings;
+
 abstract class UserGridLayout extends JPanel implements
         GuiInterface,
         IUserTile.OnTileClickListener {
@@ -50,7 +52,7 @@ abstract class UserGridLayout extends JPanel implements
         tabPanel.removeAll();
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, 26 ) );
+        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, settings.getTabFontSize() ) );
         JScrollPane scrollPane = new JScrollPane(gridPanel);
 
         userList.sort(Comparator.comparing(User::getFirstName));

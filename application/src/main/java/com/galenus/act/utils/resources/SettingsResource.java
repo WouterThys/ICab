@@ -9,6 +9,7 @@ public class SettingsResource extends BasicResource {
     private static final String ULT = "USER_LOGON_TIME";
     private static final String WURL = "WEB_URL";
     private static final String INM = "NAME";
+    private static final String TFS = "TAB_FONT_SIZE";
 
     public SettingsResource(String propertiesUrl, String fileName) {
         super(propertiesUrl, fileName);
@@ -89,5 +90,16 @@ public class SettingsResource extends BasicResource {
             delay = 0;
         }
         return delay;
+    }
+
+    public int getTabFontSize() {
+        int tabFontSize;
+        try {
+            tabFontSize = Integer.valueOf(readProperty(TFS));
+        } catch (Exception e) {
+            System.err.println("Failed to read tab font size: " + e);
+            tabFontSize = 20;
+        }
+        return tabFontSize;
     }
 }
