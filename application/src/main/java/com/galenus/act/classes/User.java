@@ -110,7 +110,7 @@ public class User extends BaseClass {
 
     public boolean isPinCorrect(String pin) {
         String encoded = getEncryptedString(pin);
-        return true;//encoded.equals(getEncodedPin());
+        return encoded.equals(getEncodedPin());
     }
 
     public static String getEncryptedString(String original) {
