@@ -175,8 +175,8 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
             serialBufferStringLbl.setText("");
             pingDelayTf.clearText();
             pingEnableAa.setEnabled(false);
-            initAa.setEnabled(false);
-            resetAa.setEnabled(false);
+            //initAa.setEnabled(false);
+            //resetAa.setEnabled(false);
             lockAa.setEnabled(false);
             unlockAa.setEnabled(false);
             errorAa.setEnabled(false);
