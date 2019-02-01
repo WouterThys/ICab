@@ -1,10 +1,15 @@
 package com.galenus.act.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Door {
 
-    private long id;
+    private final long id;
     private boolean isOpen;
     private boolean isLocked;
+
+    private final List<Item> itemList = new ArrayList<>();
 
     public Door(long id) {
         this.id = id;
@@ -31,6 +36,20 @@ public class Door {
             result += "closed";
         }
         return result;
+    }
+
+    public void addItem(Item item) {
+        if (!itemList.contains(item)) {
+            itemList.add(item);
+        }
+    }
+
+    public void clearItemList() {
+        itemList.clear();
+    }
+
+    public List<Item> getItemList() {
+        return itemList;
     }
 
     public long getId() {

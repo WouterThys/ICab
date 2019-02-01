@@ -1,4 +1,4 @@
-package com.galenus.act.serial;
+package com.galenus.act.classes.managers.serial;
 
 public class SerialError {
 

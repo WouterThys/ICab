@@ -1,86 +1,35 @@
 package com.galenus.act;
 
-import com.galenus.act.gui.Application;
-
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
-import java.io.File;
+
+import static com.galenus.act.Application.settings;
 
 public class Main {
 
-    private static final String DM = "DEBUG_MODE";
-    private static final String FS = "FULL_SCREEN";
-    private static final String DC = "DOOR_COUNT";
-    private static final String ULT = "USER_LOGON_TIMER";
-    private static final String WURL = "WEB_URL";
-    private static final String INM = "NAME";
-
-    public static boolean DEBUG_MODE = false;
-    public static boolean FULL_SCREEN = false;
-
-    public static String WEB_URL = "http://sp0007test/juliette/oriswsmattteo.asmx";
-    public static String ICAB_NAME = "ICAB";
-    public static int DOOR_COUNT = 5;
-    public static int USER_LOGON_TIME = (20); // Seconds
-    public static int PING_DELAY = 5000; // 5s
-
     public static void main(String[] args) {
-        String startUpPath = new File("").getAbsolutePath() + File.separator;
-        readArguments(args);
 
         SwingUtilities.invokeLater(() -> {
             setLookAndFeel();
 
-            Application app = new Application(startUpPath);
+            Application app = new Application();
+
+            app.setPreferredSize(new Dimension(1500, 800));
+            if (settings.isFullScreen()) {
+                app.setUndecorated(true);
+            }
             app.setTitle("I-CAB");
             app.setLocationByPlatform(true);
-            app.setPreferredSize(new Dimension(1500, 800));
             app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             app.pack();
             app.setVisible(true);
+            app.start();
         });
     }
 
-    private static void test(String test) {
-        test = test.substring(5, 9);
-    }
-
-    public static void shutDown() {
+    static void shutDown() {
         System.exit(-1);
-    }
-
-    private static void readArguments(String[] args) {
-        if (args.length > 0) {
-            for (String arg : args) {
-                try {
-                    System.out.println("Reading main input parameter: " + arg);
-                    String[] split = arg.split("=");
-                    String param = split[0];
-                    String value = split[1];
-
-                    switch (param) {
-                        case DM:
-                            DEBUG_MODE = Boolean.valueOf(value);
-                            break;
-                        case FS:
-                            FULL_SCREEN = Boolean.valueOf(value);
-                            break;
-                        case DC:
-                            DOOR_COUNT = Integer.valueOf(value);
-                            break;
-                        case WURL:
-                            WEB_URL = String.valueOf(value);
-                            break;
-                        case INM:
-                            ICAB_NAME = String.valueOf(value);
-                            break;
-                    }
-                } catch (Exception e) {
-                    System.err.println("Failed to read input params: " + e);
-                }
-            }
-        }
     }
 
     private static void setLookAndFeel() {

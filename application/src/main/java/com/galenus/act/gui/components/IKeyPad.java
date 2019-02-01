@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class IKeyPad extends JPanel {
 
@@ -16,10 +16,7 @@ public class IKeyPad extends JPanel {
     }
 
     private int maxDigits = 4;
-    //private final JTextPane pinField = new JTextPane();
     private final JLabel pinField = new JLabel("", SwingConstants.CENTER);
-    private final JButton clearBtn = new JButton(new Clear("", imageResource.readImage("KeyPad.Clear")));
-    private final JButton enterBtn = new JButton(new Enter("", imageResource.readImage("KeyPad.Enter")));
     private final List<NumberButton> numbers = new ArrayList<NumberButton>();
 
     private String password = "";
@@ -32,17 +29,11 @@ public class IKeyPad extends JPanel {
         super(new BorderLayout());
 
         JPanel display = new JPanel();
-        pinField.setFont(new Font("Dialog", Font.PLAIN, 60));
-        //pinField.setEditable(false);
+        pinField.setFont(new Font("Dialog", Font.PLAIN, 80));
         pinField.setFocusable(false);
         pinField.setOpaque(true);
         pinField.setBackground(Color.WHITE);
-        pinField.setPreferredSize(new Dimension(200, 80));
-
-//        StyledDocument doc = pinField.getStyledDocument();
-//        SimpleAttributeSet center = new SimpleAttributeSet();
-//        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-//        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        pinField.setPreferredSize(new Dimension(220, 100));
 
         display.add(pinField);
         this.add(display, BorderLayout.NORTH);
@@ -55,25 +46,18 @@ public class IKeyPad extends JPanel {
                 pad.add(n);
             }
         }
+        JButton clearBtn = new JButton(new Clear("", imageResource.readImage("KeyPad.Clear")));
         pad.add(clearBtn);
         clearBtn.setFocusable(false);
         this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0), clearBtn.getText());
         this.getActionMap().put(clearBtn.getText(), new Click(clearBtn));
         pad.add(numbers.get(0));
+        JButton enterBtn = new JButton(new Enter("", imageResource.readImage("KeyPad.Enter")));
         pad.add(enterBtn);
         enterBtn.setFocusable(false);
         this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), enterBtn.getText());
         this.getActionMap().put(enterBtn.getText(), new Click(enterBtn));
         this.add(pad, BorderLayout.CENTER);
-    }
-
-    /**
-     * Construct a numeric key pad that accepts up to <code>maxDigits<code>.
-     */
-    public IKeyPad(int maxDigits) {
-        this();
-        this.maxDigits = maxDigits;
-        //this.pinField.setColumns(maxDigits);
     }
 
     public void addKeyPadListener(KeyPadListener keyPadListener) {
@@ -155,7 +139,7 @@ public class IKeyPad extends JPanel {
             super(String.valueOf(number));
             this.setFocusable(false);
             Font f = this.getFont();
-            this.setFont(new Font(f.getName(), Font.BOLD, 30));
+            this.setFont(new Font(f.getName(), Font.BOLD, 40));
             this.setAction(new AbstractAction(this.getText()) {
 
                 @Override

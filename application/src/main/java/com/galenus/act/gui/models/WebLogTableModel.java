@@ -1,12 +1,11 @@
 package com.galenus.act.gui.models;
 
 import com.galenus.act.utils.DateUtils;
-import com.galenus.act.utils.StringValues;
-import com.galenus.act.web.AsyncWebCall;
+import com.galenus.act.classes.managers.web.AsyncWebCall;
 
 import javax.swing.*;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class WebLogTableModel extends IAbstractTableModel<AsyncWebCall> {
 

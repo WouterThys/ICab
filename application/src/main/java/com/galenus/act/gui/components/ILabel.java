@@ -5,7 +5,7 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class ILabel extends JLabel {
 

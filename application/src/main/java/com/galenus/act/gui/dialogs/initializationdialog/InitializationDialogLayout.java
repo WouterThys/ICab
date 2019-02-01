@@ -1,6 +1,6 @@
 package com.galenus.act.gui.dialogs.initializationdialog;
 
-import com.galenus.act.gui.Application;
+import com.galenus.act.Application;
 import com.galenus.act.gui.components.IDialog;
 import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.classes.interfaces.SerialListener;

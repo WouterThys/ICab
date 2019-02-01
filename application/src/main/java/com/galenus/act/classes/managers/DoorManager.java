@@ -1,7 +1,8 @@
 package com.galenus.act.classes.managers;
 
 import com.galenus.act.classes.Door;
-import com.galenus.act.serial.SerialMessage;
+import com.galenus.act.classes.Item;
+import com.galenus.act.classes.managers.serial.SerialMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class DoorManager {
     }
     private DoorManager() {}
 
-    private List<Door> doorList = new ArrayList<>();
+    private final List<Door> doorList = new ArrayList<>();
 
     public void init(int doorCount) {
         doorList.clear();
@@ -85,6 +86,34 @@ public class DoorManager {
 
     public List<Door> getDoorList() {
         return doorList;
+    }
+
+
+
+
+    public void clearItems() {
+        for (Door d : doorList) {
+            d.clearItemList();
+        }
+    }
+
+    public void addItems(Item item) {
+        if (item != null) {
+            String location = item.getLocation();
+            if (!location.isEmpty()) {
+                try {
+                    String s[] = location.split("/");
+                    if (s.length > 0) {
+                        int d = Integer.parseInt(s[0].replaceAll("[\\D]", ""));
+                        if (d > 0 && d <= doorList.size()) {
+                            doorList.get(d-1).addItem(item);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

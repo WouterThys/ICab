@@ -15,6 +15,8 @@ public abstract class BaseClass {
         return obj instanceof BaseClass && getCode().equals(((BaseClass) obj).getCode());
     }
 
+    public abstract void copyFrom(BaseClass baseClass);
+
     public String getCode() {
         if (code == null) {
             code = "";

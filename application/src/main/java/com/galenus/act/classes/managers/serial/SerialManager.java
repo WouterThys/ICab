@@ -1,17 +1,16 @@
-package com.galenus.act.serial;
+package com.galenus.act.classes.managers.serial;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import com.galenus.act.classes.interfaces.SerialListener;
-import com.galenus.act.gui.models.SerialLogTableModel;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import static com.galenus.act.serial.SerialError.ErrorType.*;
+import static com.galenus.act.classes.managers.serial.SerialError.ErrorType.*;
 
 public class SerialManager {
 

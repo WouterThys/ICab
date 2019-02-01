@@ -5,16 +5,19 @@ import com.galenus.act.gui.components.ILabel;
 import com.galenus.act.gui.components.ITable;
 import com.galenus.act.gui.models.WebLogTableModel;
 import com.galenus.act.utils.GuiUtils;
-import com.galenus.act.web.AsyncWebCall;
+import com.galenus.act.classes.managers.web.AsyncWebCall;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-import static com.galenus.act.gui.Application.imageResource;
-import static com.galenus.act.web.WebManager.webMgr;
+import static com.galenus.act.Application.imageResource;
+import static com.galenus.act.classes.managers.DoorManager.doorMgr;
+import static com.galenus.act.classes.managers.UserManager.usrMgr;
+import static com.galenus.act.classes.managers.web.WebManager.webMgr;
 
 class WebLogsPanel extends JPanel implements GuiInterface {
 
@@ -29,6 +32,9 @@ class WebLogsPanel extends JPanel implements GuiInterface {
 
     private WebLogTableModel webLogModel;
     private ITable<AsyncWebCall> webLogTable;
+
+    private AbstractAction refreshUsersAa;
+    private AbstractAction refreshItemsAa;
 
     /*
      *                  CONSTRUCTOR
@@ -57,7 +63,7 @@ class WebLogsPanel extends JPanel implements GuiInterface {
     }
 
     void updateTableData() {
-        java.util.List<AsyncWebCall> webCalls = new ArrayList<>();
+        List<AsyncWebCall> webCalls = new ArrayList<>();
         webCalls.addAll(webMgr().getWebCallList());
 
         webCalls.sort(new WebLogsPanel.LogMessageSorter());
@@ -94,8 +100,6 @@ class WebLogsPanel extends JPanel implements GuiInterface {
     private JPanel createWebInfoPanel() {
         JPanel webPanel = new JPanel(new BorderLayout());
 
-        // Extra
-
         JPanel iconPanel = new JPanel(new BorderLayout());
         iconPanel.add(webDeviceNameLbl, BorderLayout.CENTER);
         iconPanel.add(webStateLbl, BorderLayout.EAST);
@@ -105,8 +109,14 @@ class WebLogsPanel extends JPanel implements GuiInterface {
         gbc = new GuiUtils.GridBagHelper(webDataPanel);
         gbc.addLine("Url: ", webUrlLbl);
 
-        webPanel.add(iconPanel, BorderLayout.NORTH);
+        JToolBar testToolBar = new JToolBar(JToolBar.VERTICAL);
+        testToolBar.setFloatable(false);
+        testToolBar.add(refreshUsersAa);
+        testToolBar.add(refreshItemsAa);
+
+        webPanel.add(iconPanel, BorderLayout.PAGE_START);
         webPanel.add(webDataPanel, BorderLayout.CENTER);
+        webPanel.add(testToolBar, BorderLayout.EAST);
         webPanel.setBorder(GuiUtils.createTitleBorder("Web info"));
 
         return webPanel;
@@ -134,6 +144,21 @@ class WebLogsPanel extends JPanel implements GuiInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onDeleteLogs();
+            }
+        };
+
+        refreshItemsAa = new AbstractAction("Refresh items", imageResource.readImage("Web.Items.Refresh")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doorMgr().clearItems();
+                webMgr().getDeviceItems();
+            }
+        };
+        refreshUsersAa = new AbstractAction("Refresh users", imageResource.readImage("Web.Users.Refresh")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usrMgr().clearUsers();
+                webMgr().getDeviceUsers();
             }
         };
     }

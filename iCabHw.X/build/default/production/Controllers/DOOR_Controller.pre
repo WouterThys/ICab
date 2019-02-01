@@ -4370,21 +4370,26 @@ typedef struct {
 const char* sender;
 const char* command;
 const char* message;
+uint8_t ackId;
 }READ_Data;
 
-# 32
+# 33
 void D_UART_Init(const char* name, uint16_t baud, bool interrupts);
 
-# 39
+# 40
 void D_UART_Write(const char* command, const char* data);
 
-# 45
+# 47
+void D_UART_WriteInt(const char* command, int d);
+
+# 53
 READ_Data D_UART_Read();
 
-# 51
+# 59
 void D_UART_Enable(bool enable);
 
-void D_UART_SendInt(int i);
+# 65
+void D_UART_Acknowledge(uint8_t i);
 
 # 12 "Controllers/DOOR_Controller.h"
 typedef struct {

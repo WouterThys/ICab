@@ -2,16 +2,16 @@ package com.galenus.act.classes;
 
 import com.galenus.act.utils.DateUtils;
 import com.galenus.act.utils.SoapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalTime;
 import java.util.Date;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class User extends BaseClass {
 
@@ -20,16 +20,7 @@ public class User extends BaseClass {
         French,
         English;
 
-        public static int enumToInt(UserLanguage userLanguage) {
-            switch (userLanguage) {
-                case Dutch: return 0;
-                case French: return 1;
-                case English: return 2;
-                default: return -1;
-            }
-        }
-
-        public static UserLanguage intToEnum(int userLanguage) {
+        public static UserLanguage fromInt(int userLanguage) {
             switch (userLanguage) {
                 case 0: return Dutch;
                 case 1: return French;
@@ -44,16 +35,7 @@ public class User extends BaseClass {
         Female,
         Male;
 
-        public static int enumToInt(UserSex userSex) {
-            switch (userSex) {
-                case Machine: return 0;
-                case Female: return 1;
-                case Male: return 2;
-                default: return -1;
-            }
-        }
-
-        public static UserSex intToEnum(int userSex) {
+        public static UserSex fromInt(int userSex) {
             switch (userSex) {
                 case 0: return Machine;
                 case 1: return Female;
@@ -70,17 +52,12 @@ public class User extends BaseClass {
     private ImageIcon avatar;
     private UserLanguage language;
     private UserSex sex;
+    private boolean canStopTimer;
 
     private boolean isLoggedIn = false;
     private boolean isOverTime = false;
     private Date lastLogIn = DateUtils.minDate();
     private int loggedInTime;
-
-    public User() {
-        language = UserLanguage.French;
-        sex = UserSex.Female;
-        avatar = null;
-    }
 
     public User(SoapObject soapObject) {
         onSoapInit(soapObject);
@@ -94,11 +71,27 @@ public class User extends BaseClass {
             lastName = SoapUtils.convertToString(soapObject, "LastName");
             encodedPassword = SoapUtils.convertToString(soapObject, "EncodedPassword");
             encodedPin = SoapUtils.convertToString(soapObject, "EncodedPIN");
-            sex = UserSex.intToEnum(SoapUtils.convertToInt(soapObject, "UserSex"));
-            language = UserLanguage.intToEnum(SoapUtils.convertToInt(soapObject, "Lan"));
-
+            sex = UserSex.fromInt(SoapUtils.convertToInt(soapObject, "UserSex"));
+            language = UserLanguage.fromInt(SoapUtils.convertToInt(soapObject, "Lan"));
+            avatar = SoapUtils.convertToImageIcon(soapObject, "Avatar");
+            canStopTimer = SoapUtils.convertToBool(soapObject, "CanStopTimer");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void copyFrom(BaseClass baseClass) {
+        if (baseClass != null && baseClass instanceof User) {
+            User from = (User) baseClass;
+            firstName = from.getFirstName();
+            lastName = from.getLastName();
+            encodedPassword = from.getEncodedPassword();
+            encodedPin = from.getEncodedPin();
+            avatar = from.getAvatar();
+            language = from.getLanguage();
+            sex = from.getSex();
+            canStopTimer = from.isCanStopTimer();
         }
     }
 
@@ -129,6 +122,10 @@ public class User extends BaseClass {
 
             encrypted = new BigInteger(1,md5.digest()).toString(16);
             StringBuilder str = new StringBuilder(encrypted);
+
+            if (encrypted.length() < 32) {
+                encrypted = StringUtils.leftPad(encrypted, 32, '0');
+            }
 
             int i = 2;
             int length = encrypted.length();
@@ -165,51 +162,48 @@ public class User extends BaseClass {
 
 
     public String getFirstName() {
+        if (firstName == null) {
+            firstName = "";
+        }
+        if (!firstName.isEmpty()) {
+            firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+        }
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
+        if (lastName == null) {
+            lastName = "";
+        }
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEncodedPassword() {
+        if (encodedPassword == null) {
+            encodedPassword = "";
+        }
         return encodedPassword;
     }
 
-    public void setEncodedPassword(String encodedPassword) {
-        this.encodedPassword = encodedPassword;
-    }
-
     public String getEncodedPin() {
+        if (encodedPin == null) {
+            encodedPin = "";
+        }
         return encodedPin;
     }
 
-    public void setEncodedPin(String encodedPin) {
-        this.encodedPin = encodedPin;
-    }
-
     public UserLanguage getLanguage() {
+        if (language == null) {
+            language = UserLanguage.French;
+        }
         return language;
     }
 
-    public void setLanguage(UserLanguage language) {
-        this.language = language;
-    }
-
     public UserSex getSex() {
+        if (sex == null) {
+            sex = UserSex.Female;
+        }
         return sex;
-    }
-
-    public void setSex(UserSex sex) {
-        this.sex = sex;
     }
 
     public boolean isLoggedIn() {
@@ -249,5 +243,9 @@ public class User extends BaseClass {
 
     public void setLoggedInTime(int loggedInTime) {
         this.loggedInTime = loggedInTime;
+    }
+
+    public boolean isCanStopTimer() {
+        return canStopTimer;
     }
 }

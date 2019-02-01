@@ -1,6 +1,6 @@
 package com.galenus.act.gui.components;
 
-import com.galenus.act.gui.Application;
+import com.galenus.act.Application;
 import com.galenus.act.classes.interfaces.GuiInterface;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public abstract class IDialog extends JDialog implements GuiInterface, WindowListener {
 

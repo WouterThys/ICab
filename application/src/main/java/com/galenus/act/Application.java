@@ -1,37 +1,39 @@
-package com.galenus.act.gui;
+package com.galenus.act;
 
 import com.fazecast.jSerialComm.SerialPort;
-import com.galenus.act.Main;
 import com.galenus.act.classes.Door;
+import com.galenus.act.classes.Item;
 import com.galenus.act.classes.User;
 import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.classes.interfaces.SerialListener;
 import com.galenus.act.classes.interfaces.UserListener;
 import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.classes.managers.DoorManager.DoorState;
+import com.galenus.act.classes.managers.serial.SerialError;
+import com.galenus.act.classes.managers.serial.SerialMessage;
 import com.galenus.act.gui.dialogs.initializationdialog.InitializationDialog;
 import com.galenus.act.gui.dialogs.logsdialog.LogsDialog;
 import com.galenus.act.gui.panels.doors.DoorsPanel;
 import com.galenus.act.gui.panels.inventory.InventoryPanel;
-import com.galenus.act.gui.panels.logon.LogOnPanel;
+import com.galenus.act.gui.panels.logon.UserGrid;
 import com.galenus.act.gui.panels.user.UserPanel;
-import com.galenus.act.serial.SerialError;
-import com.galenus.act.serial.SerialMessage;
 import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
+import com.galenus.act.utils.resources.SettingsResource;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import static com.galenus.act.classes.managers.DoorManager.doorMgr;
 import static com.galenus.act.classes.managers.UserManager.usrMgr;
-import static com.galenus.act.serial.SerialManager.serMgr;
-import static com.galenus.act.web.WebManager.*;
+import static com.galenus.act.classes.managers.serial.MessageFactory.*;
+import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
+import static com.galenus.act.classes.managers.web.WebManager.*;
 
 public class Application extends JFrame implements
         GuiInterface,
@@ -41,19 +43,21 @@ public class Application extends JFrame implements
 
     public static ImageResource imageResource;
     public static ColorResource colorResource;
+    public static SettingsResource settings;
 
     private static final String VIEW_MAIN = "Main";
     private static final String VIEW_INVENTORY = "Inventory";
 
+    private static final int UPDATE_USERS = 1;
+    private static final int UPDATE_ITEMS = 2;
+
     /*
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private JMenuBar menuBar;
-
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    private LogOnPanel logOnPanel;
+    private UserGrid logOnPanel;
     private InventoryPanel inventoryPanel;
 
     private UserPanel userPanel;
@@ -64,35 +68,31 @@ public class Application extends JFrame implements
 
     private int serialWriteRetry;
 
+    private boolean showingOpenError = false;
+    private boolean showingOtherError = false;
+    private boolean showingReadError = false;
+    private boolean showingWriteError = false;
+    private boolean showingResetError = false;
+
 
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    private Action showMenuAction = new AbstractAction("ShowMenu") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            boolean isVisible = (getJMenuBar() != null);
-            setMenuVisible(!isVisible);
-        }
-    };
 
-    private Action showUserPinsAction = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            usrMgr().printAllUserPins();
-        }
-    };
 
     /*
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    public Application(String startUpPath) {
+    public Application() {
         Application.imageResource = new ImageResource("", "icons.properties");
         Application.colorResource = new ColorResource("", "colors.properties");
+        Application.settings = new SettingsResource("", "settings.properties");
+    }
 
+    void start() {
         // Doors
-        doorMgr().init(Main.DOOR_COUNT);
-        usrMgr().init(Main.USER_LOGON_TIME, this);
+        doorMgr().init(settings.getDoorCount());
+        usrMgr().init(settings.getUserLogonTime(), this);
 
         // Init gui
         initializeComponents();
@@ -157,17 +157,21 @@ public class Application extends JFrame implements
     private void webRegistered() {
         // Fetch users
         webMgr().getDeviceUsers();
+
+        // Fetch items
+        webMgr().getDeviceItems();
     }
 
     private void webReceivedUsers(Vector response) {
         try {
             // Create user list
             if (response.size() == 2) {
-                usrMgr().clearUsers();
                 SoapObject users = (SoapObject) response.get(1);
+                List<User> newUserList = new ArrayList<>();
                 for (int i = 0; i < users.getPropertyCount(); i++) {
-                    usrMgr().addUser(new User((SoapObject) users.getProperty(i)));
+                    newUserList.add(new User((SoapObject) users.getProperty(i)));
                 }
+                usrMgr().updateUsers(newUserList);
                 // Update components
                 updateComponents();
             }
@@ -177,13 +181,94 @@ public class Application extends JFrame implements
         }
     }
 
-    private void setMenuVisible(boolean visible) {
-        if (visible) {
-            setJMenuBar(menuBar);
-        } else {
-            setJMenuBar(null);
+    private void webReceivedItems(Vector response) {
+        try {
+            // Create user list
+            if (response.size() == 2) {
+                doorMgr().clearItems();
+                SoapObject items = (SoapObject) response.get(1);
+                for (int i = 0; i < items.getPropertyCount(); i++) {
+                    doorMgr().addItems(new Item((SoapObject) items.getProperty(i)));
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        pack();
+    }
+
+    private void webPinged(Vector response) {
+        try {
+            SoapObject requestListSoap = (SoapObject) response.get(1);
+            if (requestListSoap != null) {
+                for (int i = 0; i < requestListSoap.getPropertyCount(); i++) {
+                    SoapPrimitive sp = (SoapPrimitive) requestListSoap.getProperty(i);
+                    try {
+                        int request = Integer.parseInt(sp.toString());
+                        switch (request) {
+                            case UPDATE_ITEMS:
+                                System.out.println("UPDATE ITEMS");
+                                SwingUtilities.invokeLater(() -> webMgr().getDeviceItems());
+                                break;
+                            case UPDATE_USERS:
+                                System.out.println("UPDATE USERS");
+                                SwingUtilities.invokeLater(() -> webMgr().getDeviceUsers());
+                                break;
+                        }
+                    } catch (NumberFormatException nfe) {
+                        // Invalid request..
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showDebugDialog() {
+        String password = getPassword();
+        if (password.equals("1234")) {
+            SwingUtilities.invokeLater(() -> {
+                LogsDialog dialog = new LogsDialog(this, serMgr().getSerialPort());
+                dialog.showDialog();
+            });
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Wrong password..",
+                    ":(",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            getPassword();
+        }
+    }
+
+    private String getPassword() {
+        char[] password = null;
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter a password:");
+        JPasswordField pass = new JPasswordField(10);
+        panel.add(label);
+        panel.add(pass);
+        String[] options = new String[]{"Cancel", "Ok"};
+        int option = JOptionPane.showOptionDialog(
+                null,
+                panel, "Password",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[1]);
+        if(option == 1) {
+            password = pass.getPassword();
+        }
+
+        if (password == null) {
+            return "";
+        } else {
+            return new String(password);
+        }
     }
 
     /*
@@ -195,40 +280,16 @@ public class Application extends JFrame implements
     @Override
     public void initializeComponents() {
         // Panels
-        logOnPanel = new LogOnPanel(this);
+        logOnPanel = new UserGrid(this);
         inventoryPanel = new InventoryPanel();
         userPanel = new UserPanel(this);
-        doorsPanel = new DoorsPanel();
+        doorsPanel = new DoorsPanel(this);
 
         // Cards
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.add(VIEW_MAIN, logOnPanel);
         mainPanel.add(VIEW_INVENTORY, inventoryPanel);
-
-        // Menu panel
-        menuBar = new JMenuBar();
-        JMenu serialMenu = new JMenu("Debug");
-        JMenuItem serialLogs = new JMenuItem("Logs");
-        serialLogs.addActionListener(e -> {
-            LogsDialog dialog = new LogsDialog(this, "Serial logs", serMgr().getSerialPort());
-            dialog.showDialog();
-        });
-
-        serialMenu.add(serialLogs);
-        menuBar.add(serialMenu);
-
-        // Key strokes
-        this.getRootPane().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-                InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK),
-                "debugModeKey");
-        this.getRootPane().getActionMap().put("debugModeKey", showMenuAction);
-
-        this.getRootPane().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK),
-                "usersKey");
-        this.getRootPane().getActionMap().put("usersKey", showUserPinsAction);
-
     }
 
     @Override
@@ -244,14 +305,6 @@ public class Application extends JFrame implements
         add(mainPanel, BorderLayout.CENTER);
         add(eastPanel, BorderLayout.EAST);
 
-        if (Main.DEBUG_MODE) {
-            setMenuVisible(true);
-        }
-
-        if (Main.FULL_SCREEN) {
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-            setUndecorated(true);
-        }
         pack();
     }
 
@@ -262,17 +315,11 @@ public class Application extends JFrame implements
 
         // Users
         logOnPanel.setUsers(usrMgr().getUserList());
-
-        // Other
-        try {
-            if (Main.FULL_SCREEN) {
-                setExtendedState(JFrame.MAXIMIZED_BOTH);
-                setUndecorated(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         pack();
+
+        if (settings.isFullScreen()) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
     }
 
     //
@@ -309,8 +356,8 @@ public class Application extends JFrame implements
         serialWriteRetry = 0;
         System.out.println("COM port found: " + serialPort.getDescriptivePortName());
         serMgr().initComPort(serialPort);
-        serMgr().sendInit(Main.DOOR_COUNT);
-        serMgr().startPinging(Main.PING_DELAY);
+        serMgr().sendInit(settings.getDoorCount());
+        serMgr().startPinging(settings.getPingDelay());
     }
 
     @Override
@@ -328,13 +375,25 @@ public class Application extends JFrame implements
             }
             switch (serialError.getErrorType()) {
                 case OpenError:
-                    showErrorMessage(error, true);
+                    if (!showingOpenError) {
+                        showingOpenError = true;
+                        showErrorMessage(error, true);
+                        showingOpenError = false;
+                    }
                     break;
                 case ReadError:
-                    showErrorMessage(error, false);
+                    if (!showingReadError) {
+                        showingReadError = true;
+                        showErrorMessage(error, false);
+                        showingReadError = false;
+                    }
                     break;
                 case OtherError:
-                    showErrorMessage(error, false);
+                    if (!showingOtherError) {
+                        showingOtherError = true;
+                        showErrorMessage(error, false);
+                        showingOtherError = false;
+                    }
                     break;
                 case WriteError:
                     if (serialError.getSerialMessage() != null) {
@@ -345,26 +404,38 @@ public class Application extends JFrame implements
                                 break;
                             case 1: // Try to reset and initialize again
                                 System.err.println("Write error, trying to initialize again");
-                                int res = JOptionPane.showConfirmDialog(
-                                        Application.this,
-                                        "Failed to communicate with controller, make sure the system setup is" +
-                                                " correct. Retry to initialize?",
-                                        "Serial Error",
-                                        JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.ERROR_MESSAGE
-                                );
-                                if (res == JOptionPane.YES_OPTION) {
-                                    serMgr().reInitialize();
+                                if (!showingResetError) {
+                                    showingResetError = true;
+                                    int res = JOptionPane.showConfirmDialog(
+                                            Application.this,
+                                            "Failed to communicate with controller, make sure the system setup is" +
+                                                    " correct. Retry to initialize?",
+                                            "Serial Error",
+                                            JOptionPane.YES_NO_OPTION,
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                    if (res == JOptionPane.YES_OPTION) {
+                                        serMgr().reInitialize();
+                                    }
+                                    showingResetError = false;
                                 }
                                 break;
                             case 2:
                                 System.err.println("Write error, no communication");
-                                showErrorMessage(error, true);
+                                if (!showingWriteError) {
+                                    showingWriteError = true;
+                                    showErrorMessage(error, true);
+                                    showingWriteError = false;
+                                }
                                 break;
                         }
                         serialWriteRetry++;
                     } else {
-                        showErrorMessage(error, false);
+                        if (!showingWriteError) {
+                            showingWriteError = true;
+                            showErrorMessage(error, false);
+                            showingWriteError = false;
+                        }
                     }
                     break;
             }
@@ -378,23 +449,28 @@ public class Application extends JFrame implements
                 "Serial error",
                 JOptionPane.ERROR_MESSAGE
         );
-        if (exit && !Main.DEBUG_MODE) {
+        if (exit && !settings.isDebugMode()) {
             Main.shutDown();
         }
     }
 
     @Override
     public void onNewRead(SerialMessage message) {
-        if (message.getCommand().contains("D")) {
+        // Message about door state
+        if (message.getCommand().contains(PIC_DOOR)) {
             Door door = doorMgr().updateDoor(message);
             if (door != null) {
                 doorsPanel.updateDoor(door);
                 inventoryPanel.updateComponents();
             }
 
-            SwingUtilities.invokeLater(() -> {
-                doDoorLogic(usrMgr().getSelectedUser());
-            });
+            SwingUtilities.invokeLater(() -> doDoorLogic(usrMgr().getSelectedUser()));
+
+            // Message about state
+        } else if (message.getCommand().contains(PIC_STATE)) {
+            if (!message.getMessage().equals(PIC_RUNNING)) {
+                serMgr().sendInit(settings.getDoorCount());
+            }
         }
 
     }
@@ -405,8 +481,15 @@ public class Application extends JFrame implements
     @Override
     public void onFinishedRequest(String methodName, Vector response) {
         switch (methodName) {
+            case WebCall_Ping:
+                if (response.size() == 2) {
+                    webPinged(response);
+                }
+                break;
+
             case WebCall_Register:
                 webRegistered();
+                webMgr().startPinging(3 * settings.getPingDelay());
                 break;
 
             case WebCall_UnRegister:
@@ -415,9 +498,11 @@ public class Application extends JFrame implements
             case WebCall_LogOn:
                 cardLayout.show(mainPanel, VIEW_INVENTORY);
                 userPanel.updateComponents(usrMgr().getSelectedUser());
+                inventoryPanel.updateComponents();
                 doorMgr().unlockDoors();
                 serMgr().sendUnlockAll();
                 usrMgr().startTimer(newTime -> userPanel.updateTimer(newTime));
+                userPanel.updateTimerView();
                 break;
 
             case WebCall_LogOff:
@@ -431,6 +516,10 @@ public class Application extends JFrame implements
 
             case WebCall_GetUsers:
                 webReceivedUsers(response);
+                break;
+
+            case WebCall_GetItems:
+                webReceivedItems(response);
                 break;
         }
         webMgr().setWebSuccess(true);

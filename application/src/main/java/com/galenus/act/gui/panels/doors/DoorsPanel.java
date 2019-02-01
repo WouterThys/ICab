@@ -1,5 +1,6 @@
 package com.galenus.act.gui.panels.doors;
 
+import com.galenus.act.Application;
 import com.galenus.act.classes.Door;
 import com.galenus.act.classes.interfaces.GuiInterface;
 import com.galenus.act.classes.managers.DoorManager;
@@ -7,13 +8,14 @@ import com.galenus.act.gui.components.IDoorTile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.galenus.act.classes.managers.DoorManager.doorMgr;
-import static com.galenus.act.gui.Application.colorResource;
+import static com.galenus.act.Application.colorResource;
 
-public class DoorsPanel extends JPanel implements GuiInterface {
+public class DoorsPanel extends JPanel implements GuiInterface, IDoorTile.DoorClickedListener {
 
     /*
      *                  COMPONENTS
@@ -26,11 +28,15 @@ public class DoorsPanel extends JPanel implements GuiInterface {
     /*
      *                  VARIABLES
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    private final Application application;
 
     /*
     *                  CONSTRUCTOR
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    public DoorsPanel() {
+    public DoorsPanel(Application application) {
+        super();
+        this.application = application;
+
         initializeComponents();
         initializeLayouts();
         updateComponents();
@@ -69,12 +75,29 @@ public class DoorsPanel extends JPanel implements GuiInterface {
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    //
+    // Door clicked
+    //
+    @Override
+    public void onDoorClicked(MouseEvent e, Door door) {
+        if (application != null) {
+            if (e.getClickCount() == 2) {
+                application.showDebugDialog();
+            }
+        }
+    }
+
+    //
+    // Gui
+    //
     @Override
     public void initializeComponents() {
         doorsPanel = new JPanel();
         statePanel = new JPanel();
         for (Door door : doorMgr().getDoorList()) {
-            doorTiles.add(new IDoorTile(door));
+            IDoorTile tile = new IDoorTile(door);
+            tile.setClickListener(this);
+            doorTiles.add(tile);
         }
 
         // Test

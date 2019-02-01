@@ -1,4 +1,4 @@
-package com.galenus.act.web;
+package com.galenus.act.classes.managers.web;
 
 class AsyncWebResult<T> {
 

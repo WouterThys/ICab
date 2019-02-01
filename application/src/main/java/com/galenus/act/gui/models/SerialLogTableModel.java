@@ -1,12 +1,12 @@
 package com.galenus.act.gui.models;
 
-import com.galenus.act.serial.SerialMessage;
+import com.galenus.act.classes.managers.serial.SerialMessage;
 import com.galenus.act.utils.DateUtils;
 import com.galenus.act.utils.StringValues;
 
 import javax.swing.*;
 
-import static com.galenus.act.gui.Application.imageResource;
+import static com.galenus.act.Application.imageResource;
 
 public class SerialLogTableModel extends IAbstractTableModel<SerialMessage> {
 
@@ -44,7 +44,7 @@ public class SerialLogTableModel extends IAbstractTableModel<SerialMessage> {
                 case 3: // Command
                     return StringValues.picCommandToString(message.getCommand());
                 case 4: // Message
-                    return StringValues.picMessageToString(message.getMessage());
+                    return StringValues.picMessageToString(message);
                 case 5: // Ack
                     if (message.isAcknowledged()) {
                         return ackImage;

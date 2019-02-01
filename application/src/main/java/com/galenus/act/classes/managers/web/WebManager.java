@@ -1,12 +1,12 @@
-package com.galenus.act.web;
+package com.galenus.act.classes.managers.web;
 
-import com.galenus.act.classes.Door;
 import com.galenus.act.classes.User;
 import com.galenus.act.classes.interfaces.WebCallListener;
-import com.galenus.act.gui.Application;
+import com.galenus.act.Application;
 import com.galenus.act.utils.DateUtils;
 import org.ksoap2.serialization.SoapObject;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -23,12 +23,15 @@ public class WebManager {
     public static final String WebCall_Register = "RegisterDevice";
     public static final String WebCall_UnRegister = "UnRegisterDevice";
     public static final String WebCall_GetUsers = "GetDeviceUsers";
+    public static final String WebCall_GetItems = "GetTypeItems";
     public static final String WebCall_LogOn = "SignalLogOn";
     public static final String WebCall_LogOff = "SignalLogOff";
     public static final String WebCall_DoorOpen = "SignalDoorOpen";
     public static final String WebCall_DoorClose = "SignalDoorClose";
     public static final String WebCall_AlarmDoorNotClosed = "SignalAlarmDoorNotClosed";
     public static final String WebCall_AlarmDoorForced = "SignalAlarmDoorForced";
+    public static final String WebCall_StopTimer = "SignalStopTimer";
+    public static final String WebCall_StartTimer = "SignalStartTimer";
 
     private Application application;
     private List<WebCallListener> webCallListenerList = new ArrayList<>();
@@ -41,6 +44,8 @@ public class WebManager {
     private String webNameSpace;
     private int webTimeout;
     private boolean webSuccess;
+
+    private PingThread pingThread;
 
 
     public void init(Application application, String deviceName, String webUrl, String webNameSpace, int webTimeout) {
@@ -57,7 +62,13 @@ public class WebManager {
     }
 
     public void close() {
-
+        try {
+            if (pingThread != null) {
+                pingThread.stop();
+            }
+        } catch (Exception e) {
+            // Nothing we can do..
+        }
     }
 
     public void registerShutDownHook() {
@@ -74,6 +85,15 @@ public class WebManager {
         if (webCallListenerList.contains(webCallListener)) {
             webCallListenerList.remove(webCallListener);
         }
+    }
+
+    public void startPinging(int delayInMillis) {
+        if (pingThread != null) {
+            pingThread.cancel(true);
+        }
+
+        pingThread = new PingThread(delayInMillis);
+        pingThread.execute();
     }
 
     /*
@@ -165,6 +185,15 @@ public class WebManager {
         }.execute();
     }
 
+    public void getDeviceItems() {
+        new AsyncWebCall(application, WebCall_GetItems) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+            }
+        }.execute();
+    }
+
     public void doorOpen(User user) {
         new AsyncWebCall(application, WebCall_DoorOpen) {
             @Override
@@ -206,6 +235,28 @@ public class WebManager {
         }.execute();
     }
 
+    public void stoppedTimer(User user) {
+        new AsyncWebCall(application, WebCall_StopTimer) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
+    public void startedTimer(User user) {
+        new AsyncWebCall(application, WebCall_StartTimer) {
+            @Override
+            void onAddProperties(SoapObject soapRequest) {
+                soapRequest.addProperty("aDeviceName", getDeviceName());
+                soapRequest.addProperty("aUser", user.getCode());
+                soapRequest.addProperty("aTimeStamp", DateUtils.convertToServerDate(DateUtils.now()));
+            }
+        }.execute();
+    }
+
     /*
      * Getters and setters
      */
@@ -236,5 +287,42 @@ public class WebManager {
 
     public void setWebSuccess(boolean webSuccess) {
         this.webSuccess = webSuccess;
+    }
+
+    private static class PingThread extends SwingWorker<Void, Void> {
+
+        private boolean keepRunning = true;
+        private boolean enabled = true;
+
+        private int delay;
+
+        public PingThread(int delay) {
+            this.delay = delay;
+            this.keepRunning = true;
+            this.enabled = true;
+        }
+
+        void stop() {
+            keepRunning = false;
+        }
+
+        void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+
+            while (keepRunning) {
+                try {
+                    webMgr().ping();
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
     }
 }

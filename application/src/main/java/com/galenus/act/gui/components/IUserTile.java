@@ -8,13 +8,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class IUserTile extends JPanel implements GuiInterface, ActionListener {
+public class IUserTile extends JPanel implements GuiInterface, /*ActionListener,*/ MouseListener {
 
     public interface OnTileClickListener {
-        void onTileClick(User user);
+        void onTileClick(MouseEvent e, IUserTile tile);
     }
 
     /*
@@ -29,11 +29,18 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
     private User user;
     private OnTileClickListener clickListener;
 
+    private boolean isSelected = false;
+    private Color background;
+
     /*
      *                  CONSTRUCTOR
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     public IUserTile(User user) {
+        super();
         this.user = user;
+
+        this.addMouseListener(this);
+        this.background = getBackground();
 
         initializeComponents();
         initializeLayouts();
@@ -51,6 +58,15 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
         return user;
     }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+        if (selected) {
+            this.setBackground(Color.gray);
+        } else {
+            this.setBackground(background);
+        }
+    }
+
     /*
      *                  LISTENERS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -59,7 +75,11 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
         iconBtn = new JButton();
         iconBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         iconBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        iconBtn.addActionListener(this);
+        iconBtn.setPreferredSize(new Dimension(120,120));
+        iconBtn.setMaximumSize(new Dimension(120,120));
+        iconBtn.setMinimumSize(new Dimension(120,120));
+        //iconBtn.addActionListener(this);
+        iconBtn.addMouseListener(this);
 
         nameTp = new JTextPane();
 
@@ -68,6 +88,8 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
+        Font f = nameTp.getFont();
+        nameTp.setFont(new Font(f.getName(), Font.BOLD, 20));
         nameTp.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameTp.setAlignmentY(Component.CENTER_ALIGNMENT);
         nameTp.setFocusable(false);
@@ -75,6 +97,7 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
         nameTp.setBackground(new Color(0,0,0,0));
         nameTp.setBorder(null);
         nameTp.setEditable(false);
+        nameTp.addMouseListener(this);
     }
 
     @Override
@@ -84,8 +107,9 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
         add(iconBtn);
         add(nameTp);
 
-        setPreferredSize(new Dimension(128, 128));
+        setPreferredSize(new Dimension(100, 120));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
     }
 
     @Override
@@ -95,12 +119,33 @@ public class IUserTile extends JPanel implements GuiInterface, ActionListener {
     }
 
     //
-    // Button click listener
+    // Mouse listener
     //
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void mouseClicked(MouseEvent e) {
         if (clickListener != null) {
-            clickListener.onTileClick(user);
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                clickListener.onTileClick(e, this);
+            }
         }
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        setBackground(Color.gray.brighter());
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        setSelected(isSelected);
+    }
+
 }
