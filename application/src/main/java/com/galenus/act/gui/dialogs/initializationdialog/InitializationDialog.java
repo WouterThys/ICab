@@ -7,9 +7,9 @@ import com.galenus.act.classes.managers.serial.SerialManager;
 
 import javax.swing.*;
 
-import static com.galenus.act.Application.settings;
 import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
 import static com.galenus.act.classes.managers.web.WebManager.webMgr;
+import static com.galenus.act.utils.resources.Settings.getSettings;
 
 public class InitializationDialog extends InitializationDialogLayout {
 
@@ -52,8 +52,8 @@ public class InitializationDialog extends InitializationDialogLayout {
 
     private void three_initWebService() {
         webMgr().init( application,
-                settings.getName(),
-                settings.getWebUrl(),
+                getSettings().getName(),
+                getSettings().getWebUrl(),
                 "http://tempuri.org/",
                 60000);
         webMgr().registerShutDownHook();

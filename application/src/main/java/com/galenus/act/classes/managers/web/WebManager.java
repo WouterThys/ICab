@@ -4,6 +4,7 @@ import com.galenus.act.classes.User;
 import com.galenus.act.classes.interfaces.WebCallListener;
 import com.galenus.act.Application;
 import com.galenus.act.utils.DateUtils;
+import com.galenus.act.utils.resources.Settings;
 import org.ksoap2.serialization.SoapObject;
 
 import javax.swing.*;
@@ -87,12 +88,12 @@ public class WebManager {
         }
     }
 
-    public void startPinging(int delayInMillis) {
+    public void startPinging() {
         if (pingThread != null) {
             pingThread.cancel(true);
         }
 
-        pingThread = new PingThread(delayInMillis);
+        pingThread = new PingThread();
         pingThread.execute();
     }
 
@@ -294,10 +295,7 @@ public class WebManager {
         private boolean keepRunning = true;
         private boolean enabled = true;
 
-        private int delay;
-
-        public PingThread(int delay) {
-            this.delay = delay;
+        public PingThread() {
             this.keepRunning = true;
             this.enabled = true;
         }
@@ -316,7 +314,7 @@ public class WebManager {
             while (keepRunning) {
                 try {
                     webMgr().ping();
-                    Thread.sleep(delay);
+                    Thread.sleep(Settings.getSettings().getPingDelay() * 3);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

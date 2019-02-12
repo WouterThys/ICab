@@ -102,8 +102,8 @@ public class DoorManager {
             String location = item.getLocation();
             if (!location.isEmpty()) {
                 try {
-                    String s[] = location.split("/");
-                    if (s.length > 0) {
+                    String[] s = location.split("/");
+                    if (s.length > 0 && !s[0].isEmpty()) {
                         int d = Integer.parseInt(s[0].replaceAll("[\\D]", ""));
                         if (d > 0 && d <= doorList.size()) {
                             doorList.get(d-1).addItem(item);

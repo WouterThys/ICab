@@ -4693,8 +4693,8 @@ TXSTAbits.BRGH = 0;
 RCSTAbits.RX9 = 0;
 
 
-BAUDCONbits.RXDTP = 1;
-BAUDCONbits.TXCKP = 1;
+BAUDCONbits.RXDTP = 0;
+BAUDCONbits.TXCKP = 0;
 BAUDCONbits.BRG16 = 0;
 
 

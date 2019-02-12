@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 
-import static com.galenus.act.Application.settings;
+import static com.galenus.act.utils.resources.Settings.getSettings;
 
 public class Main {
 
@@ -16,7 +16,7 @@ public class Main {
             Application app = new Application();
 
             app.setPreferredSize(new Dimension(1500, 800));
-            if (settings.isFullScreen()) {
+            if (getSettings().isFullScreen()) {
                 app.setUndecorated(true);
             }
             app.setTitle("I-CAB");

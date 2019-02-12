@@ -1,0 +1,3 @@
+
+-- Initialize (I) with 5 doors
+&[M]::I::5$

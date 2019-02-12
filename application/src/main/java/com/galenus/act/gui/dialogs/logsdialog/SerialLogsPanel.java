@@ -17,8 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.galenus.act.Application.imageResource;
-import static com.galenus.act.Application.settings;
 import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
+import static com.galenus.act.utils.resources.Settings.getSettings;
 
 class SerialLogsPanel extends JPanel implements GuiInterface {
 
@@ -103,7 +103,7 @@ class SerialLogsPanel extends JPanel implements GuiInterface {
         }
     }
     private void onPicInit() {
-        serMgr().sendInit(settings.getDoorCount());
+        serMgr().sendInit(getSettings().getDoorCount());
     }
     private void onPicReset() {
         serMgr().sendReset();

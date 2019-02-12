@@ -31,6 +31,7 @@
 
 uint8_t lockDelayCnt;
 uint8_t communicationCnt;
+uint8_t ledDelayCnt;
 READ_Data read;
 bool tick;
 bool lock;
@@ -40,6 +41,7 @@ uint8_t pwm;
 uint8_t newAlarm;
 uint8_t oldAlarm;
 
+void run();
 void initDoors(uint8_t door_cnt);
 void setAlarm(uint8_t alarm);
 
@@ -91,7 +93,20 @@ void main(void) {
         PORTB = 0xFF;
     }
     
+    run();
+//    TRISAbits.TRISA1 = 1;
+//    TRISAbits.TRISA2 = 1;
+//    TRISAbits.TRISA3 = 1;
+//    TRISAbits.TRISA4 = 1;
+//    TRISAbits.TRISA5 = 1;
+//    while(1) {
+//        LED1 = PORTAbits.RA5;
+//    }
+}
+
+void run() {
     while(1) {
+        
         // Close doors
         if (lock) {
             D_TMR1_Enable(false);
@@ -104,7 +119,7 @@ void main(void) {
         if (readReady) {
             readReady = false;
             read = D_UART_Read();
-            LED1 = !LED1;
+            
             
             // Acknowledge
             D_UART_Acknowledge(read.ackId);
@@ -153,6 +168,14 @@ void main(void) {
         // FSM
         if (tick) {
             tick = false;
+            
+            // LED
+            if (ledDelayCnt < LED_DELAY) {
+                ledDelayCnt++;
+            } else {
+                
+                ledDelayCnt = 0;
+            }
             
             // Read inputs
             C_DOOR_ReadSensors();

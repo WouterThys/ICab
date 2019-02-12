@@ -4475,6 +4475,7 @@ void C_DOOR_SendStates();
 # 32 "main.c"
 uint8_t lockDelayCnt;
 uint8_t communicationCnt;
+uint8_t ledDelayCnt;
 READ_Data read;
 bool tick;
 bool lock;
@@ -4484,6 +4485,7 @@ uint8_t pwm;
 uint8_t newAlarm;
 uint8_t oldAlarm;
 
+void run();
 void initDoors(uint8_t door_cnt);
 void setAlarm(uint8_t alarm);
 
@@ -4535,7 +4537,14 @@ PORTB = 0x00;
 PORTB = 0xFF;
 }
 
+run();
+
+# 105
+}
+
+void run() {
 while(1) {
+
 
 if (lock) {
 D_TMR1_Enable(0);
@@ -4548,7 +4557,7 @@ lock = 0;
 if (readReady) {
 readReady = 0;
 read = D_UART_Read();
-PORTBbits.RB5 = !PORTBbits.RB5;
+
 
 
 D_UART_Acknowledge(read.ackId);
@@ -4597,6 +4606,14 @@ D_UART_Write("E", "U");
 
 if (tick) {
 tick = 0;
+
+
+if (ledDelayCnt < 2) {
+ledDelayCnt++;
+} else {
+
+ledDelayCnt = 0;
+}
 
 
 C_DOOR_ReadSensors();

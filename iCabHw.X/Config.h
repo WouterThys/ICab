@@ -38,7 +38,7 @@
  * Baud rate of serial communication
  */
 #define SERIAL_BAUD 9600
-
+#define SERIAL_INV  0
 
 
 
@@ -55,11 +55,11 @@
 /**
  * OPEN and CLOSED sensor signal polarity
  */
-#define OPEN    0
+#define OPEN    1
 #define CLOSED  !OPEN
 
 /*******************************************************************************
- *                      ALARM SETTINGS 
+ *                      DELAYS SETTINGS 
  ******************************************************************************/
 
 /**
@@ -77,6 +77,13 @@
  * ALARM_DELAY * 100 ms
  */
 #define ALARM_DELAY  60
+
+/**
+ * Blink LED time
+ * The LED_DELAY is a multiple of 100 ms: LED will blink after
+ * LED_DELAY * 100 ms
+ */
+#define LED_DELAY  2
 
 #endif	/* CONFIG_H */
 

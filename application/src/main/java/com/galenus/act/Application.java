@@ -19,7 +19,7 @@ import com.galenus.act.gui.panels.logon.UserGrid;
 import com.galenus.act.gui.panels.user.UserPanel;
 import com.galenus.act.utils.resources.ColorResource;
 import com.galenus.act.utils.resources.ImageResource;
-import com.galenus.act.utils.resources.SettingsResource;
+import com.galenus.act.utils.resources.Settings;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
@@ -34,6 +34,7 @@ import static com.galenus.act.classes.managers.UserManager.usrMgr;
 import static com.galenus.act.classes.managers.serial.MessageFactory.*;
 import static com.galenus.act.classes.managers.serial.SerialManager.serMgr;
 import static com.galenus.act.classes.managers.web.WebManager.*;
+import static com.galenus.act.utils.resources.Settings.getSettings;
 
 public class Application extends JFrame implements
         GuiInterface,
@@ -43,7 +44,6 @@ public class Application extends JFrame implements
 
     public static ImageResource imageResource;
     public static ColorResource colorResource;
-    public static SettingsResource settings;
 
     private static final String VIEW_MAIN = "Main";
     private static final String VIEW_INVENTORY = "Inventory";
@@ -86,13 +86,13 @@ public class Application extends JFrame implements
     public Application() {
         Application.imageResource = new ImageResource("", "icons.properties");
         Application.colorResource = new ColorResource("", "colors.properties");
-        Application.settings = new SettingsResource("", "settings.properties");
+        getSettings().initialize("", "settings.properties");
     }
 
     void start() {
         // Doors
-        doorMgr().init(settings.getDoorCount());
-        usrMgr().init(settings.getUserLogonTime(), this);
+        doorMgr().init(getSettings().getDoorCount());
+        usrMgr().init(getSettings().getUserLogonTime(), this);
 
         // Init gui
         initializeComponents();
@@ -251,6 +251,7 @@ public class Application extends JFrame implements
         JPasswordField pass = new JPasswordField(10);
         panel.add(label);
         panel.add(pass);
+        pass.requestFocus();
         String[] options = new String[]{"Cancel", "Ok"};
         int option = JOptionPane.showOptionDialog(
                 null,
@@ -317,7 +318,7 @@ public class Application extends JFrame implements
         logOnPanel.setUsers(usrMgr().getUserList());
         pack();
 
-        if (settings.isFullScreen()) {
+        if (getSettings().isFullScreen()) {
             setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
     }
@@ -356,8 +357,8 @@ public class Application extends JFrame implements
         serialWriteRetry = 0;
         System.out.println("COM port found: " + serialPort.getDescriptivePortName());
         serMgr().initComPort(serialPort);
-        serMgr().sendInit(settings.getDoorCount());
-        serMgr().startPinging(settings.getPingDelay());
+        serMgr().sendInit(getSettings().getDoorCount());
+        serMgr().startPinging(getSettings().getPingDelay());
     }
 
     @Override
@@ -449,7 +450,7 @@ public class Application extends JFrame implements
                 "Serial error",
                 JOptionPane.ERROR_MESSAGE
         );
-        if (exit && !settings.isDebugMode()) {
+        if (exit && !getSettings().isDebugMode()) {
             Main.shutDown();
         }
     }
@@ -469,7 +470,7 @@ public class Application extends JFrame implements
             // Message about state
         } else if (message.getCommand().contains(PIC_STATE)) {
             if (!message.getMessage().equals(PIC_RUNNING)) {
-                serMgr().sendInit(settings.getDoorCount());
+                serMgr().sendInit(getSettings().getDoorCount());
             }
         }
 
@@ -489,7 +490,7 @@ public class Application extends JFrame implements
 
             case WebCall_Register:
                 webRegistered();
-                webMgr().startPinging(3 * settings.getPingDelay());
+                webMgr().startPinging();
                 break;
 
             case WebCall_UnRegister:

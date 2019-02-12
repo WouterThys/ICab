@@ -3795,12 +3795,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART_Driver.c: 185: RCSTAbits.RX9 = 0;
 "185
 [e = . . _RCSTAbits 0 6 -> -> 0 `i `uc ]
-[; ;UART_Driver.c: 188: BAUDCONbits.RXDTP = 1;
+[; ;UART_Driver.c: 188: BAUDCONbits.RXDTP = 0;
 "188
-[e = . . _BAUDCONbits 0 5 -> -> 1 `i `uc ]
-[; ;UART_Driver.c: 189: BAUDCONbits.TXCKP = 1;
+[e = . . _BAUDCONbits 0 5 -> -> 0 `i `uc ]
+[; ;UART_Driver.c: 189: BAUDCONbits.TXCKP = 0;
 "189
-[e = . . _BAUDCONbits 0 4 -> -> 1 `i `uc ]
+[e = . . _BAUDCONbits 0 4 -> -> 0 `i `uc ]
 [; ;UART_Driver.c: 190: BAUDCONbits.BRG16 = 0;
 "190
 [e = . . _BAUDCONbits 0 3 -> -> 0 `i `uc ]

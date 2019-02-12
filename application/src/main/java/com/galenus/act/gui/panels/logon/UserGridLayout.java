@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.galenus.act.Application.settings;
+import static com.galenus.act.utils.resources.Settings.getSettings;
 
 abstract class UserGridLayout extends JPanel implements
         GuiInterface,
@@ -52,7 +52,7 @@ abstract class UserGridLayout extends JPanel implements
         tabPanel.removeAll();
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, settings.getTabFontSize() ) );
+        tabbedPane.setFont( new Font( "Dialog", Font.BOLD|Font.ITALIC, getSettings().getTabFontSize() ) );
         JScrollPane scrollPane = new JScrollPane(gridPanel);
 
         userList.sort(Comparator.comparing(User::getFirstName));

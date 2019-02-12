@@ -185,8 +185,8 @@ void D_UART_Init(const char* name, uint16_t baud, bool interrupts) {
     RCSTAbits.RX9 = 0; // Selects 8-bit reception
 
     // BAUDCON register settings
-    BAUDCONbits.RXDTP = 1; // RX data is inverted
-    BAUDCONbits.TXCKP = 1; // TX data is inverted
+    BAUDCONbits.RXDTP = SERIAL_INV; // RX data is inverted
+    BAUDCONbits.TXCKP = SERIAL_INV; // TX data is inverted
     BAUDCONbits.BRG16 = 0; // 8-bit Baud Rate Generator
     
     // Baud

@@ -7,8 +7,16 @@ public abstract class BasicResource {
 
     private Properties properties;
 
-    public BasicResource(String propertiesUrl, String fileName) {
+    BasicResource() {
         properties = new Properties();
+    }
+
+    public BasicResource(String propertiesUrl, String fileName) {
+        this();
+        initialize(propertiesUrl, fileName);
+    }
+
+    public void initialize(String propertiesUrl, String fileName) {
         try {
             String resourceFileName = propertiesUrl + fileName;
             InputStream input = getClass().getClassLoader().getResourceAsStream(resourceFileName);
@@ -26,5 +34,17 @@ public abstract class BasicResource {
             property = "";
         }
         return property;
+    }
+
+    public void writeString(String key, String value) {
+        properties.setProperty(key, value);
+    }
+
+    public void writeInt(String key, int value) {
+        writeString(key, String.valueOf(value));
+    }
+
+    public void writeBoolean(String key, boolean value) {
+        writeString(key, String.valueOf(value));
     }
 }

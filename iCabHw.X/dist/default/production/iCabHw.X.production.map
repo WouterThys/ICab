@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.44\dat\en_msgs.txt -cs \
   -h+dist/default/production\iCabHw.X.production.sym \
   --cmf=dist/default/production\iCabHw.X.production.cmf -z -Q18F2550 \
-  -oC:\Users\thys_\AppData\Local\Temp\s408.2 \
+  -oC:\Users\thys_\AppData\Local\Temp\s7kc.2 \
   -Mdist/default/production/iCabHw.X.production.map -E1 -ver=XC8 \
   -ASTACK=01A6h-07ffh -pstack=STACK -ACODE=00h-07FFFh -ACONST=00h-07FFFh \
   -ASMALLCONST=0800h-08FFhx120 -AMEDIUMCONST=0800h-07FFFh -ACOMRAM=01h-05Fh \
@@ -22,7 +22,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\thys_\AppData\Local\Temp\s408.obj \
+  C:\Users\thys_\AppData\Local\Temp\s7kc.obj \
   dist/default/production\iCabHw.X.production.obj 
 
 Object code version is 3.11
@@ -35,7 +35,7 @@ Call graph: (short form)
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\thys_\AppData\Local\Temp\s408.obj
+C:\Users\thys_\AppData\Local\Temp\s7kc.obj
                 init                                 EC       EC        4        C       0
                 reset_vec                             0        0        4        0       0
                 idloc                            200000   200000        8   200000       0
@@ -43,46 +43,47 @@ C:\Users\thys_\AppData\Local\Temp\s408.obj
 dist/default/production\iCabHw.X.production.obj
                 intcodelo                            18       18       D4        C       0
                 intcode                               8        8        6        4       0
-                temp                                 43       43        1        1       1
+                temp                                 44       44        1        1       1
                 smallconst                          800      800       4A      400       0
-                text30                              D60      D60      18A      425       0
-                intcode_body                       12DE     12DE       B6      425       0
-                text27                             14FA     14FA       A0      425       0
-                text26                             176C     176C       54      425       0
-                text25                             185C     185C       44      425       0
-                text24                             18FE     18FE       28      425       0
-                text23                              B08      B08      258      425       0
-                text22                             112A     112A       E0      425       0
-                text21                             170C     170C       60      425       0
-                text20                             103C     103C       EE      425       0
-                text19                             1394     1394       B4      425       0
-                text18                             19CE     19CE       1E      425       0
-                text17                             19B0     19B0       1E      425       0
-                text16                             18D0     18D0       2E      425       0
-                text15                             1A00     1A00       14      425       0
-                text14                             194A     194A       24      425       0
-                text13                             19EC     19EC       14      425       0
-                text12                             1990     1990       20      425       0
-                text11                             16A0     16A0       6C      425       0
-                text10                             1926     1926       24      425       0
-                text9                              159A     159A       84      425       0
-                text8                              161E     161E       82      425       0
-                text7                              18A0     18A0       30      425       0
-                text6                              120A     120A       D4      425       0
-                text5                               EEA      EEA      152      425       0
-                text4                              1448     1448       B2      425       0
-                text3                              196E     196E       22      425       0
-                text2                              1A14     1A14        A      425       0
-                text1                              180E     180E       4E      425       0
-                text0                               84A      84A      2BE      425       0
+                text31                              CC2      CC2      18A      425       0
+                intcode_body                       1240     1240       B6      425       0
+                text28                             19C6     19C6       1E      425       0
+                text27                             19A8     19A8       1E      425       0
+                text26                             19F8     19F8       14      425       0
+                text25                             1942     1942       24      425       0
+                text24                             19E4     19E4       14      425       0
+                text23                             1988     1988       20      425       0
+                text22                             191E     191E       24      425       0
+                text21                             1592     1592       84      425       0
+                text20                             1616     1616       82      425       0
+                text19                             145C     145C       A0      425       0
+                text18                             1764     1764       54      425       0
+                text17                             1854     1854       44      425       0
+                text16                             18F6     18F6       28      425       0
+                text15                              84A      84A      258      425       0
+                text14                             108C     108C       E0      425       0
+                text13                             1704     1704       60      425       0
+                text12                              F9E      F9E       EE      425       0
+                text11                             12F6     12F6       B4      425       0
+                text10                             18C8     18C8       2E      425       0
+                text9                              1698     1698       6C      425       0
+                text8                              1898     1898       30      425       0
+                text7                              116C     116C       D4      425       0
+                text6                               E4C      E4C      152      425       0
+                text5                              13AA     13AA       B2      425       0
+                text4                              1966     1966       22      425       0
+                text3                              1A0C     1A0C        A      425       0
+                text2                              1806     1806       4E      425       0
+                text1                               AA2      AA2      220      425       0
+                text0                              14FC     14FC       96      425       0
                 cstackCOMRAM                          1        1       28        1       1
-                cstackBANK0                          C7       C7       2A       60       1
+                cstackBANK0                          C7       C7       2B       60       1
                 bssBANK1                            100      100       A6      100       1
-                dataBANK0                            F1       F1        8       60       1
+                dataBANK0                            F2       F2        8       60       1
                 bssBANK0                             60       60       67       60       1
-                bssCOMRAM                            29       29       1A        1       1
-                cinit                              17C0     17C0       4E      425       0
-                idataBANK0                         1A1E     1A1E        8      425       0
+                bssCOMRAM                            29       29       1B        1       1
+                cinit                              17B8     17B8       4E      425       0
+                idataBANK0                         1A16     1A16        8      425       0
 
 TOTAL           Name                               Link     Load   Length     Space
         CLASS   STACK          
@@ -92,38 +93,39 @@ TOTAL           Name                               Link     Load   Length     Sp
                 intcode                               8        8        6         0
                 init                                 EC       EC        4         0
                 reset_vec                             0        0        4         0
-                text30                              D60      D60      18A         0
-                intcode_body                       12DE     12DE       B6         0
-                text27                             14FA     14FA       A0         0
-                text26                             176C     176C       54         0
-                text25                             185C     185C       44         0
-                text24                             18FE     18FE       28         0
-                text23                              B08      B08      258         0
-                text22                             112A     112A       E0         0
-                text21                             170C     170C       60         0
-                text20                             103C     103C       EE         0
-                text19                             1394     1394       B4         0
-                text18                             19CE     19CE       1E         0
-                text17                             19B0     19B0       1E         0
-                text16                             18D0     18D0       2E         0
-                text15                             1A00     1A00       14         0
-                text14                             194A     194A       24         0
-                text13                             19EC     19EC       14         0
-                text12                             1990     1990       20         0
-                text11                             16A0     16A0       6C         0
-                text10                             1926     1926       24         0
-                text9                              159A     159A       84         0
-                text8                              161E     161E       82         0
-                text7                              18A0     18A0       30         0
-                text6                              120A     120A       D4         0
-                text5                               EEA      EEA      152         0
-                text4                              1448     1448       B2         0
-                text3                              196E     196E       22         0
-                text2                              1A14     1A14        A         0
-                text1                              180E     180E       4E         0
-                text0                               84A      84A      2BE         0
-                cinit                              17C0     17C0       4E         0
-                idataBANK0                         1A1E     1A1E        8         0
+                text31                              CC2      CC2      18A         0
+                intcode_body                       1240     1240       B6         0
+                text28                             19C6     19C6       1E         0
+                text27                             19A8     19A8       1E         0
+                text26                             19F8     19F8       14         0
+                text25                             1942     1942       24         0
+                text24                             19E4     19E4       14         0
+                text23                             1988     1988       20         0
+                text22                             191E     191E       24         0
+                text21                             1592     1592       84         0
+                text20                             1616     1616       82         0
+                text19                             145C     145C       A0         0
+                text18                             1764     1764       54         0
+                text17                             1854     1854       44         0
+                text16                             18F6     18F6       28         0
+                text15                              84A      84A      258         0
+                text14                             108C     108C       E0         0
+                text13                             1704     1704       60         0
+                text12                              F9E      F9E       EE         0
+                text11                             12F6     12F6       B4         0
+                text10                             18C8     18C8       2E         0
+                text9                              1698     1698       6C         0
+                text8                              1898     1898       30         0
+                text7                              116C     116C       D4         0
+                text6                               E4C      E4C      152         0
+                text5                              13AA     13AA       B2         0
+                text4                              1966     1966       22         0
+                text3                              1A0C     1A0C        A         0
+                text2                              1806     1806       4E         0
+                text1                               AA2      AA2      220         0
+                text0                              14FC     14FC       96         0
+                cinit                              17B8     17B8       4E         0
+                idataBANK0                         1A16     1A16        8         0
 
         CLASS   CONST          
 
@@ -133,9 +135,9 @@ TOTAL           Name                               Link     Load   Length     Sp
         CLASS   MEDIUMCONST    
 
         CLASS   COMRAM         
-                temp                                 43       43        1         1
+                temp                                 44       44        1         1
                 cstackCOMRAM                          1        1       28         1
-                bssCOMRAM                            29       29       1A         1
+                bssCOMRAM                            29       29       1B         1
 
         CLASS   ABS1           
 
@@ -144,8 +146,8 @@ TOTAL           Name                               Link     Load   Length     Sp
         CLASS   RAM            
 
         CLASS   BANK0          
-                cstackBANK0                          C7       C7       2A         1
-                dataBANK0                            F1       F1        8         1
+                cstackBANK0                          C7       C7       2B         1
+                dataBANK0                            F2       F2        8         1
                 bssBANK0                             60       60       67         1
 
         CLASS   BANK1          
@@ -180,13 +182,13 @@ TOTAL           Name                               Link     Load   Length     Sp
 SEGMENTS        Name                           Load    Length   Top    Selector   Space  Class
 
                 reset_vec                      000000  000004  000004         0       0  CODE    
-                cstackCOMRAM                   000001  000043  000044         1       1  COMRAM  
+                cstackCOMRAM                   000001  000044  000045         1       1  COMRAM  
                 intcode                        000008  000006  00000E         4       0  CODE    
                 intcodelo                      000018  0000D8  0000F0         C       0  CODE    
-                bssBANK0                       000060  000099  0000F9        60       1  BANK0   
+                bssBANK0                       000060  00009A  0000FA        60       1  BANK0   
                 bssBANK1                       000100  0000A6  0001A6       100       1  BANK1   
                 smallconst                     000800  00004A  00084A       400       0  SMALLCON
-                text0                          00084A  0011DC  001A26       425       0  CODE    
+                text15                         00084A  0011D4  001A1E       425       0  CODE    
                 idloc                          200000  000008  200008    200000       0  IDLOC   
                 config                         300000  00000E  30000E    300000       0  CONFIG  
 
@@ -194,7 +196,7 @@ SEGMENTS        Name                           Load    Length   Top    Selector 
 UNUSED ADDRESS RANGES
 
         Name                Unused          Largest block    Delta
-        BANK0            0000F9-0000FF                7
+        BANK0            0000FA-0000FF                6
         BANK1            0001A6-0001FF               5A
         BANK2            000200-0002FF              100
         BANK3            000300-0003FF              100
@@ -202,24 +204,24 @@ UNUSED ADDRESS RANGES
         BANK5            000500-0005FF              100
         BANK6            000600-0006FF              100
         BANK7            000700-0007FF              100
-        BIGRAM           000044-00005F               1C
-                         0000F9-0000FF                7
+        BIGRAM           000045-00005F               1B
+                         0000FA-0000FF                6
                          0001A6-0007FF              65A
         CODE             000004-000007                4
                          00000E-000017                A
                          0000F0-0007FF              710
-                         001A26-007FFF             65DA
-        COMRAM           000044-00005F               1C
+                         001A1E-007FFF             65E2
+        COMRAM           000045-00005F               1B
         CONST            000004-000007                4
                          00000E-000017                A
                          0000F0-0007FF              710
-                         001A26-007FFF             65DA
+                         001A1E-007FFF             65E2
         EEDATA           F00000-F000FF              100
-        MEDIUMCONST      001A26-007FFF             65DA
-        RAM              0000F9-0000FF                7
+        MEDIUMCONST      001A1E-007FFF             65E2
+        RAM              0000FA-0000FF                6
                          0001A6-0007FF              100
         SFR              000F60-000FFF               A0
-        SMALLCONST       001A26-007FFF              100
+        SMALLCONST       001A1E-007FFF              100
         STACK            0001A6-0007FF              65A
 
                                   Symbol Table
@@ -254,24 +256,24 @@ _ADCON1                      (abs)        000FC1
 _BAUDCONbits                 (abs)        000FB8
 _CCP1CONbits                 (abs)        000FBD
 _CCPR1L                      (abs)        000FBE
-_C_DOOR_Init                 text5        000EEA
-_C_DOOR_LockAll              text4        001448
-_C_DOOR_ReadSensors          text27       0014FA
-_C_DOOR_SendStates           text20       00103C
-_C_DOOR_UnlockAll            text19       001394
-_D_PORT_Init                 text18       0019CE
-_D_PWM_Init                  text17       0019B0
-_D_PWM_SetPwm                text16       0018D0
-_D_TMR0_Enable               text15       001A00
-_D_TMR0_Init                 text14       00194A
-_D_TMR1_Enable               text13       0019EC
-_D_TMR1_Init                 text12       001990
-_D_UART_Acknowledge          text11       0016A0
-_D_UART_Enable               text10       001926
-_D_UART_Init                 text8        00161E
-_D_UART_Read                 text7        0018A0
-_D_UART_Write                text22       00112A
-_D_UART_WriteInt             text6        00120A
+_C_DOOR_Init                 text6        000E4C
+_C_DOOR_LockAll              text5        0013AA
+_C_DOOR_ReadSensors          text19       00145C
+_C_DOOR_SendStates           text12       000F9E
+_C_DOOR_UnlockAll            text11       0012F6
+_D_PORT_Init                 text28       0019C6
+_D_PWM_Init                  text27       0019A8
+_D_PWM_SetPwm                text10       0018C8
+_D_TMR0_Enable               text26       0019F8
+_D_TMR0_Init                 text25       001942
+_D_TMR1_Enable               text24       0019E4
+_D_TMR1_Init                 text23       001988
+_D_UART_Acknowledge          text9        001698
+_D_UART_Enable               text22       00191E
+_D_UART_Init                 text20       001616
+_D_UART_Read                 text8        001898
+_D_UART_Write                text14       00108C
+_D_UART_WriteInt             text7        00116C
 _HighISR                     intcode      000008
 _INTCON2bits                 (abs)        000FF1
 _INTCONbits                  (abs)        000FF2
@@ -281,7 +283,6 @@ _PIE1bits                    (abs)        000F9D
 _PIR1bits                    (abs)        000F9E
 _PORTA                       (abs)        000F80
 _PORTB                       (abs)        000F81
-_PORTBbits                   (abs)        000F81
 _PORTC                       (abs)        000F82
 _PORTCbits                   (abs)        000F82
 _PR2                         (abs)        000FCB
@@ -399,7 +400,7 @@ __Hspace_1                   (abs)        0001A6
 __Hspace_2                   (abs)        000000
 __Hstack                     stack        000000
 __Hstruct                    struct       000000
-__Htemp                      temp         000044
+__Htemp                      temp         000045
 __Htext                      text         000000
 __Htext0                     text0        000000
 __Htext1                     text1        000000
@@ -422,8 +423,9 @@ __Htext24                    text24       000000
 __Htext25                    text25       000000
 __Htext26                    text26       000000
 __Htext27                    text27       000000
+__Htext28                    text28       000000
 __Htext3                     text3        000000
-__Htext30                    text30       000000
+__Htext31                    text31       000000
 __Htext4                     text4        000000
 __Htext5                     text5        000000
 __Htext6                     text6        000000
@@ -492,7 +494,7 @@ __Lspace_1                   (abs)        000000
 __Lspace_2                   (abs)        000000
 __Lstack                     stack        000000
 __Lstruct                    struct       000000
-__Ltemp                      temp         000043
+__Ltemp                      temp         000044
 __Ltext                      text         000000
 __Ltext0                     text0        000000
 __Ltext1                     text1        000000
@@ -515,8 +517,9 @@ __Ltext24                    text24       000000
 __Ltext25                    text25       000000
 __Ltext26                    text26       000000
 __Ltext27                    text27       000000
+__Ltext28                    text28       000000
 __Ltext3                     text3        000000
-__Ltext30                    text30       000000
+__Ltext31                    text31       000000
 __Ltext4                     text4        000000
 __Ltext5                     text5        000000
 __Ltext6                     text6        000000
@@ -528,17 +531,17 @@ __S1                         (abs)        0001A6
 __S2                         (abs)        000000
 ___inthi_sp                  stack        000000
 ___intlo_sp                  stack        000000
-___lldiv                     text9        00159A
+___lldiv                     text21       001592
 ___lldiv@counter             cstackBANK0  0000D3
 ___lldiv@dividend            cstackBANK0  0000C7
 ___lldiv@divisor             cstackBANK0  0000CB
 ___lldiv@quotient            cstackBANK0  0000CF
-___lwdiv                     text26       00176C
+___lwdiv                     text18       001764
 ___lwdiv@counter             cstackBANK0  0000CB
 ___lwdiv@dividend            cstackBANK0  0000C7
 ___lwdiv@divisor             cstackBANK0  0000C9
 ___lwdiv@quotient            cstackBANK0  0000CC
-___lwmod                     text25       00185C
+___lwmod                     text17       001854
 ___lwmod@counter             cstackBANK0  0000D2
 ___lwmod@dividend            cstackBANK0  0000CE
 ___lwmod@divisor             cstackBANK0  0000D0
@@ -547,83 +550,85 @@ ___rparam_used               (abs)        000001
 ___sp                        stack        000000
 __accesstop                  (abs)        000060
 __activetblptr               (abs)        000003
-__end_of_C_DOOR_Init         text5        00103C
-__end_of_C_DOOR_LockAll      text4        0014FA
-__end_of_C_DOOR_ReadSensors  text27       00159A
-__end_of_C_DOOR_SendStates   text20       00112A
-__end_of_C_DOOR_UnlockAll    text19       001448
-__end_of_D_PORT_Init         text18       0019EC
-__end_of_D_PWM_Init          text17       0019CE
-__end_of_D_PWM_SetPwm        text16       0018FE
-__end_of_D_TMR0_Enable       text15       001A14
-__end_of_D_TMR0_Init         text14       00196E
-__end_of_D_TMR1_Enable       text13       001A00
-__end_of_D_TMR1_Init         text12       0019B0
-__end_of_D_UART_Acknowledge  text11       00170C
-__end_of_D_UART_Enable       text10       00194A
-__end_of_D_UART_Init         text8        0016A0
-__end_of_D_UART_Read         text7        0018D0
-__end_of_D_UART_Write        text22       00120A
-__end_of_D_UART_WriteInt     text6        0012DE
-__end_of_HighISR             intcode_body 001394
+__end_of_C_DOOR_Init         text6        000F9E
+__end_of_C_DOOR_LockAll      text5        00145C
+__end_of_C_DOOR_ReadSensors  text19       0014FC
+__end_of_C_DOOR_SendStates   text12       00108C
+__end_of_C_DOOR_UnlockAll    text11       0013AA
+__end_of_D_PORT_Init         text28       0019E4
+__end_of_D_PWM_Init          text27       0019C6
+__end_of_D_PWM_SetPwm        text10       0018F6
+__end_of_D_TMR0_Enable       text26       001A0C
+__end_of_D_TMR0_Init         text25       001966
+__end_of_D_TMR1_Enable       text24       0019F8
+__end_of_D_TMR1_Init         text23       0019A8
+__end_of_D_UART_Acknowledge  text9        001704
+__end_of_D_UART_Enable       text22       001942
+__end_of_D_UART_Init         text20       001698
+__end_of_D_UART_Read         text8        0018C8
+__end_of_D_UART_Write        text14       00116C
+__end_of_D_UART_WriteInt     text7        001240
+__end_of_HighISR             intcode_body 0012F6
 __end_of_LowISR              intcodelo    0000EC
-__end_of___lldiv             text9        00161E
-__end_of___lwdiv             text26       0017C0
-__end_of___lwmod             text25       0018A0
-__end_of__initialization     cinit        001804
-__end_of_commandAndMessage   text21       00176C
+__end_of___lldiv             text21       001616
+__end_of___lwdiv             text18       0017B8
+__end_of___lwmod             text17       001898
+__end_of__initialization     cinit        0017FC
+__end_of_commandAndMessage   text13       001764
 __end_of_dpowers             smallconst   00080B
-__end_of_fillDataBuffer      text30       000EEA
+__end_of_fillDataBuffer      text31       000E4C
 __end_of_hexpowers           smallconst   000813
-__end_of_initDoors           text3        001990
-__end_of_main                text0        000B08
-__end_of_printf              text23       000D60
-__end_of_putch               text24       001926
-__end_of_setAlarm            text2        001A1E
-__end_of_strcmp              text1        00185C
-__initialization             cinit        0017C0
+__end_of_initDoors           text4        001988
+__end_of_main                text0        001592
+__end_of_printf              text15       000AA2
+__end_of_putch               text16       00191E
+__end_of_run                 text1        000CC2
+__end_of_setAlarm            text3        001A16
+__end_of_strcmp              text2        001854
+__initialization             cinit        0017B8
 __mediumconst                mediumconst  000000
 __pbssBANK0                  bssBANK0     000060
 __pbssBANK1                  bssBANK1     000100
 __pbssCOMRAM                 bssCOMRAM    000029
-__pcinit                     cinit        0017C0
+__pcinit                     cinit        0017B8
 __pcstackBANK0               cstackBANK0  0000C7
 __pcstackCOMRAM              cstackCOMRAM 000001
-__pdataBANK0                 dataBANK0    0000F1
-__pidataBANK0                idataBANK0   001A1E
+__pdataBANK0                 dataBANK0    0000F2
+__pidataBANK0                idataBANK0   001A16
 __pintcode                   intcode      000008
-__pintcode_body              intcode_body 0012DE
+__pintcode_body              intcode_body 001240
 __pintcodelo                 intcodelo    000018
 __psmallconst                smallconst   000800
-__ptext0                     text0        00084A
-__ptext1                     text1        00180E
-__ptext10                    text10       001926
-__ptext11                    text11       0016A0
-__ptext12                    text12       001990
-__ptext13                    text13       0019EC
-__ptext14                    text14       00194A
-__ptext15                    text15       001A00
-__ptext16                    text16       0018D0
-__ptext17                    text17       0019B0
-__ptext18                    text18       0019CE
-__ptext19                    text19       001394
-__ptext2                     text2        001A14
-__ptext20                    text20       00103C
-__ptext21                    text21       00170C
-__ptext22                    text22       00112A
-__ptext23                    text23       000B08
-__ptext24                    text24       0018FE
-__ptext25                    text25       00185C
-__ptext26                    text26       00176C
-__ptext27                    text27       0014FA
-__ptext3                     text3        00196E
-__ptext30                    text30       000D60
-__ptext4                     text4        001448
-__ptext5                     text5        000EEA
-__ptext6                     text6        00120A
-__ptext7                     text7        0018A0
-__ptext8                     text8        00161E
-__ptext9                     text9        00159A
+__ptext0                     text0        0014FC
+__ptext1                     text1        000AA2
+__ptext10                    text10       0018C8
+__ptext11                    text11       0012F6
+__ptext12                    text12       000F9E
+__ptext13                    text13       001704
+__ptext14                    text14       00108C
+__ptext15                    text15       00084A
+__ptext16                    text16       0018F6
+__ptext17                    text17       001854
+__ptext18                    text18       001764
+__ptext19                    text19       00145C
+__ptext2                     text2        001806
+__ptext20                    text20       001616
+__ptext21                    text21       001592
+__ptext22                    text22       00191E
+__ptext23                    text23       001988
+__ptext24                    text24       0019E4
+__ptext25                    text25       001942
+__ptext26                    text26       0019F8
+__ptext27                    text27       0019A8
+__ptext28                    text28       0019C6
+__ptext3                     text3        001A0C
+__ptext31                    text31       000CC2
+__ptext4                     text4        001966
+__ptext5                     text5        0013AA
+__ptext6                     text6        000E4C
+__ptext7                     text7        00116C
+__ptext8                     text8        001898
+__ptext9                     text9        001698
 __ramtop                     ramtop       000800
 __size_of_C_DOOR_Init        (abs)        000000
 __size_of_C_DOOR_LockAll     (abs)        000000
@@ -654,48 +659,51 @@ __size_of_initDoors          (abs)        000000
 __size_of_main               (abs)        000000
 __size_of_printf             (abs)        000000
 __size_of_putch              (abs)        000000
+__size_of_run                (abs)        000000
 __size_of_setAlarm           (abs)        000000
 __size_of_strcmp             (abs)        000000
 __smallconst                 smallconst   000800
-_ackCharacter                dataBANK0    0000F1
-_baud                        bssCOMRAM    000042
-_commandAndMessage           text21       00170C
-_communicationCnt            bssCOMRAM    00003F
+_ackCharacter                dataBANK0    0000F2
+_baud                        bssCOMRAM    000043
+_commandAndMessage           text13       001704
+_communicationCnt            bssCOMRAM    000040
 _deviceName                  bssBANK0     0000C4
 _door_cnt                    bssCOMRAM    000037
 _doors                       bssBANK0     000060
 _dpowers                     smallconst   000801
-_fillDataBuffer              text30       000D60
+_fillDataBuffer              text31       000CC2
 _hexpowers                   smallconst   00080B
-_initDoors                   text3        00196E
+_initDoors                   text4        001966
+_ledDelayCnt                 bssCOMRAM    00003F
 _lock                        bssCOMRAM    00003D
-_lockDelayCnt                bssCOMRAM    000040
-_main                        text0        00084A
-_messageCharacter            dataBANK0    0000F3
+_lockDelayCnt                bssCOMRAM    000041
+_main                        text0        0014FC
+_messageCharacter            dataBANK0    0000F4
 _newAlarm                    bssCOMRAM    00003A
 _oldAlarm                    bssCOMRAM    000039
-_printf                      text23       000B08
-_putch                       text24       0018FE
+_printf                      text15       00084A
+_putch                       text16       0018F6
 _pwm                         bssCOMRAM    00003B
 _read                        bssCOMRAM    000029
 _readBuffer                  bssBANK1     000100
 _readData                    bssCOMRAM    000030
-_readReady                   bssCOMRAM    000041
+_readReady                   bssCOMRAM    000042
+_run                         text1        000AA2
 _running                     bssCOMRAM    00003C
-_setAlarm                    text2        001A14
-_startCharacter              dataBANK0    0000F7
-_stopCharacter               dataBANK0    0000F5
-_strcmp                      text1        00180E
+_setAlarm                    text3        001A0C
+_startCharacter              dataBANK0    0000F8
+_stopCharacter               dataBANK0    0000F6
+_strcmp                      text2        001806
 _tick                        bssCOMRAM    00003E
-btemp                        temp         000043
+btemp                        temp         000044
 commandAndMessage@com        cstackBANK0  0000D1
 commandAndMessage@door       cstackBANK0  0000C7
 commandAndMessage@mes        cstackBANK0  0000D3
-end_of_initialization        cinit        001804
+end_of_initialization        cinit        0017FC
 fillDataBuffer@data          cstackCOMRAM 000001
 initDoors@door_cnt           cstackBANK0  0000D0
-int$flags                    temp         000043
-int_func                     intcode_body 0012DE
+int$flags                    temp         000044
+int_func                     intcode_body 001240
 intlevel0                    text         000000
 intlevel1                    text         000000
 intlevel2                    text         000000
@@ -713,18 +721,18 @@ setAlarm@alarm               cstackBANK0  0000C7
 stackhi                      (abs)        0007FF
 stacklo                      (abs)        0001A6
 start                        init         0000EC
-start_initialization         cinit        0017C0
+start_initialization         cinit        0017B8
 strcmp@r                     cstackBANK0  0000CC
 strcmp@s1                    cstackBANK0  0000C7
 strcmp@s2                    cstackBANK0  0000C9
-wtemp6                       temp         000044
+wtemp6                       temp         000045
 
 
 FUNCTION INFORMATION:
 
  *************** function _main *****************
  Defined at:
-		line 62 in file "main.c"
+		line 64 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -743,21 +751,51 @@ FUNCTION INFORMATION:
       Temps:          0       2       0       0       0       0       0       0       0
       Totals:         0       2       0       0       0       0       0       0       0
 Total ram usage:        2 bytes
+ Hardware stack levels required when called:    8
+ This function calls:
+		_D_PORT_Init
+		_D_PWM_Init
+		_D_TMR0_Init
+		_D_TMR1_Init
+		_D_UART_Enable
+		_D_UART_Init
+		_run
+ This function is called by:
+		Startup code after reset
+ This function uses a non-reentrant model
+
+
+ *************** function _run *****************
+ Defined at:
+		line 107 in file "main.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, fsr0l, fsr0h, fsr1l, fsr1h, fsr2l, fsr2h, status,2, status,0, tblptrl, tblptrh, tblptru, prodl, prodh, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       1       0       0       0       0       0       0       0
+      Totals:         0       1       0       0       0       0       0       0       0
+Total ram usage:        1 bytes
+ Hardware stack levels used:    1
  Hardware stack levels required when called:    7
  This function calls:
 		_C_DOOR_LockAll
 		_C_DOOR_ReadSensors
 		_C_DOOR_SendStates
 		_C_DOOR_UnlockAll
-		_D_PORT_Init
-		_D_PWM_Init
 		_D_PWM_SetPwm
-		_D_TMR0_Init
 		_D_TMR1_Enable
-		_D_TMR1_Init
 		_D_UART_Acknowledge
-		_D_UART_Enable
-		_D_UART_Init
 		_D_UART_Read
 		_D_UART_Write
 		_D_UART_WriteInt
@@ -765,7 +803,7 @@ Total ram usage:        2 bytes
 		_setAlarm
 		_strcmp
  This function is called by:
-		Startup code after reset
+		_main
  This function uses a non-reentrant model
 
 
@@ -799,13 +837,13 @@ Total ram usage:        6 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
  *************** function _setAlarm *****************
  Defined at:
-		line 58 in file "main.c"
+		line 60 in file "main.c"
  Parameters:    Size  Location     Type
   alarm           1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -829,13 +867,13 @@ Total ram usage:        1 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
  *************** function _initDoors *****************
  Defined at:
-		line 46 in file "main.c"
+		line 48 in file "main.c"
  Parameters:    Size  Location     Type
   door_cnt        1    wreg     unsigned char 
  Auto vars:     Size  Location     Type
@@ -861,7 +899,7 @@ Total ram usage:        1 bytes
 		_C_DOOR_LockAll
 		_D_TMR0_Enable
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -892,7 +930,7 @@ Total ram usage:        9 bytes
 		Nothing
  This function is called by:
 		_initDoors
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -955,7 +993,7 @@ Total ram usage:        5 bytes
  This function calls:
 		_printf
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -985,104 +1023,7 @@ Total ram usage:        7 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_UART_Init *****************
- Defined at:
-		line 166 in file "Drivers/UART_Driver.c"
- Parameters:    Size  Location     Type
-  name            2   13[BANK0 ] PTR const unsigned char 
-		 -> STR_11(2), 
-  baud            2   15[BANK0 ] unsigned int 
-  interrupts      1   17[BANK0 ] unsigned char 
- Auto vars:     Size  Location     Type
-		None
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2, status,0, cstack
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       5       0       0       0       0       0       0       0
-      Locals:         0       0       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       5       0       0       0       0       0       0       0
-Total ram usage:        5 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    4
- This function calls:
-		_D_UART_Enable
-		___lldiv
- This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function ___lldiv *****************
- Defined at:
-		line 8 in file "C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c"
- Parameters:    Size  Location     Type
-  dividend        4    0[BANK0 ] unsigned long 
-  divisor         4    4[BANK0 ] unsigned long 
- Auto vars:     Size  Location     Type
-  quotient        4    8[BANK0 ] unsigned long 
-  counter         1   12[BANK0 ] unsigned char 
- Return value:  Size  Location     Type
-                  4    0[BANK0 ] unsigned long 
- Registers used:
-		wreg, status,2, status,0
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       8       0       0       0       0       0       0       0
-      Locals:         0       5       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0      13       0       0       0       0       0       0       0
-Total ram usage:       13 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_D_UART_Init
- This function uses a non-reentrant model
-
-
- *************** function _D_UART_Enable *****************
- Defined at:
-		line 242 in file "Drivers/UART_Driver.c"
- Parameters:    Size  Location     Type
-  enable          1    wreg     unsigned char 
- Auto vars:     Size  Location     Type
-  enable          1    0[BANK0 ] unsigned char 
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       1       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       1       0       0       0       0       0       0       0
-Total ram usage:        1 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_D_UART_Init
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -1112,129 +1053,7 @@ Total ram usage:        1 bytes
  This function calls:
 		_printf
  This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_TMR1_Init *****************
- Defined at:
-		line 31 in file "Drivers/TMR1_Driver.c"
- Parameters:    Size  Location     Type
-		None
- Auto vars:     Size  Location     Type
-		None
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2, cstack
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       0       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       0       0       0       0       0       0       0       0
-Total ram usage:        0 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    4
- This function calls:
-		_D_TMR1_Enable
- This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_TMR1_Enable *****************
- Defined at:
-		line 52 in file "Drivers/TMR1_Driver.c"
- Parameters:    Size  Location     Type
-  enable          1    wreg     unsigned char 
- Auto vars:     Size  Location     Type
-  enable          1    0[BANK0 ] unsigned char 
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       1       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       1       0       0       0       0       0       0       0
-Total ram usage:        1 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_D_TMR1_Init
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_TMR0_Init *****************
- Defined at:
-		line 31 in file "Drivers/TMR0_Driver.c"
- Parameters:    Size  Location     Type
-		None
- Auto vars:     Size  Location     Type
-		None
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2, cstack
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       0       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       0       0       0       0       0       0       0       0
-Total ram usage:        0 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    4
- This function calls:
-		_D_TMR0_Enable
- This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_TMR0_Enable *****************
- Defined at:
-		line 53 in file "Drivers/TMR0_Driver.c"
- Parameters:    Size  Location     Type
-  enable          1    wreg     unsigned char 
- Auto vars:     Size  Location     Type
-  enable          1    0[BANK0 ] unsigned char 
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       1       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       1       0       0       0       0       0       0       0
-Total ram usage:        1 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_D_TMR0_Init
-		_initDoors
+		_run
  This function uses a non-reentrant model
 
 
@@ -1264,67 +1083,7 @@ Total ram usage:        1 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_PWM_Init *****************
- Defined at:
-		line 31 in file "Drivers/PWM_Driver.c"
- Parameters:    Size  Location     Type
-		None
- Auto vars:     Size  Location     Type
-		None
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       0       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       0       0       0       0       0       0       0       0
-Total ram usage:        0 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_main
- This function uses a non-reentrant model
-
-
- *************** function _D_PORT_Init *****************
- Defined at:
-		line 32 in file "Drivers/PORT_Driver.c"
- Parameters:    Size  Location     Type
-		None
- Auto vars:     Size  Location     Type
-		None
- Return value:  Size  Location     Type
-                  1    wreg      void 
- Registers used:
-		wreg, status,2
- Tracked objects:
-		On entry : 
-		On exit  : 
-		Unchanged: 
- Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-      Params:         0       0       0       0       0       0       0       0       0
-      Locals:         0       0       0       0       0       0       0       0       0
-      Temps:          0       0       0       0       0       0       0       0       0
-      Totals:         0       0       0       0       0       0       0       0       0
-Total ram usage:        0 bytes
- Hardware stack levels used:    1
- Hardware stack levels required when called:    3
- This function calls:
-		Nothing
- This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -1354,7 +1113,7 @@ Total ram usage:        9 bytes
  This function calls:
 		Nothing
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -1387,7 +1146,7 @@ Total ram usage:        9 bytes
 		_D_UART_Write
 		_commandAndMessage
  This function is called by:
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -1455,7 +1214,7 @@ Total ram usage:        5 bytes
 		_printf
  This function is called by:
 		_C_DOOR_SendStates
-		_main
+		_run
  This function uses a non-reentrant model
 
 
@@ -1627,13 +1386,292 @@ Total ram usage:        5 bytes
  This function calls:
 		Nothing
  This function is called by:
+		_run
+ This function uses a non-reentrant model
+
+
+ *************** function _D_UART_Init *****************
+ Defined at:
+		line 166 in file "Drivers/UART_Driver.c"
+ Parameters:    Size  Location     Type
+  name            2   13[BANK0 ] PTR const unsigned char 
+		 -> STR_11(2), 
+  baud            2   15[BANK0 ] unsigned int 
+  interrupts      1   17[BANK0 ] unsigned char 
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2, status,0, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       5       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       5       0       0       0       0       0       0       0
+Total ram usage:        5 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    4
+ This function calls:
+		_D_UART_Enable
+		___lldiv
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function ___lldiv *****************
+ Defined at:
+		line 8 in file "C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c"
+ Parameters:    Size  Location     Type
+  dividend        4    0[BANK0 ] unsigned long 
+  divisor         4    4[BANK0 ] unsigned long 
+ Auto vars:     Size  Location     Type
+  quotient        4    8[BANK0 ] unsigned long 
+  counter         1   12[BANK0 ] unsigned char 
+ Return value:  Size  Location     Type
+                  4    0[BANK0 ] unsigned long 
+ Registers used:
+		wreg, status,2, status,0
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       8       0       0       0       0       0       0       0
+      Locals:         0       5       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0      13       0       0       0       0       0       0       0
+Total ram usage:       13 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
+		_D_UART_Init
+ This function uses a non-reentrant model
+
+
+ *************** function _D_UART_Enable *****************
+ Defined at:
+		line 242 in file "Drivers/UART_Driver.c"
+ Parameters:    Size  Location     Type
+  enable          1    wreg     unsigned char 
+ Auto vars:     Size  Location     Type
+  enable          1    0[BANK0 ] unsigned char 
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       1       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       1       0       0       0       0       0       0       0
+Total ram usage:        1 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
+		_D_UART_Init
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function _D_TMR1_Init *****************
+ Defined at:
+		line 31 in file "Drivers/TMR1_Driver.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    4
+ This function calls:
+		_D_TMR1_Enable
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function _D_TMR1_Enable *****************
+ Defined at:
+		line 52 in file "Drivers/TMR1_Driver.c"
+ Parameters:    Size  Location     Type
+  enable          1    wreg     unsigned char 
+ Auto vars:     Size  Location     Type
+  enable          1    0[BANK0 ] unsigned char 
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       1       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       1       0       0       0       0       0       0       0
+Total ram usage:        1 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
+		_D_TMR1_Init
+		_run
+ This function uses a non-reentrant model
+
+
+ *************** function _D_TMR0_Init *****************
+ Defined at:
+		line 31 in file "Drivers/TMR0_Driver.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    4
+ This function calls:
+		_D_TMR0_Enable
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function _D_TMR0_Enable *****************
+ Defined at:
+		line 53 in file "Drivers/TMR0_Driver.c"
+ Parameters:    Size  Location     Type
+  enable          1    wreg     unsigned char 
+ Auto vars:     Size  Location     Type
+  enable          1    0[BANK0 ] unsigned char 
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       1       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       1       0       0       0       0       0       0       0
+Total ram usage:        1 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
+		_D_TMR0_Init
+		_initDoors
+ This function uses a non-reentrant model
+
+
+ *************** function _D_PWM_Init *****************
+ Defined at:
+		line 31 in file "Drivers/PWM_Driver.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function _D_PORT_Init *****************
+ Defined at:
+		line 32 in file "Drivers/PORT_Driver.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, status,2
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+      Params:         0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    3
+ This function calls:
+		Nothing
+ This function is called by:
 		_main
  This function uses a non-reentrant model
 
 
  *************** function _LowISR *****************
  Defined at:
-		line 199 in file "main.c"
+		line 222 in file "main.c"
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
@@ -1725,88 +1763,89 @@ MODULE INFORMATION
 
 Module		Function		Class		Link	Load	Size
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
-		_strcmp        		CODE           	180E	0000	79
+		_strcmp        		CODE           	1806	0000	79
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c estimated size: 79
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwmod.c
-		___lwmod       		CODE           	185C	0000	69
+		___lwmod       		CODE           	1854	0000	69
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwmod.c estimated size: 69
 
 Drivers/PORT_Driver.c
-		_D_PORT_Init   		CODE           	19CE	0000	31
+		_D_PORT_Init   		CODE           	19C6	0000	31
 
 Drivers/PORT_Driver.c estimated size: 31
 
 Drivers/TMR0_Driver.c
-		_D_TMR0_Init   		CODE           	194A	0000	37
-		_D_TMR0_Enable 		CODE           	1A00	0000	21
+		_D_TMR0_Init   		CODE           	1942	0000	37
+		_D_TMR0_Enable 		CODE           	19F8	0000	21
 
 Drivers/TMR0_Driver.c estimated size: 58
 
 Controllers/DOOR_Controller.c
-		_C_DOOR_SendStates		CODE           	103C	0000	239
-		_commandAndMessage		CODE           	170C	0000	97
-		_C_DOOR_ReadSensors		CODE           	14FA	0000	161
-		_C_DOOR_Init   		CODE           	0EEA	0000	339
-		_C_DOOR_UnlockAll		CODE           	1394	0000	181
-		_C_DOOR_LockAll		CODE           	1448	0000	179
+		_C_DOOR_SendStates		CODE           	0F9E	0000	239
+		_commandAndMessage		CODE           	1704	0000	97
+		_C_DOOR_ReadSensors		CODE           	145C	0000	161
+		_C_DOOR_Init   		CODE           	0E4C	0000	339
+		_C_DOOR_UnlockAll		CODE           	12F6	0000	181
+		_C_DOOR_LockAll		CODE           	13AA	0000	179
 
 Controllers/DOOR_Controller.c estimated size: 1196
 
 Drivers/UART_Driver.c
-		_D_UART_WriteInt		CODE           	120A	0000	213
-		_putch         		CODE           	18FE	0000	41
-		_D_UART_Read   		CODE           	18A0	0000	49
-		_D_UART_Init   		CODE           	161E	0000	131
-		_fillDataBuffer		CODE           	0D60	0000	395
-		_D_UART_Write  		CODE           	112A	0000	225
-		_D_UART_Enable 		CODE           	1926	0000	37
-		_D_UART_Acknowledge		CODE           	16A0	0000	109
+		_D_UART_WriteInt		CODE           	116C	0000	213
+		_putch         		CODE           	18F6	0000	41
+		_D_UART_Read   		CODE           	1898	0000	49
+		_D_UART_Init   		CODE           	1616	0000	131
+		_fillDataBuffer		CODE           	0CC2	0000	395
+		_D_UART_Write  		CODE           	108C	0000	225
+		_D_UART_Enable 		CODE           	191E	0000	37
+		_D_UART_Acknowledge		CODE           	1698	0000	109
 		_HighISR       		CODE           	0008	0000	189
 
 Drivers/UART_Driver.c estimated size: 1389
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c
-		___lwdiv       		CODE           	176C	0000	85
+		___lwdiv       		CODE           	1764	0000	85
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lwdiv.c estimated size: 85
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
-		_printf        		CODE           	0B08	0000	601
+		_printf        		CODE           	084A	0000	601
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c estimated size: 601
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c
-		___lldiv       		CODE           	159A	0000	133
+		___lldiv       		CODE           	1592	0000	133
 
 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c estimated size: 133
 
 Drivers/TMR1_Driver.c
-		_D_TMR1_Init   		CODE           	1990	0000	33
-		_D_TMR1_Enable 		CODE           	19EC	0000	21
+		_D_TMR1_Init   		CODE           	1988	0000	33
+		_D_TMR1_Enable 		CODE           	19E4	0000	21
 
 Drivers/TMR1_Driver.c estimated size: 54
 
 shared
 		_dpowers       		SMALLCONST     	0801	0000	11
-		__initialization		CODE           	17C0	0000	69
+		__initialization		CODE           	17B8	0000	69
 		_hexpowers     		SMALLCONST     	080B	0000	9
 
 shared estimated size: 89
 
 Drivers/PWM_Driver.c
-		_D_PWM_SetPwm  		CODE           	18D0	0000	47
-		_D_PWM_Init    		CODE           	19B0	0000	31
+		_D_PWM_SetPwm  		CODE           	18C8	0000	47
+		_D_PWM_Init    		CODE           	19A8	0000	31
 
 Drivers/PWM_Driver.c estimated size: 78
 
 main.c
 		_LowISR        		CODE           	0018	0000	213
-		_main          		CODE           	084A	0000	703
-		_initDoors     		CODE           	196E	0000	35
-		_setAlarm      		CODE           	1A14	0000	11
+		_main          		CODE           	14FC	0000	151
+		_initDoors     		CODE           	1966	0000	35
+		_setAlarm      		CODE           	1A0C	0000	11
+		_run           		CODE           	0AA2	0000	545
 
-main.c estimated size: 962
+main.c estimated size: 955
 

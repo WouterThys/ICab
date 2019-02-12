@@ -15,6 +15,7 @@ abstract class LogsDialogLayout extends IDialog {
      *                  COMPONENTS
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     private JTabbedPane tabbedPane = new JTabbedPane();
+    private SettingsPanel settingsPanel;
     private SerialLogsPanel serialLogsPanel;
     private WebLogsPanel webLogsPanel;
 
@@ -51,6 +52,7 @@ abstract class LogsDialogLayout extends IDialog {
         setTitleName(getTitle());
 
         // Panels
+        settingsPanel = new SettingsPanel();
         serialLogsPanel = new SerialLogsPanel();
         webLogsPanel = new WebLogsPanel();
 
@@ -60,6 +62,7 @@ abstract class LogsDialogLayout extends IDialog {
     public void initializeLayouts() {
         getContentPanel().setLayout(new BorderLayout());
 
+        tabbedPane.addTab("Settings", settingsPanel);
         tabbedPane.addTab("Serial", serialLogsPanel);
         tabbedPane.addTab("Web", webLogsPanel);
 
@@ -78,6 +81,8 @@ abstract class LogsDialogLayout extends IDialog {
         }
         // Web
         webLogsPanel.updateComponents();
+        // Settings
+        settingsPanel.updateComponents();
 
         // Tables
         updateSerialTableData();

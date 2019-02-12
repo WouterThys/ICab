@@ -81,7 +81,7 @@ public class DoorsPanel extends JPanel implements GuiInterface, IDoorTile.DoorCl
     @Override
     public void onDoorClicked(MouseEvent e, Door door) {
         if (application != null) {
-            if (e.getClickCount() == 2) {
+            if (e.getClickCount() == 4) {
                 application.showDebugDialog();
             }
         }
