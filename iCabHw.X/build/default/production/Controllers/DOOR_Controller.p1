@@ -2,7 +2,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "12 Controllers/DOOR_Controller.h
 [s S323 `uc 1 `uc 1 `*Vuc 1 `uc 1 `uc 1 `uc 1 `*Vuc 1 `uc 1 ]
 [n S323 . id locked lock_port lock_pin was_open is_open sensor_port sensor_pin ]
-"2254 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"2254 D:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f2550.h
 [v _PORTB `Vuc ~T0 @X0 0 e@3969 ]
 "2115
 [v _PORTA `Vuc ~T0 @X0 0 e@3968 ]
@@ -13,14 +13,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "40 Controllers/../Drivers/UART_Driver.h
 [v _D_UART_Write `(v ~T0 @X0 0 ef2`*Cuc`*Cuc ]
 [v F3316 `(v ~T0 @X0 1 tf1`ul ]
-"164 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18.h
+"164 D:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18.h
 [v __delay `JF3316 ~T0 @X0 0 e ]
 [p i __delay ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
 [; ;pic18f2550.h: 50: extern volatile unsigned short UFRM @ 0xF66;
-"52 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"52 D:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f2550.h
 [; ;pic18f2550.h: 52: asm("UFRM equ 0F66h");
 [; <" UFRM equ 0F66h ;# ">
 [; ;pic18f2550.h: 57: extern volatile unsigned char UFRML @ 0xF66;
@@ -3263,12 +3263,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;DOOR_Controller.c: 58: doors[d].lock_pin = (uint8_t)(0 + d);
 "58
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 3 -> + -> 0 `i -> _d `i `uc ]
-[; ;DOOR_Controller.c: 60: doors[d].is_open = 1;
+[; ;DOOR_Controller.c: 60: doors[d].is_open = 0;
 "60
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 1 `i `uc ]
-[; ;DOOR_Controller.c: 61: doors[d].was_open = !1;
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> 0 `i `uc ]
+[; ;DOOR_Controller.c: 61: doors[d].was_open = !0;
 "61
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> ! != -> 1 `i -> 0 `i `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 4 -> -> ! != -> 0 `i -> 0 `i `i `uc ]
 [; ;DOOR_Controller.c: 62: doors[d].sensor_port = &PORTA;
 "62
 [e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 &U _PORTA ]
@@ -3377,9 +3377,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 346  ]
 [e :U 343 ]
 {
-[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 1);
+[; ;DOOR_Controller.c: 105: doors[d].is_open = (uint8_t)(((*doors[d].sensor_port >> doors[d].sensor_pin) & 0x01) == 0);
 "105
-[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 1 `i `i `uc ]
+[e = . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 5 -> -> == & >> -> *U . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 6 `i . *U + &U _doors * -> _d `ux -> -> # *U &U _doors `ui `ux 7 -> 1 `i -> 0 `i `i `uc ]
 "106
 }
 "104

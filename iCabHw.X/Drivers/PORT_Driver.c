@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <xc.h>
-#include <p18f4550.h>
 
 #include "PORT_Driver.h"
 

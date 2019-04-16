@@ -1,5 +1,5 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"6115 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"6115 D:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f2550.h
 [v _PR2 `Vuc ~T0 @X0 0 e@4043 ]
 "6023
 [s S261 :2 `uc 1 :1 `uc 1 :4 `uc 1 ]
@@ -160,7 +160,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;pic18f2550.h: 50: extern volatile unsigned short UFRM @ 0xF66;
-"52 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic18f2550.h
+"52 D:\Program Files (x86)\Microchip\xc8\v1.45\include\pic18f2550.h
 [; ;pic18f2550.h: 52: asm("UFRM equ 0F66h");
 [; <" UFRM equ 0F66h ;# ">
 [; ;pic18f2550.h: 57: extern volatile unsigned char UFRML @ 0xF66;

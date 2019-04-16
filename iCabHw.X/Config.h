@@ -38,7 +38,7 @@
  * Baud rate of serial communication
  */
 #define SERIAL_BAUD 9600
-#define SERIAL_INV  0
+#define SERIAL_INV  1
 
 
 
@@ -55,7 +55,7 @@
 /**
  * OPEN and CLOSED sensor signal polarity
  */
-#define OPEN    1
+#define OPEN    0
 #define CLOSED  !OPEN
 
 /*******************************************************************************

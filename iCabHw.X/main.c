@@ -173,7 +173,7 @@ void run() {
             if (ledDelayCnt < LED_DELAY) {
                 ledDelayCnt++;
             } else {
-                
+                LED1 = !LED1;
                 ledDelayCnt = 0;
             }
             
